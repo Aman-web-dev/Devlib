@@ -1,5 +1,6 @@
 module.exports = {
-  plugins: [
-    require('flowbite/plugin')
-]
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
 };
