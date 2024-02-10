@@ -1,10 +1,9 @@
 import React from 'react'
-import github from '../assets/github.png'
 
 function Hero() {
   return (
     <div>
-      <div className="h-screen w-[90vw] bg-black ">
+      <div className="min-h-screen w-[90vw] m-auto bg-black ">
     <div className="mx-auto max-w-7xl pt-16 sm:pt-24">
         <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-8">
             <div className="px-6 sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:flex lg:items-center lg:text-left">
@@ -90,9 +89,9 @@ function Hero() {
             </div>
 
             <div className="flex items-center w-full col-span-6">
-                <div className="px-6 h-96 lg:h-100% w-full max-w-2xl col-span-6 flex items-center mx-auto">
+                <div className="px-6 h-96 lg:h-100% w-full max-w-2xl col-span-6 flex items-center mx-auto ">
                     <div style={{width: "100%" , height: "100%"}}>
-                        <div style={{width: "100%", height: "100%"}}>
+                        <div className='shadow-2xl shadow-cyan-500/50' style={{width: "100%", height: "100%"}}>
                             <iframe frameBorder="0" allowFullScreen="1"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                 width="100%" height="100%"
