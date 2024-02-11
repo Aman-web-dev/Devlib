@@ -1,6 +1,20 @@
-import React from 'react'
+'use client'
+
+import React,{useEffect} from 'react'
 
 function Hero() {
+
+    
+    useEffect(()=>{
+         
+        const queryString=window.location.search
+        const urlParams=new URLSearchParams(queryString);
+        const codeParam=urlParams.get('code');
+        console.log(codeParam)
+        console.log(codeParam)
+    },[])
+
+
   return (
     <div>
       <div className="min-h-screen w-[90vw] m-auto bg-black ">
