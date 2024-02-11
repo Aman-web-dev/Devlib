@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Usage=()=>{
+export default  Usage=()=>{
   return (
     <div className='min-h-screen flex flex-col w-[90vw] m-auto '>
 
@@ -107,4 +107,4 @@ export const Usage=()=>{
   )
 }
 
-export default Usage
+

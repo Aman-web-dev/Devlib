@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 
-export const Nav = () => {
+export default Nav = () => {
 
 
     const [navShow, setNavShow] = useState(false)
