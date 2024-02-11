@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 
-const Nav = () => {
+export const Nav = () => {
 
 
     const [navShow, setNavShow] = useState(false)
@@ -89,4 +89,3 @@ const Nav = () => {
         )
     }
 
-    export default Nav
