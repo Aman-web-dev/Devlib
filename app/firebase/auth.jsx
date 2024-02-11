@@ -1,12 +1,29 @@
 import React from 'react'
 import { auth } from './firebase'
 
-function auth() {
-  return (
-    <div>
-      
-    </div>
-  )
+import { createUserWithEmailAndPassword,GoogleAuthProvider } from 'firebase/auth';
+
+export const doCreateUserWithEmailAndPassword   =async (email,password)=>{
+
+    return createUserWithEmailAndPassword(auth,email,password);
+
 }
 
-export default auth
+
+
+
+
+export const doSignInWithGoogle=async ()=>{
+
+    const provider = new GoogleAuthProvider();
+    const result =await signInWithPopup(auth,provider);
+    // result.user
+    return result
+
+}
+
+
+export const doSignOut=()=>{
+    return auth.signOut();
+
+}

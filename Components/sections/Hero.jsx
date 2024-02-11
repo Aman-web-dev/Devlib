@@ -2,9 +2,9 @@
 
 import React,{useEffect} from 'react'
 
-function Hero() {
+export const  Hero=()=>{
 
-    
+
     useEffect(()=>{
          
         const queryString=window.location.search
