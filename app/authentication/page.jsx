@@ -3,28 +3,30 @@ import React,{useState,useContext} from 'react'
 import { doSignInWithGoogle,doCreateUserWithEmailAndPassword } from '../firebase/auth'
 import { useAuth } from '@/contexts/authContext'
 
+
 function page() {
 
     const {userLoggedIn} =useAuth()
+    // const history = useHistory()
 
     const [formData,setFormData]=useState({email:"",password:""})
     const [isSigningIn,setIsSigningIn]=useState(false)
 
+    console.log(userLoggedIn)
+
 
     const handleSignUp=async (e)=>{
         e.preventDefault();
+
         if(!isSigningIn){
             setIsSigningIn(true);
             await doCreateUserWithEmailAndPassword(formData.email,formData.password)
         }
-        
         console.log(formData)
     }
 
 
     const googleSignIn=async(e)=>{
-
-
         e.preventDefault()
         if(!isSigningIn){
             setIsSigningIn(true)
@@ -41,7 +43,7 @@ function page() {
 
   return (
     <div className='h-full'>
-        {userLoggedIn && (<Navigate to={'/'} replace={true}/>)}
+        {/* {userLoggedIn && (history.push('/'))} */}
 <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
     <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
@@ -56,7 +58,7 @@ function page() {
                 <div className="w-full flex-1 mt-8">
                     <div className="flex flex-col items-center">
                         <button
-                            onClick={()=>{doSignInWithGoogle}}
+                            onClick={(e)=>{googleSignIn(e)}}
                             className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
                             <div className="bg-white p-2 rounded-full">
                                 <svg className="w-4" viewBox="0 0 533.5 544.3">

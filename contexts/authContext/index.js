@@ -16,9 +16,7 @@ export  function useAuth(){
 
 
 
-
-
-export function AuthProvider({children}){
+ function AuthProvider({children}){
 
     const [currentUser,setCurrentUser]=useState(null)
     const [userLoggedIn,setUserLoggedIn]=useState(false)
@@ -30,16 +28,18 @@ export function AuthProvider({children}){
     },[])
 
 
-    async function initializeUser(){
+    async function initializeUser(user){
            if(user){
             setCurrentUser({...user});
             setUserLoggedIn(true)
            }else{
-            currentUser(null);
+            setCurrentUser(null);
             setUserLoggedIn(false)
            }
            setLoading(false)
     }
+
+    // console.log(currentUser.)
 
 
     const value={
@@ -54,3 +54,6 @@ export function AuthProvider({children}){
    </AuthContext.Provider>
     )
 }
+
+
+export default AuthProvider

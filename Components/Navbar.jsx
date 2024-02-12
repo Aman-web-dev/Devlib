@@ -3,10 +3,17 @@
 import { ThemeContext } from "@/utils (Context)/ThemeContext";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
+import { useAuth } from "@/contexts/authContext";
+import { doSignOut } from "@/app/firebase/auth";
 
 const Nav = () => {
   const [navShow, setNavShow] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const {userLoggedIn}=useAuth()
+
+
+
+
   const CheckSize = function () {
     if (window.innerWidth > 764) {
       console.log("changing Nav Show to row");
@@ -106,6 +113,16 @@ const Nav = () => {
                 <li>
                   <div>
                     <div className="flex flex-col md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                    
+
+
+                        {userLoggedIn?<button
+                          type="button"
+                          onClick={()=>doSignOut()}
+                          className="text-white bg-[#ec4899] hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-lg text-lg px-4 py-2 text-center dark:bg-[#ec4899] hover:bg-[#f8c419] dark:focus:ring-blue-800 transition-opacity duration-2000 ease-in-out opacity-100"
+                        >
+                          Log Out
+                        </button>:
                       <Link href="/authentication">
                         <button
                           type="button"
@@ -113,7 +130,8 @@ const Nav = () => {
                         >
                           Get Started
                         </button>
-                      </Link>
+                      </Link>}
+                    
                     </div>
                   </div>
                 </li>
