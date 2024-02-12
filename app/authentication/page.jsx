@@ -1,6 +1,6 @@
 'use client'
-import React,{useState,useContext} from 'react'
-import { doSignInWithGoogle,doCreateUserWithEmailAndPassword } from '../firebase/auth'
+import React,{useState} from 'react'
+import { doSignInWithGoogle,doCreateUserWithEmailAndPassword,doSignInWithGithub } from '../firebase/auth'
 import { useAuth } from '@/contexts/authContext'
 
 
@@ -23,6 +23,20 @@ function page() {
             await doCreateUserWithEmailAndPassword(formData.email,formData.password)
         }
         console.log(formData)
+    }
+
+
+    const githuhubSignIn=(e)=>{
+
+        e.preventDefault()
+        console.log(isSigningIn)
+        if(!isSigningIn){
+            setIsSigningIn(true);
+            doSignInWithGithub().catch(err=>{
+                setIsSigningIn(false)
+            })
+        }
+
     }
 
 
@@ -82,6 +96,7 @@ function page() {
                         </button>
 
                         <button
+                            onClick={(e)=>githuhubSignIn(e)}
                             className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5">
                             <div className="bg-white p-1 rounded-full">
                                 <svg className="w-6" viewBox="0 0 32 32">
