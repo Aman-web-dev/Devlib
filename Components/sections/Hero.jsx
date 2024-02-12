@@ -2,7 +2,7 @@
 
 import React,{useEffect} from 'react'
 
-export default  Hero=()=>{
+const  Hero=()=>{
 
 
     useEffect(()=>{
@@ -123,3 +123,6 @@ export default  Hero=()=>{
     </div>
   )
 }
+
+
+export default Hero;
