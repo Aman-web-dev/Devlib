@@ -3,7 +3,7 @@
 import { ThemeContext } from "@/utils (Context)/ThemeContext";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import { useAuth } from "@/contexts/authContext";
+import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { doSignOut } from "@/app/firebase/auth";
 import Image from "next/image";
 
@@ -172,4 +172,3 @@ const Nav = () => {
 };
 
 export default Nav;
-  

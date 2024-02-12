@@ -1,7 +1,7 @@
 'use client'
 import React,{useState} from 'react'
 import { doSignInWithGoogle,doCreateUserWithEmailAndPassword,doSignInWithGithub } from '../firebase/auth'
-import { useAuth } from '@/contexts/authContext'
+import { useAuth } from '@/utils (Context)/authContext.jsx'
 
 
 function page() {
