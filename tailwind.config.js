@@ -9,11 +9,14 @@ module.exports = {
   ],
   theme: {
     extend: {
-
       boxShadow: {
-        "custom": '-8px 15px 258px -5px rgba(248,196,25,1)'
-      }
+        custom: "-8px 15px 258px -5px rgba(248,196,25,1)",
+      },
+      colors: {
+        dark: "#23272F",
+        light: "#F3F4F6",
+      },
     },
   },
   plugins: [],
-}
+};
