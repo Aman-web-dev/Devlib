@@ -3,6 +3,7 @@
 import { ThemeContext } from "@/utils (Context)/ThemeContext";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const Nav = () => {
   const [navShow, setNavShow] = useState(false);
@@ -28,11 +29,17 @@ const Nav = () => {
       <nav
         className={`${
           theme === "dark" ? "bg-dark" : "bg-light"
-        } sticky top-0 w-full z-40`}
+        } sticky top-0 w-full z-40 py-2`}
       >
-        <div className="flex flex-wrap items-center justify-between mx-auto p-1 md:px-8 text-white">
-          <Link href="/" className="flex items-center h-50">
-            {/* <img src="https://firebasestorage.googleapis.com/v0/b/rajvip-numbers.appspot.com/o/logo%2FRAJ%20VIP%20NUMBER%20LOGO%201.webp?alt=media&token=37e43ac8-cf57-4060-b2cd-f0b89fc3027f" className="w-50 h-20 rounded-lg" /> */}
+        <div className="flex flex-wrap items-center justify-between mx-auto md:px-8 text-white">
+          <Link href="/">
+            <Image
+              src={"/assets/logo.svg"}
+              width={50}
+              height={50}
+              alt="Dev lib"
+              className=""
+            />
           </Link>
 
           <button
@@ -65,57 +72,35 @@ const Nav = () => {
           {navShow ? (
             <div className=" w-full md:block md:w-auto" id="navbar-default">
               <ul
-                className={`font-medium flex flex-col md:flex-row p-4 md:p-0 md:items-center mt-4 border  md:space-x-8 md:mt-0 md:border-0`}
+                className={`font-medium flex flex-col md:flex-row p-4 md:p-0 md:items-center mt-4 border md:mt-0 md:border-0 gap-8`}
               >
                 <li>
-                  <Link
-                    href="/"
-                    className="block px-4 py-2 font-bold text-white   "
-                  >
-                    Home
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    href="/articles"
-                    className="block px-4 py-2 font-bold text-white  "
-                  >
+                  <Link href="/articles" className="">
                     Articles
                   </Link>
                 </li>
 
                 <li>
-                  <Link
-                    href="/documentation"
-                    className="block px-4 py-2 font-bold text-white  "
-                  >
+                  <Link href="/documentation" className="">
                     Documentation
                   </Link>
                 </li>
 
                 <li>
-                  <Link
-                    href="/documentation"
-                    className="block px-4 py-2 font-bold text-white  "
-                  >
+                  <Link href="/documentation" className="">
                     Videos
                   </Link>
                 </li>
 
                 <li>
-                  <div>
-                    <div className="flex flex-col md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                      <Link href="/authentication">
-                        <button
-                          type="button"
-                          className="text-white bg-[#ec4899] hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-lg text-lg px-4 py-2 text-center dark:bg-[#ec4899] hover:bg-[#f8c419] dark:focus:ring-blue-800 transition-opacity duration-2000 ease-in-out opacity-100"
-                        >
-                          Get Started
-                        </button>
-                      </Link>
-                    </div>
-                  </div>
+                  <Link href="/authentication">
+                    <button
+                      type="button"
+                      className="text-white bg-[#ec4899] hover:text-black focus:outline-none rounded-lg text-lg py-1 px-3 text-center hover:bg-[#f8c419] transition-opacity duration-2000 ease-in-out opacity-100"
+                    >
+                      Login
+                    </button>
+                  </Link>
                 </li>
                 <li>
                   {theme === "dark" ? (
