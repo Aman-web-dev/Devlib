@@ -1,18 +1,22 @@
 'use client'
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { doSignInWithGoogle,doCreateUserWithEmailAndPassword,doSignInWithGithub } from '../firebase/auth'
 import { useAuth } from '@/utils (Context)/authContext.jsx'
+import { redirect } from 'next/navigation'
+
 
 
 function page() {
 
-    const {userLoggedIn} =useAuth()
+    
+ 
     // const history = useHistory()
 
     const [formData,setFormData]=useState({email:"",password:""})
     const [isSigningIn,setIsSigningIn]=useState(false)
+    const {userLoggedIn}=useAuth()
 
-    console.log(userLoggedIn)
+    console.log("userLoggedIn",userLoggedIn)
 
 
     const handleSignUp=async (e)=>{
@@ -53,11 +57,17 @@ function page() {
     }
 
 
+    useEffect(() => {
+        if (userLoggedIn) {
+          redirect('/'); // Redirect to the home page if the user is logged in
+        }
+      }, [userLoggedIn]);
+
 
 
   return (
     <div className='h-full'>
-        {/* {userLoggedIn && (history.push('/'))} */}
+       
 <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
     <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">

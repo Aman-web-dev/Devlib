@@ -6,12 +6,14 @@ import Link from "next/link";
 import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { doSignOut } from "@/app/firebase/auth";
 import Image from "next/image";
+import Sidebar from "./Sidebar";
+
 
 const Nav = () => {
   const [navShow, setNavShow] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState("")
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const {userLoggedIn}=useAuth()
-
+  const { userLoggedIn, currentUser } = useAuth()
 
 
 
@@ -27,18 +29,23 @@ const Nav = () => {
     }
   };
   useEffect(() => {
+    if (currentUser != null) {
+      console.log(currentUser.photoURL)
+      if (currentUser.photoURL) {
+        setPhotoUrl(currentUser.photoURL)
+      }
+    }
     CheckSize();
     window.addEventListener("resize", CheckSize);
-  }, []);
+  }, [currentUser]);
 
   return (
     <>
       <nav
-        className={`${
-          theme === "dark" ? "bg-dark" : "bg-light"
-        } sticky top-0 w-full z-40 py-2`}
+        className={`${theme === "dark" ? "bg-dark text-white" : "bg-light text-black"
+          } sticky top-0 w-full z-40 py-2 `}
       >
-        <div className="flex flex-wrap items-center justify-between mx-auto md:px-8 text-white">
+        <div className="flex flex-wrap items-center justify-between mx-auto md:px-8 ">
           <Link href="/">
             <Image
               src={"/assets/logo.svg"}
@@ -82,7 +89,7 @@ const Nav = () => {
                 className={`font-medium flex flex-col md:flex-row p-4 md:p-0 md:items-center mt-4 border md:mt-0 md:border-0 gap-8`}
               >
                 <li>
-                  <Link href="/articles" className="">
+                  <Link href="/articles" className="dark: ">
                     Articles
                   </Link>
                 </li>
@@ -102,28 +109,31 @@ const Nav = () => {
                 <li>
                   <div>
                     <div className="flex flex-col md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                    
 
 
-                        {userLoggedIn?<button
-                          type="button"
-                          onClick={()=>doSignOut()}
-                          className="text-white bg-[#ec4899] hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-lg text-lg px-4 py-2 text-center dark:bg-[#ec4899] hover:bg-[#f8c419] dark:focus:ring-blue-800 transition-opacity duration-2000 ease-in-out opacity-100"
-                        >
-                          Log Out
-                        </button>:
-                      <Link href="/authentication">
-                      <button
-                        type="button"
-                        className="text-white bg-[#ec4899] hover:text-black focus:outline-none rounded-lg text-lg py-1 px-3 text-center hover:bg-[#f8c419] transition-opacity duration-2000 ease-in-out opacity-100"
-                      >
-                        Login
-                      </button>
-                    </Link>}
-                    
+
+                      {userLoggedIn ?
+
+                        <div className="flex flex-row">
+                          <ProfileSection ImgUrl={photoUrl} signOut={doSignOut}/>
+                        </div>
+
+
+
+
+                        :
+                        <Link href="/authentication">
+                          <button
+                            type="button"
+                            className=" bg-[#ec4899] hover: focus:outline-none rounded-lg text-lg py-1 px-3 text-center hover:bg-[#f8c419] transition-opacity duration-2000 ease-in-out opacity-100"
+                          >
+                            Login
+                          </button>
+                        </Link>}
+
                     </div>
                   </div>
-                 
+
                 </li>
                 <li>
                   {theme === "dark" ? (
@@ -172,3 +182,32 @@ const Nav = () => {
 };
 
 export default Nav;
+
+
+
+
+
+
+const ProfileSection = (props) => {
+
+const [optionsVisible,setOptionVisible]=useState(false)
+
+
+  return (
+
+    <>
+
+
+    <div className="  h-10 w-10">
+      <img src={props.ImgUrl} className="h-10 w-10 rounded-full mx-4 cursor-pointer" onClick={()=>setOptionVisible(!optionsVisible)}/>
+
+
+      {optionsVisible?
+     <Sidebar handleScreenClick={()=>(setOptionVisible(!optionsVisible))}/>
+      :""}    
+    </div>
+
+    </>
+
+  )
+}
