@@ -168,7 +168,6 @@ function Page() {
               </form>
 
               <p className="mt-6 text-xs text-gray-600 text-center">
-                I agree to abide by templatana's
                 <a href="#" className="border-b border-gray-500 border-dotted">
                   Terms of Service
                 </a>
