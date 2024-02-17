@@ -109,28 +109,6 @@ const Nav = () => {
                 <li>
                   <div>
                     <div className="flex flex-col md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-<<<<<<< HEAD
-                      {userLoggedIn ? (
-                        <button
-                          type="button"
-                          onClick={() => doSignOut()}
-                          className="text-white bg-[#ec4899] hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-lg text-lg px-4 py-2 text-center dark:bg-[#ec4899] hover:bg-[#f8c419] dark:focus:ring-blue-800 transition-opacity duration-2000 ease-in-out opacity-100"
-                        >
-                          Log Out
-                        </button>
-                      ) : (
-                        <Link href="/authentication">
-                          <button
-                            type="button"
-                            className="text-white bg-[#ec4899] hover:text-black focus:outline-none rounded-lg text-lg py-1 px-3 text-center hover:bg-[#f8c419] transition-opacity duration-2000 ease-in-out opacity-100"
-                          >
-                            Login
-                          </button>
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-=======
 
 
 
@@ -156,7 +134,6 @@ const Nav = () => {
                     </div>
                   </div>
 
->>>>>>> cd40c27175f1f6430c5713f479ee186795ec3ba7
                 </li>
                 <li>
                   {theme === "dark" ? (
