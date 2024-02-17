@@ -1,9 +1,6 @@
 "use client";
 
 import React,{useState,useEffect} from "react";
-
-
-
 import {
   doSignInWithGoogle,
   doCreateUserWithEmailAndPassword,
@@ -12,7 +9,7 @@ import {
 import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { redirect } from "next/navigation";
 
-function page() {
+function Page() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isSigningIn, setIsSigningIn] = useState(false);
   const { userLoggedIn } = useAuth();
@@ -197,4 +194,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
