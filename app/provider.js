@@ -1,7 +1,7 @@
 "use client";
 
 import ThemeProvider from "@/utils (Context)/ThemeContext";
-import AuthProvider from "@/contexts/authContext";
+import AuthProvider from "@/utils (Context)/authContext.jsx";
 
 const Provider = ({ children }) => {
 
