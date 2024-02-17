@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { doSignOut } from "@/app/firebase/auth";
 import Image from "next/image";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "./Sidebar";
 
 
 const Navbar = () => {
