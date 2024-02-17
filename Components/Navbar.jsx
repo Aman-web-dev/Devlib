@@ -10,14 +10,11 @@ import Image from "next/image";
 const Nav = () => {
   const [navShow, setNavShow] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const {userLoggedIn}=useAuth()
-
-
-
+  const { userLoggedIn } = useAuth();
 
   const CheckSize = function () {
     if (window.innerWidth > 764) {
-      console.log("changing Nav Show to row");
+      //   console.log("changing Nav Show to row");
       setNavShow(true);
     }
 
@@ -102,28 +99,26 @@ const Nav = () => {
                 <li>
                   <div>
                     <div className="flex flex-col md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                    
-
-
-                        {userLoggedIn?<button
+                      {userLoggedIn ? (
+                        <button
                           type="button"
-                          onClick={()=>doSignOut()}
+                          onClick={() => doSignOut()}
                           className="text-white bg-[#ec4899] hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-lg text-lg px-4 py-2 text-center dark:bg-[#ec4899] hover:bg-[#f8c419] dark:focus:ring-blue-800 transition-opacity duration-2000 ease-in-out opacity-100"
                         >
                           Log Out
-                        </button>:
-                      <Link href="/authentication">
-                      <button
-                        type="button"
-                        className="text-white bg-[#ec4899] hover:text-black focus:outline-none rounded-lg text-lg py-1 px-3 text-center hover:bg-[#f8c419] transition-opacity duration-2000 ease-in-out opacity-100"
-                      >
-                        Login
-                      </button>
-                    </Link>}
-                    
+                        </button>
+                      ) : (
+                        <Link href="/authentication">
+                          <button
+                            type="button"
+                            className="text-white bg-[#ec4899] hover:text-black focus:outline-none rounded-lg text-lg py-1 px-3 text-center hover:bg-[#f8c419] transition-opacity duration-2000 ease-in-out opacity-100"
+                          >
+                            Login
+                          </button>
+                        </Link>
+                      )}
                     </div>
                   </div>
-                 
                 </li>
                 <li>
                   {theme === "dark" ? (

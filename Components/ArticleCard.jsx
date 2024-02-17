@@ -1,9 +1,14 @@
+import Youtube from "./YoutubeComponent";
 function ArticleCard({ data }) {
+  console.log("data:", data?.name);
   return (
-    <section className="bg-blue-400">
-      <iframe src={data?.src} frameborder="0"></iframe>
-      <span>{data?.userName}</span>
-    </section>
+    <div className="">
+      <span>{data.youtubeLink}</span>
+      <div>
+        <Youtube link={data.youtubeLink} />
+      </div>
+      <span className="text-black text-2xl">{data?.name}</span>
+    </div>
   );
 }
 
