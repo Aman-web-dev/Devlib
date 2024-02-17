@@ -6,10 +6,10 @@ import Link from "next/link";
 import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { doSignOut } from "@/app/firebase/auth";
 import Image from "next/image";
-import Sidebar from "./Sidebar";
+import Sidebar from "../components/Sidebar";
 
 
-const Nav = () => {
+const Navbar = () => {
   const [navShow, setNavShow] = useState(false);
   const [photoUrl, setPhotoUrl] = useState("")
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -181,7 +181,7 @@ const Nav = () => {
   );
 };
 
-export default Nav;
+export default Navbar;
 
 
 
