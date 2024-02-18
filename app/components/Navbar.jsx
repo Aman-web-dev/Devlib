@@ -20,17 +20,17 @@ const Navbar = () => {
   const CheckSize = function () {
 
 
-    // if (typeof window !== 'undefined') {
-    //   if (window.innerWidth > 764) {
-    //     //   console.log("changing Nav Show to row");
-    //     setNavShow(true);
-    //   }
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth > 764) {
+        //   console.log("changing Nav Show to row");
+        setNavShow(true);
+      }
   
-    //   if (window.innerWidth < 764) {
-    //     console.log("changing Nav Show to col");
-    //     setNavShow(false);
-    //   }
-    // }
+      if (window.innerWidth < 764) {
+        console.log("changing Nav Show to col");
+        setNavShow(false);
+      }
+    }
    
   };
   useEffect(() => {
@@ -42,11 +42,11 @@ const Navbar = () => {
     }
     CheckSize();
 
-    // if (typeof window !== 'undefined'){
+    if (typeof window !== 'undefined'){
 
-    //   window.addEventListener("resize", CheckSize);
+      window.addEventListener("resize", CheckSize);
 
-    // }
+    }
 
     
   }, [currentUser]);
