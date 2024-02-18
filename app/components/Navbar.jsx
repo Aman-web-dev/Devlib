@@ -18,15 +18,20 @@ const Navbar = () => {
 
 
   const CheckSize = function () {
-    if (window.innerWidth > 764) {
-      //   console.log("changing Nav Show to row");
-      setNavShow(true);
-    }
 
-    if (window.innerWidth < 764) {
-      console.log("changing Nav Show to col");
-      setNavShow(false);
-    }
+
+    // if (typeof window !== 'undefined') {
+    //   if (window.innerWidth > 764) {
+    //     //   console.log("changing Nav Show to row");
+    //     setNavShow(true);
+    //   }
+  
+    //   if (window.innerWidth < 764) {
+    //     console.log("changing Nav Show to col");
+    //     setNavShow(false);
+    //   }
+    // }
+   
   };
   useEffect(() => {
     if (currentUser != null) {
@@ -36,7 +41,14 @@ const Navbar = () => {
       }
     }
     CheckSize();
-    window.addEventListener("resize", CheckSize);
+
+    // if (typeof window !== 'undefined'){
+
+    //   window.addEventListener("resize", CheckSize);
+
+    // }
+
+    
   }, [currentUser]);
 
   return (
@@ -185,7 +197,9 @@ export default Navbar;
 
 
 
-
+Navbar.getInitialProps = async () => {
+  return { ssr: false };
+};
 
 
 const ProfileSection = (props) => {
