@@ -12,6 +12,8 @@ export const doCreateUserWithEmailAndPassword=async (email,password)=>{
 
 export const doSignInWithGoogle=async ()=>{
 
+
+   console.log("Came to Google Signin")
     const provider = new GoogleAuthProvider();
     const result =await signInWithPopup(auth,provider);
     // result.user

@@ -8,21 +8,23 @@ import { doSignOut } from "@/app/firebase/auth";
 import Image from "next/image";
 import Sidebar from "./Sidebar";
 
-const Nav = () => {
+const Navbar = () => {
   const [navShow, setNavShow] = useState(false);
   const [photoUrl, setPhotoUrl] = useState("");
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { userLoggedIn, currentUser } = useAuth();
 
   const CheckSize = function () {
-    if (window.innerWidth > 764) {
-      //   console.log("changing Nav Show to row");
-      setNavShow(true);
-    }
+    if (typeof window !== "undefined") {
+      if (window.innerWidth > 764) {
+        //   console.log("changing Nav Show to row");
+        setNavShow(true);
+      }
 
-    if (window.innerWidth < 764) {
-      console.log("changing Nav Show to col");
-      setNavShow(false);
+      if (window.innerWidth < 764) {
+        console.log("changing Nav Show to col");
+        setNavShow(false);
+      }
     }
   };
   useEffect(() => {
@@ -33,7 +35,10 @@ const Nav = () => {
       }
     }
     CheckSize();
-    window.addEventListener("resize", CheckSize);
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", CheckSize);
+    }
   }, [currentUser]);
 
   return (
@@ -173,7 +178,11 @@ const Nav = () => {
   );
 };
 
-export default Nav;
+export default Navbar;
+
+Navbar.getInitialProps = async () => {
+  return { ssr: false };
+};
 
 const ProfileSection = (props) => {
   const [optionsVisible, setOptionVisible] = useState(false);
@@ -187,13 +196,20 @@ const ProfileSection = (props) => {
           onClick={() => setOptionVisible(!optionsVisible)}
         />
 
-        {optionsVisible ? (
-          <Sidebar
-            handleScreenClick={() => setOptionVisible(!optionsVisible)}
+        <div className="  h-10 w-10">
+          <img
+            src={props.ImgUrl}
+            className="h-10 w-10 rounded-full mx-4 cursor-pointer"
+            onClick={() => setOptionVisible(!optionsVisible)}
           />
-        ) : (
-          ""
-        )}
+          {optionsVisible ? (
+            <Sidebar
+              handleScreenClick={() => setOptionVisible(!optionsVisible)}
+            />
+          ) : (
+            ""
+          )}
+        </div>
       </div>
     </>
   );

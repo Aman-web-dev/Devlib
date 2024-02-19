@@ -31,6 +31,7 @@ function AddNewArticles() {
   };
 
   const youtbueId = getId(dataToBeSend.youtubeLink);
+  
   // console.log("youtubeLink: ", youtbueId);
 
   async function writeArticle() {
