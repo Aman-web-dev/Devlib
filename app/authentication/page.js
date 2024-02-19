@@ -1,6 +1,6 @@
 "use client";
 
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   doSignInWithGoogle,
   doCreateUserWithEmailAndPassword,
@@ -16,22 +16,16 @@ function Page() {
 
   console.log("userLoggedIn", userLoggedIn);
 
-
-  const handleSignUp= async(e)=>{
-    e.preventDefault()
+  const handleSignUp = async (e) => {
+    e.preventDefault();
     if (!isSigningIn) {
       setIsSigningIn(true);
-     await doCreateUserWithEmailAndPassword(formData.email, formData.password);
+      await doCreateUserWithEmailAndPassword(formData.email, formData.password);
     }
-  }
-
- 
-
-
-
+  };
 
   console.log(formData);
-  
+
   const githuhubSignIn = (e) => {
     e.preventDefault();
     console.log(isSigningIn);
@@ -45,7 +39,7 @@ function Page() {
 
   const googleSignIn = async (e) => {
     e.preventDefault();
-    console.log("Signing in with Google")
+    console.log("Signing in with Google");
     if (!isSigningIn) {
       setIsSigningIn(true);
       doSignInWithGoogle().catch((err) => {
@@ -118,7 +112,6 @@ function Page() {
                   <span className="ml-4">Sign Up with GitHub</span>
                 </button>
               </div>
-             
             </div>
 
             <div className="my-12 border-b text-center">

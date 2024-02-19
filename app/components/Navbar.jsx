@@ -189,27 +189,19 @@ const ProfileSection = (props) => {
 
   return (
     <>
-      <div className="  h-10 w-10">
+      <div>
         <img
           src={props.ImgUrl}
-          className="h-10 w-10 rounded-full mx-4 cursor-pointer"
+          className="h-10 w-10 rounded-full cursor-pointer"
           onClick={() => setOptionVisible(!optionsVisible)}
         />
-
-        <div className="  h-10 w-10">
-          <img
-            src={props.ImgUrl}
-            className="h-10 w-10 rounded-full mx-4 cursor-pointer"
-            onClick={() => setOptionVisible(!optionsVisible)}
+        {optionsVisible ? (
+          <Sidebar
+            handleScreenClick={() => setOptionVisible(!optionsVisible)}
           />
-          {optionsVisible ? (
-            <Sidebar
-              handleScreenClick={() => setOptionVisible(!optionsVisible)}
-            />
-          ) : (
-            ""
-          )}
-        </div>
+        ) : (
+          ""
+        )}
       </div>
     </>
   );
