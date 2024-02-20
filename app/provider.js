@@ -2,11 +2,14 @@
 
 import ThemeProvider from "@/utils (Context)/ThemeContext";
 import AuthProvider from "@/utils (Context)/authContext.jsx";
+import YouTubeProvider from "@/utils (Context)/YoutubeDetails";
 
 const Provider = ({ children }) => {
   return (
     <AuthProvider>
-      <ThemeProvider>{children}</ThemeProvider>
+      <YouTubeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
+      </YouTubeProvider>
     </AuthProvider>
   );
 };

@@ -5,24 +5,28 @@ import ArticleCard from "./ArticleCard";
 import axios from "axios";
 import { useAuth } from "@/contexts/authContext";
 import { ThemeContext } from "@/utils (Context)/ThemeContext";
-
-function getId(url) {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-
-  return match && match[2].length === 11 ? match[2] : null;
-}
+import { v4 as uuidv4 } from "uuid";
+import { AuthContext } from "@/utils (Context)/authContext";
+import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
+import { ShimmerThumbnail } from "react-shimmer-effects";
+import { YoutubeContext } from "@/utils (Context)/YoutubeDetails";
+import Link from "next/link";
 
 function AddNewArticles() {
-  const [isNewArticle, setIsNewArticle] = useState(true);
+  const [isNewArticle, setIsNewArticle] = useState(false);
   const [articlesData, setArticlesData] = useState([]);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { theme } = useContext(ThemeContext);
-  // console.log("article-data: ", articlesData);
-  // const { currentUser } = useAuth();
+
+  const { currentUser } = useContext(AuthContext);
   const [dataToBeSend, setDataToBeSend] = useState({
     youtubeLink: "",
     userName: "",
+    tags: [],
   });
+
+  const { youtubeId, setYoutubeId } = useContext(YoutubeContext);
 
   const handleUserNameChange = (e) => {
     setDataToBeSend((prev) => ({ ...prev, userName: e.target.value }));
@@ -32,19 +36,38 @@ function AddNewArticles() {
     setDataToBeSend((prev) => ({ ...prev, youtubeLink: e.target.value }));
   };
 
-  const youtbueId = getId(dataToBeSend.youtubeLink);
-  async function writeArticle() {
+  const handleTagsChange = (e) => {
+    setDataToBeSend((prev) => ({ ...prev, tags: [e.target.value] }));
+  };
+
+  function getId(url) {
+    const regExp =
+      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+
+    return match && match[2].length === 11 ? setYoutubeId(match[2]) : null;
+  }
+
+  function writeArticle() {
     try {
-      const data = await axios.post("http://localhost:4000/new-article", {
-        userId: currentUser.uid,
-        name: dataToBeSend.userName,
-        youtubeLink: `https://www.youtube.com/embed/${youtbueId}`,
-      });
+      setIsSubmitting(true);
+      setTimeout(async () => {
+        const data = await axios.post("http://localhost:4000/new-article", {
+          userId: currentUser.uid,
+          name: dataToBeSend.userName,
+          youtubeLink: youtubeVideoThumbnail + youtubeId + "/maxresdefault.jpg",
+          tags: dataToBeSend.tags,
+          uniqueId: youtubeId,
+        });
+        setIsSubmitting(false);
+        setIsNewArticle(false);
+      }, 2000);
     } catch (error) {
       console.log("data not added due to: ", error);
     }
   }
 
+  //Get all article code from database code
   useEffect(() => {
     async function getData() {
       try {
@@ -66,16 +89,25 @@ function AddNewArticles() {
     getData();
   }, []);
 
-  console.log(articlesData);
+  useEffect(() => {
+    getId(dataToBeSend.youtubeLink);
+  }, [dataToBeSend.youtubeLink]);
+  // console.log(articlesData);
   return (
     <section
       className={`${
         theme === "dark" && "bg-[#23272F]"
-      } w-full px-12 py-12 relative min-h-screen grid lg:grid-cols-2 gap-4`}
+      } w-full px-12 py-12 relative min-h-screen grid lg:grid-cols-3 gap-8`}
     >
-      {/* {articlesData?.map((data) => {
-        return <ArticleCard key={data.youtubeLink} data={data} />;
-      })} */}
+      {articlesData?.map((data) => {
+        return articlesData.length !== 0 ? (
+          <Link href={`/video/${data.uniqueId}`} key={data.uniqueId}>
+            <ArticleCard data={data} />
+          </Link>
+        ) : (
+          <ShimmerThumbnail height={250} width={250} />
+        );
+      })}
       <button
         className={`${
           theme === "dark" && "bg-light"
@@ -103,6 +135,25 @@ function AddNewArticles() {
             theme === "dark" && "bg-extraDark"
           } flex flex-col  px-6 py-12 absolute rounded top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2`}
         >
+          <button
+            className="absolute  right-5 top-5 bg-light p-1 rounded-full"
+            onClick={() => setIsNewArticle(false)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-4 h-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
           <div className="flex flex-col gap-8">
             <div className="flex flex-col">
               <label
@@ -150,7 +201,8 @@ function AddNewArticles() {
               <input
                 id="tags"
                 type="url"
-                value={""}
+                value={dataToBeSend.tags}
+                onChange={handleTagsChange}
                 className={`${
                   theme === "dark" &&
                   "bg-extraDark border border-gray-600 text-gray-200"
@@ -160,11 +212,12 @@ function AddNewArticles() {
           </div>
           <button
             onClick={writeArticle}
+            disabled={isSubmitting}
             className={`${
               theme === "dark" && "bg-light"
             } border border-black flex gap-4 justify-center py-2 rounded-full my-6`}
           >
-            <span>Upload</span>
+            <span>{isSubmitting ? "Uploading..." : "Upload"}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -187,4 +240,3 @@ function AddNewArticles() {
 }
 
 export default AddNewArticles;
-// bg-[#23272F] bg-[#16181D]
