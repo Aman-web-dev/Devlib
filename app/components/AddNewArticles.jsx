@@ -3,10 +3,8 @@
 import { useContext, useEffect, useState } from "react";
 import ArticleCard from "./ArticleCard";
 import axios from "axios";
-import { useAuth } from "@/contexts/authContext";
 import { ThemeContext } from "@/utils (Context)/ThemeContext";
-import { v4 as uuidv4 } from "uuid";
-import { AuthContext } from "@/utils (Context)/authContext";
+import { AuthContext,useAuth } from "@/utils (Context)/authContext";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 import { ShimmerThumbnail } from "react-shimmer-effects";
 import { YoutubeContext } from "@/utils (Context)/YoutubeDetails";

@@ -204,6 +204,10 @@ const ProfileSection = (props) => {
         {optionsVisible ? (
           <Sidebar
             handleScreenClick={() => setOptionVisible(!optionsVisible)}
+            handleLinkClick={(e)=>{
+              e.preventDefault()
+              setOptionVisible(false)
+            }}
           />
         ) : (
           ""

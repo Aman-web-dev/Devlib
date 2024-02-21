@@ -1,27 +1,57 @@
 "use client";
 
 import React, { useState } from "react";
+import { useAuth } from "@/utils (Context)/authContext";
+
+
+
+import AccountSetting from "./components/AccountSetting";
+import PersonalInfo from "./components/PersonalInfo";
+import ProfileSetting from "./components/ProfileSetting";
+import SecuritySetting from "./components/SecuritySetting";
+import EmailSetting from "./components/EmailSetting";
+import BillingSetting from "./components/BillingSetting";
+
 
 function page() {
-  const [currentSetting, setCurrentSetting] = useState(<PersonalSetting />);
+  const [currentSetting, setCurrentSetting] = useState(<ProfileSetting/>);
+
+  const components={
+    "ProfileSetting":<ProfileSetting/>,
+    "AccountSetting":<AccountSetting/>,
+    "SecuritySetting":<SecuritySetting/>,
+    "PersonalInfo":<PersonalInfo/>,
+    "EmailSetting":<EmailSetting/>,
+    "BillingSetting":<BillingSetting/>
+  }
+
+
+
   const handleSettingChange = (e) => {
     console.log(e.target.id);
-    setCurrentSetting(<>{e.target.id}</>)
+    const keye=e.target.id
+
+    setCurrentSetting(components[keye]);
   };
+
+  const { currentUser } = useAuth();
 
   return (
     <div className="bg-black min-h-screen p-2">
       <div
         id="ProfileDetails"
-        className="flex flex-row  bg-[#23272f] text-white py-2"
+        className="flex flex-row  bg-[#23272f] text-white py-2 pl-5"
       >
         <img
-          src="https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?w=1480&t=st=1708348675~exp=1708349275~hmac=0fea3e54d0a82e991654ae78c3fa832e3428a01f5b5bd72879792850ab0e5df3"
+          src={currentUser.photoURL}
           alt=""
           className=" my-4 h-20 w-20  rounded-full mx-4 object-cover"
         />
         <section id="userDetails" className="my-auto ">
-          <p className="text-3xl  dark:">Aman Kumar</p>
+          <p className="text-3xl font-bold   dark:">
+            {currentUser.displayName}
+          </p>
+          <p className="text-lg">{currentUser.email}</p>
           <p>Personal Account</p>
         </section>
       </div>
@@ -95,71 +125,3 @@ function page() {
 }
 
 export default page;
-
-
-
-
-
-const PersonalSetting = () => {
-  return (
-    <>
-    <div className="w-full bg-[#23272f] min-h-screen text-white">
-
-     
-
-    </div>
-    </>
-  )
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const AccountSetting = () => {
-  return <p>Account Setting</p>;
-};
-
-const SecuritySetting = () => {
-  return <p>Security Setting</p>;
-};
-
-const PersonalInfo = () => {
-  return <p>Personal Info Setting</p>;
-};
-
-const BillingSetting = () => {
-  return <p>Billing Setting</p>;
-};
-
-const EmailSetting = () => {
-  return <p>Email Setting</p>;
-};
