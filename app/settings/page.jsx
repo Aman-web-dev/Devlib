@@ -3,8 +3,6 @@
 import React, { useState } from "react";
 import { useAuth } from "@/utils (Context)/authContext";
 
-
-
 import AccountSetting from "./components/AccountSetting";
 import PersonalInfo from "./components/PersonalInfo";
 import ProfileSetting from "./components/ProfileSetting";
@@ -12,24 +10,21 @@ import SecuritySetting from "./components/SecuritySetting";
 import EmailSetting from "./components/EmailSetting";
 import BillingSetting from "./components/BillingSetting";
 
-
 function page() {
-  const [currentSetting, setCurrentSetting] = useState(<ProfileSetting/>);
+  const [currentSetting, setCurrentSetting] = useState(<ProfileSetting />);
 
-  const components={
-    "ProfileSetting":<ProfileSetting/>,
-    "AccountSetting":<AccountSetting/>,
-    "SecuritySetting":<SecuritySetting/>,
-    "PersonalInfo":<PersonalInfo/>,
-    "EmailSetting":<EmailSetting/>,
-    "BillingSetting":<BillingSetting/>
-  }
-
-
+  const components = {
+    ProfileSetting: <ProfileSetting />,
+    AccountSetting: <AccountSetting />,
+    SecuritySetting: <SecuritySetting />,
+    PersonalInfo: <PersonalInfo />,
+    EmailSetting: <EmailSetting />,
+    BillingSetting: <BillingSetting />,
+  };
 
   const handleSettingChange = (e) => {
     console.log(e.target.id);
-    const keye=e.target.id
+    const keye = e.target.id;
 
     setCurrentSetting(components[keye]);
   };
@@ -37,7 +32,7 @@ function page() {
   const { currentUser } = useAuth();
 
   return (
-    <div className="bg-black min-h-screen p-2">
+    <div className="bg-black  p-2">
       <div
         id="ProfileDetails"
         className="flex flex-row  bg-[#23272f] text-white py-2 pl-5"
@@ -59,7 +54,7 @@ function page() {
       <div className="flex flex-row w-full">
         <div
           id="setting-scroll-section"
-          className="bg-[#23272f] text-white min-h-screen  w-[30vw]  my-2"
+          className="bg-[#23272f] text-gray-300   w-[25vw]  my-2"
         >
           <div id="optionList" className=" w-[90%] mx-auto">
             <ul className="text-xl font-bold gap-2 border-b">
@@ -118,7 +113,7 @@ function page() {
           </div>
         </div>
 
-        <div className="w-[70vw] bg-white m-2">{currentSetting}</div>
+        <div className="min-w-[80vw] bg-white  m-2">{currentSetting}</div>
       </div>
     </div>
   );
