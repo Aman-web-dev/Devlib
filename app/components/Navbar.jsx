@@ -8,30 +8,24 @@ import { doSignOut } from "@/app/firebase/auth";
 import Image from "next/image";
 import Sidebar from "./Sidebar";
 
-
 const Navbar = () => {
   const [navShow, setNavShow] = useState(false);
-  const [photoUrl, setPhotoUrl] = useState("")
+  const [photoUrl, setPhotoUrl] = useState("");
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const { userLoggedIn, currentUser } = useAuth()
-
-
+  const { userLoggedIn, currentUser } = useAuth();
 
   const CheckSize = function () {
-
-
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       if (window.innerWidth > 764) {
         //   console.log("changing Nav Show to row");
         setNavShow(true);
       }
-  
+
       if (window.innerWidth < 764) {
         console.log("changing Nav Show to col");
         setNavShow(false);
       }
     }
-   
   };
 
 
@@ -41,27 +35,24 @@ const Navbar = () => {
   }
   useEffect(() => {
     if (currentUser != null) {
-      console.log(currentUser.photoURL)
+      console.log(currentUser.photoURL);
       if (currentUser.photoURL) {
-        setPhotoUrl(currentUser.photoURL)
+        setPhotoUrl(currentUser.photoURL);
       }
     }
     CheckSize();
 
-    if (typeof window !== 'undefined'){
-
+    if (typeof window !== "undefined") {
       window.addEventListener("resize", CheckSize);
-
     }
-
-    
   }, [currentUser]);
 
   return (
     <>
       <nav
-        className={`${theme === "dark" ? "bg-dark text-white" : "bg-light text-black"
-          } sticky top-0 w-full z-40 py-2 `}
+        className={`${
+          theme === "dark" ? "bg-dark text-white" : "bg-light text-black"
+        } sticky top-0 w-full z-40 py-2 `}
       >
         <div className="flex flex-wrap items-center justify-between mx-auto md:px-8 ">
           <Link href="/">
@@ -127,15 +118,14 @@ const Navbar = () => {
                 <li>
                   <div>
                     <div className="flex flex-col md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-
-
-
-                      {userLoggedIn ?
-
+                      {userLoggedIn ? (
                         <div className="flex flex-row">
-                          <ProfileSection ImgUrl={photoUrl} signOut={doSignOut}/>
+                          <ProfileSection
+                            ImgUrl={photoUrl}
+                            signOut={doSignOut}
+                          />
                         </div>
-                        :
+                      ) : (
                         <Link href="/authentication">
                           <button
                             type="button"
@@ -143,11 +133,10 @@ const Navbar = () => {
                           >
                             Login
                           </button>
-                        </Link>}
-
+                        </Link>
+                      )}
                     </div>
                   </div>
-
                 </li>
                 <li>
                   {theme === "dark" ? (
@@ -197,43 +186,29 @@ const Navbar = () => {
 
 export default Navbar;
 
-
-
 Navbar.getInitialProps = async () => {
   return { ssr: false };
 };
 
-
 const ProfileSection = (props) => {
-
-const [optionsVisible,setOptionVisible]=useState(false)
-
+  const [optionsVisible, setOptionVisible] = useState(false);
 
   return (
-
     <>
-
-
-    <div className="  h-10 w-10">
-      <img src={props.ImgUrl} className="h-10 w-10 rounded-full mx-4 cursor-pointer" onClick={()=>setOptionVisible(!optionsVisible)}/>
-
-
-
-
-      {optionsVisible?
-     <Sidebar 
-     handleScreenClick={()=>(setOptionVisible(!optionsVisible))}
-     handleLinkClick={()=>setOptionVisible(false)}/>
-
-     
-      :""}    
-
-
-
-
-    </div>
-
+      <div>
+        <img
+          src={props.ImgUrl}
+          className="h-10 w-10 rounded-full cursor-pointer"
+          onClick={() => setOptionVisible(!optionsVisible)}
+        />
+        {optionsVisible ? (
+          <Sidebar
+            handleScreenClick={() => setOptionVisible(!optionsVisible)}
+          />
+        ) : (
+          ""
+        )}
+      </div>
     </>
-
-  )
-}
+  );
+};

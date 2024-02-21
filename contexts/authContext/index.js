@@ -31,8 +31,6 @@ function AuthProvider({ children }) {
     setLoading(false);
   }
 
-  // console.log(currentUser.)
-
   const value = {
     currentUser,
     userLoggedIn,
