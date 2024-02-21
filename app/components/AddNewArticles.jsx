@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import ArticleCard from "./ArticleCard";
 import axios from "axios";
-import { useAuth } from "@/contexts/authContext";
+import { useAuth } from "@/utils (Context)/authContext";
 
 function getId(url) {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -108,4 +108,3 @@ function AddNewArticles() {
 }
 
 export default AddNewArticles;
-// bg-[#23272F] bg-[#16181D]

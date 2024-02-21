@@ -33,6 +33,12 @@ const Navbar = () => {
     }
    
   };
+
+
+
+  const HandleNavigation=()=>{
+
+  }
   useEffect(() => {
     if (currentUser != null) {
       console.log(currentUser.photoURL)
@@ -210,9 +216,21 @@ const [optionsVisible,setOptionVisible]=useState(false)
 
     <div className="  h-10 w-10">
       <img src={props.ImgUrl} className="h-10 w-10 rounded-full mx-4 cursor-pointer" onClick={()=>setOptionVisible(!optionsVisible)}/>
+
+
+
+
       {optionsVisible?
-     <Sidebar handleScreenClick={()=>(setOptionVisible(!optionsVisible))}/>
+     <Sidebar 
+     handleScreenClick={()=>(setOptionVisible(!optionsVisible))}
+     handleLinkClick={()=>setOptionVisible(false)}/>
+
+     
       :""}    
+
+
+
+
     </div>
 
     </>
