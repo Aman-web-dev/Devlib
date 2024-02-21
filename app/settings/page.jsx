@@ -105,10 +105,9 @@ const PersonalSetting = () => {
     <>
     <div className="w-full bg-[#23272f] min-h-screen text-white">
 
-      hello
+     
 
     </div>
-    
     </>
   )
 };
