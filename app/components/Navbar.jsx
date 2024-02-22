@@ -9,8 +9,10 @@ import Image from "next/image";
 import Sidebar from "./Sidebar";
 
 const Navbar = () => {
+
+  const defaultPhotoUrl="https://firebasestorage.googleapis.com/v0/b/devlib-c6572.appspot.com/o/assets%2Fpexels-sora-shimazaki-5668837.jpg?alt=media&token=6f17f0c5-dd45-4a69-a06b-28705ecd846e"
   const [navShow, setNavShow] = useState(false);
-  const [photoUrl, setPhotoUrl] = useState("");
+  const [photoUrl, setPhotoUrl] = useState(defaultPhotoUrl);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { userLoggedIn, currentUser } = useAuth();
 
@@ -29,10 +31,6 @@ const Navbar = () => {
   };
 
 
-
-  const HandleNavigation=()=>{
-
-  }
   useEffect(() => {
     if (currentUser != null) {
       console.log(currentUser.photoURL);

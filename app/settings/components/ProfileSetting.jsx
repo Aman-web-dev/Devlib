@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuth } from "@/utils (Context)/authContext";
 
+
 function ProfileSetting() {
   const { currentUser, userLoggedIn, loading } = useAuth();
 
@@ -60,7 +61,10 @@ function ProfileSetting() {
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Email
-                </label>
+                <span className="rounded-full uppercase bg-red-500 mx-4 px-3 py-0.5 text-sm font-semibold leading-5 text-white">
+                  {currentUser.emailVerified?"Verified":"Not Verified"}
+                  </span>
+                  </label>
                 <input
                   type="text"
                   id="last_name"
