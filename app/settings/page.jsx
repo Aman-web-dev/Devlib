@@ -57,7 +57,7 @@ function page() {
           className="bg-[#23272f] text-gray-300   w-[25vw]  my-2"
         >
           <div id="optionList" className=" w-[90%] mx-auto">
-            <ul className="text-xl font-bold gap-2 border-b">
+            <ul className="text-sm gap-2 border-b">
               <span className="text-sm my-4 mx-4">Personal</span>
 
               <li
