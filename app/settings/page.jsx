@@ -10,7 +10,7 @@ import SecuritySetting from "./components/SecuritySetting";
 import EmailSetting from "./components/EmailSetting";
 import BillingSetting from "./components/BillingSetting";
 
-function page() {
+function Page() {
   const [currentSetting, setCurrentSetting] = useState(<ProfileSetting />);
 
   const components = {
@@ -24,7 +24,7 @@ function page() {
 
   const handleSettingChange = (e) => {
     console.log(e.target.id);
-    const keye = e.target.id;
+    const key = e.target.id;
 
     setCurrentSetting(components[keye]);
   };
@@ -119,4 +119,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
