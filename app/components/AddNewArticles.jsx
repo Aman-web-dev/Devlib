@@ -155,7 +155,7 @@ function AddNewArticles() {
           <div className="flex flex-col gap-8">
             <div className="flex flex-col">
               <label
-                htmlFor="username"
+                htmlhtmlFor="username"
                 className={`${theme === "dark" && "text-gray-300"}`}
               >
                 Enter name
@@ -173,7 +173,7 @@ function AddNewArticles() {
             </div>
             <div className="flex flex-col">
               <label
-                htmlFor="youtubelink"
+                htmlhtmlFor="youtubelink"
                 className={`${theme === "dark" && "text-gray-300"}`}
               >
                 Enter a valid Youtube Vide Link
@@ -191,7 +191,7 @@ function AddNewArticles() {
             </div>
             <div className="flex flex-col">
               <label
-                htmlFor="tags"
+                htmlhtmlFor="tags"
                 className={`${theme === "dark" && "text-gray-300"}`}
               >
                 Enter a valid Tags
