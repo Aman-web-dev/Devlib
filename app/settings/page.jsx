@@ -10,7 +10,7 @@ import SecuritySetting from "./components/SecuritySetting";
 import EmailSetting from "./components/EmailSetting";
 import BillingSetting from "./components/BillingSetting";
 
-function page() {
+function Page() {
   const [currentSetting, setCurrentSetting] = useState(<ProfileSetting />);
 
   const components = {
@@ -24,9 +24,9 @@ function page() {
 
   const handleSettingChange = (e) => {
     console.log(e.target.id);
-    const keye = e.target.id;
+    const key = e.target.id;
 
-    setCurrentSetting(components[keye]);
+    setCurrentSetting(components[key]);
   };
 
   const { currentUser } = useAuth();
@@ -106,7 +106,7 @@ function page() {
 
             <ul className="text-xl font-bold gap-2 my-4 border-b">
               <span className="text-sm my-4 mx-4">Products</span>
-              <li className="my-4">Articels</li>
+              <li className="my-4">Articles</li>
               <li className="my-4">Videos</li>
               <li className="my-4">Documentation</li>
             </ul>
@@ -119,4 +119,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
