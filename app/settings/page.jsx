@@ -26,7 +26,7 @@ function Page() {
     console.log(e.target.id);
     const key = e.target.id;
 
-    setCurrentSetting(components[keye]);
+    setCurrentSetting(components[key]);
   };
 
   const { currentUser } = useAuth();
@@ -106,7 +106,7 @@ function Page() {
 
             <ul className="text-xl font-bold gap-2 my-4 border-b">
               <span className="text-sm my-4 mx-4">Products</span>
-              <li className="my-4">Articels</li>
+              <li className="my-4">Articles</li>
               <li className="my-4">Videos</li>
               <li className="my-4">Documentation</li>
             </ul>
