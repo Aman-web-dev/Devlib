@@ -108,7 +108,7 @@ const Navbar = () => {
                 </li>
 
                 <li>
-                  <Link href="/documentation" className="">
+                  <Link href="/video" className="">
                     Videos
                   </Link>
                 </li>
