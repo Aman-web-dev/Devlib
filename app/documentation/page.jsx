@@ -6,7 +6,7 @@ function Page() {
       <div class="bg-gray-900 h-screen flex flex-col items-center justify-center text-center">
   <div class="text-white">
     <h1 class="text-4xl font-bold">Coming Soon</h1>
-    <p class="mt-4 text-lg">We're working on something awesome!</p>
+    <p class="mt-4 text-lg">We &apos; re working on something awesome!</p>
   </div>
   <div class="mt-8">
     <form action="#" method="post" class="flex items-center">
