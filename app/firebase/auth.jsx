@@ -16,11 +16,12 @@ export const doSignInWithGoogle=async ()=>{
    console.log("Came to Google Signin")
     const provider = new GoogleAuthProvider();
     const result =await signInWithPopup(auth,provider);
+
+    console.log("result",result.error)
     // result.user
     const user= result.user
 
     return user
-
 }
 
 export const doSignInWithGithub=async()=>{
@@ -44,6 +45,7 @@ console.log("hello")
     // ...
   }).catch((error) => {
     console.log(error)
+    return error
     // Handle Errors here.
     const errorCode = error.code;
     console.log(errorCode)

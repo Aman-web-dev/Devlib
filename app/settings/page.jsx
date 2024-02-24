@@ -41,15 +41,15 @@ function Page() {
         className="flex flex-row  bg-[#23272f] text-white py-2 pl-5"
       >
         <img
-          src={currentUser.photoURL}
+          src={currentUser?currentUser.photoURL:""}
           alt=""
           className=" my-4 h-20 w-20  rounded-full mx-4 object-cover"
         />
         <section id="userDetails" className="my-auto ">
           <p className="text-3xl font-bold   dark:">
-            {currentUser.displayName}
+            {currentUser?currentUser.displayName:""}
           </p>
-          <p className="text-lg">{currentUser.email}</p>
+          <p className="text-lg">{currentUser?currentUser.email:""}</p>
           <p>Personal Account</p>
         </section>
       </div>

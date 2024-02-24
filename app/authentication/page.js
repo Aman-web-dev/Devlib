@@ -11,15 +11,15 @@ import { redirect } from "next/navigation";
 
 function Page() {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [isSigningIn, setIsSigningIn] = useState(false);
+
   const { userLoggedIn } = useAuth();
 
   console.log("userLoggedIn", userLoggedIn);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (!isSigningIn) {
-      setIsSigningIn(true);
+    console.log(formData)
+    if (!userLoggedIn) {
       await doCreateUserWithEmailAndPassword(formData.email, formData.password);
     }
   };
@@ -29,10 +29,9 @@ function Page() {
   const githuhubSignIn = (e) => {
     e.preventDefault();
     console.log(isSigningIn);
-    if (!isSigningIn) {
-      setIsSigningIn(true);
+    if (!userLoggedIn) {
       doSignInWithGithub().catch((err) => {
-        setIsSigningIn(false);
+        console.log(err)
       });
     }
   };
@@ -40,10 +39,9 @@ function Page() {
   const googleSignIn = async (e) => {
     e.preventDefault();
     console.log("Signing in with Google");
-    if (!isSigningIn) {
-      setIsSigningIn(true);
+    if (!userLoggedIn) {
       doSignInWithGoogle().catch((err) => {
-        setIsSigningIn(false);
+        console.log(err)
       });
     }
   };
