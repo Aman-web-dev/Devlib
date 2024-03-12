@@ -15,7 +15,7 @@ function SecuritySetting() {
       </div>
 
 
-      <div className="w-[90]  m-auto">
+      <div className="w-[90%]  m-auto">
         <p className="text-2xl border-b py-4">Change Password</p>
         <p className="text-sm my-4">
           Chnage Your login Password.
