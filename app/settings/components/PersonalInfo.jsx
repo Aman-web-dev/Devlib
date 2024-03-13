@@ -23,7 +23,7 @@ function PersonalInfo() {
 
       <div className="w-[90%] m-auto">
         <p className="text-2xl border-b py-4">Change Password</p>
-        <p className="text-sm my-4">Chnage Your login Password.</p>
+        <p className="text-sm my-4">Change Your login Password.</p>
         <button className="bg-[#373e47] py-2 px-2 rounded-lg my-2">
           Change username
         </button>
