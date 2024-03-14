@@ -8,25 +8,52 @@ import {
 } from "../firebase/auth";
 import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { redirect } from "next/navigation";
+import axios from "axios";
 
 function Page() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isSigningIn, setIsSigningIn] = useState(false);
-  const { userLoggedIn } = useAuth();
+  const { userLoggedIn, currentUser } = useAuth();
 
-  console.log("userLoggedIn", userLoggedIn);
+  async function addUserIdInPostgresql(uid) {
+    console.log("uid got as argument: ", uid);
+    fetch("http://localhost:4000/adduser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: uid }),
+    }).then((response) => {
+      console.log("response: ", response);
+      return response.text();
+    });
+  }
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (!isSigningIn) {
-      setIsSigningIn(true);
-      await doCreateUserWithEmailAndPassword(formData.email, formData.password);
+      try {
+        console.log("signed up first line");
+        setIsSigningIn(true);
+        await doCreateUserWithEmailAndPassword(
+          formData.email,
+          formData.password
+        );
+        console.log("signed up second line");
+      } catch (error) {
+        console.log("error occur while registering user ", error);
+      }
     }
   };
 
-  console.log(formData);
+  useEffect(() => {
+    if (currentUser && currentUser.uid) {
+      console.log("uid: ", currentUser.uid);
+      addUserIdInPostgresql(currentUser.uid);
+    }
+  }, [currentUser]);
 
-  const githuhubSignIn = (e) => {
+  const githubSignIn = (e) => {
     e.preventDefault();
     console.log(isSigningIn);
     if (!isSigningIn) {
@@ -39,12 +66,19 @@ function Page() {
 
   const googleSignIn = async (e) => {
     e.preventDefault();
-    console.log("Signing in with Google");
+
     if (!isSigningIn) {
-      setIsSigningIn(true);
-      doSignInWithGoogle().catch((err) => {
+      try {
+        setIsSigningIn(true);
+        await doSignInWithGoogle();
         setIsSigningIn(false);
-      });
+        // Pass currentUser.uid to addUserIdInPostgresql
+        // console.log("currentuser: ", currentUser);
+        // await addUserIdInPostgresql(currentUser.uid);
+      } catch (error) {
+        console.error("Error signing in with Google:", error);
+        setIsSigningIn(false);
+      }
     }
   };
 
@@ -98,7 +132,7 @@ function Page() {
                 </button>
 
                 <button
-                  onClick={(e) => githuhubSignIn(e)}
+                  onClick={(e) => githubSignIn(e)}
                   className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5"
                 >
                   <div className="bg-white p-1 rounded-full">
@@ -140,10 +174,7 @@ function Page() {
                   placeholder="Password"
                   name="password"
                 />
-                <button
-                  type="submit"
-                  className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                >
+                <button className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                   <svg
                     className="w-6 h-6 -ml-2"
                     fill="none"

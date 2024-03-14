@@ -28,14 +28,10 @@ const Navbar = () => {
     }
   };
 
-
-
-  const HandleNavigation=()=>{
-
-  }
+  const HandleNavigation = () => {};
   useEffect(() => {
     if (currentUser != null) {
-      console.log(currentUser.photoURL);
+      // console.log(currentUser.photoURL);
       if (currentUser.photoURL) {
         setPhotoUrl(currentUser.photoURL);
       }
@@ -204,9 +200,9 @@ const ProfileSection = (props) => {
         {optionsVisible ? (
           <Sidebar
             handleScreenClick={() => setOptionVisible(!optionsVisible)}
-            handleLinkClick={(e)=>{
-              e.preventDefault()
-              setOptionVisible(false)
+            handleLinkClick={(e) => {
+              e.preventDefault();
+              setOptionVisible(false);
             }}
           />
         ) : (

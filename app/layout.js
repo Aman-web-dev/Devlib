@@ -18,10 +18,9 @@ export default function RootLayout({ children }) {
         <Provider>
           <Navbar />
           {children}
-          <div id="portal" ></div>
+          <div id="portal"></div>
         </Provider>
       </body>
     </html>
   );
 }
-  

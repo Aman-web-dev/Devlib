@@ -17,8 +17,8 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, initializeUser);
-    return unsubscribe;
-  }, []);
+    return () => unsubscribe;
+  }, [auth]);
 
   async function initializeUser(user) {
     if (user) {
