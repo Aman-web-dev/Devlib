@@ -1,10 +1,19 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { useAuth } from "@/utils (Context)/authContext";
+import { redirect } from "next/dist/server/api-utils";
+
+
 
 function ProfileSetting() {
   const { currentUser, userLoggedIn, loading } = useAuth();
 
+
+
+
   console.log(currentUser, userLoggedIn, loading);
+
+
+
   return (
     <div className="bg-[#23272f] text-gray-300">
       <section
@@ -16,18 +25,18 @@ function ProfileSetting() {
       <div className=" w-[100%] flex flex-row-reverse  min-h-screen  mt-8">
         <section className="flex flex-col  justify-center text-center mx-auto mb-auto">
           <img
-            src={currentUser.photoURL}
+            src={currentUser?currentUser.photoURL:""}
             className="rounded-full h-40 w-40 mx-auto"
           />
           <p className="text-2xl mt-2 font-sans font-bold">
-            {currentUser.displayName}
+            {currentUser?currentUser.displayName:""}
           </p>
-          <p className="text-xl ">{currentUser.email}</p>
-          <p className="text-xl ">{currentUser.phoneNumber} </p>
+          <p className="text-xl ">{currentUser?currentUser.email:""}</p>
+          <p className="text-xl ">{currentUser?currentUser.phoneNumber:""} </p>
         </section>
 
         <section id="main-content" className="w-[60%] ml-8 mr-auto">
-          <form>
+          <form onChange={()=>{console.log("hello")}}>
             <div className="grid gap-6 mb-6 md:grid-cols-1">
               <div>
                 <label
@@ -43,7 +52,7 @@ function ProfileSetting() {
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="John"
                   required
-                  value={currentUser.displayName}
+                  value={currentUser?currentUser.displayName:""}
                 />
 
                 <label
@@ -60,12 +69,15 @@ function ProfileSetting() {
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Email
-                </label>
+                <span className="rounded-full uppercase bg-red-500 mx-4 px-3 py-0.5 text-sm font-semibold leading-5 text-white">
+                  {/* {currentUser.emailVerified?"Verified":"Not Verified"} */}
+                  </span>
+                  </label>
                 <input
                   type="text"
                   id="last_name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={currentUser.email}
+                  // value={currentUser.email}
                   placeholder="Doe"
                   readOnly
                 />
@@ -133,10 +145,11 @@ function ProfileSetting() {
                   Pronoun
                 </label>
                 <select
+                  onChange={()=>{console.log("hello")}}
                   id="countries"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
-                  <option selected>Choose a Pronoun</option>
+                  <option  defaultChecked>Choose a Pronoun</option>
                   <option value="US">he/him</option>
                   <option value="CA">they/them</option>
                   <option value="FR">she/her</option>

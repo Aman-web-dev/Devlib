@@ -56,10 +56,9 @@ function Page() {
   const githubSignIn = (e) => {
     e.preventDefault();
     console.log(isSigningIn);
-    if (!isSigningIn) {
-      setIsSigningIn(true);
+    if (!userLoggedIn) {
       doSignInWithGithub().catch((err) => {
-        setIsSigningIn(false);
+        console.log(err);
       });
     }
   };

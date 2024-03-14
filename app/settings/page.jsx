@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/utils (Context)/authContext";
 
 import AccountSetting from "./components/AccountSetting";
@@ -12,21 +12,24 @@ import BillingSetting from "./components/BillingSetting";
 
 function Page() {
   const [currentSetting, setCurrentSetting] = useState(<ProfileSetting />);
+  const [activeBtn,setActiveBtn]=useState("Profile")
 
-  const components = {
-    ProfileSetting: <ProfileSetting />,
-    AccountSetting: <AccountSetting />,
-    SecuritySetting: <SecuritySetting />,
-    PersonalInfo: <PersonalInfo />,
-    EmailSetting: <EmailSetting />,
-    BillingSetting: <BillingSetting />,
+
+  const personalComponents = {
+    Profile: <ProfileSetting />,
+    Account: <AccountSetting />,
+    Security: <SecuritySetting />,
+    Personal: <PersonalInfo />,
+    Email: <EmailSetting />,
+    Billing: <BillingSetting />,
   };
 
   const handleSettingChange = (e) => {
     console.log(e.target.id);
     const key = e.target.id;
+    setActiveBtn(e.target.id)
 
-    setCurrentSetting(components[key]);
+    setCurrentSetting(personalComponents[key]);
   };
 
   const { currentUser } = useAuth();
@@ -38,15 +41,15 @@ function Page() {
         className="flex flex-row  bg-[#23272f] text-white py-2 pl-5"
       >
         <img
-          src={currentUser.photoURL}
+          src={currentUser?currentUser.photoURL:""}
           alt=""
           className=" my-4 h-20 w-20  rounded-full mx-4 object-cover"
         />
         <section id="userDetails" className="my-auto ">
           <p className="text-3xl font-bold   dark:">
-            {currentUser.displayName}
+            {currentUser?currentUser.displayName:""}
           </p>
-          <p className="text-lg">{currentUser.email}</p>
+          <p className="text-lg">{currentUser?currentUser.email:""}</p>
           <p>Personal Account</p>
         </section>
       </div>
@@ -57,54 +60,22 @@ function Page() {
           className="bg-[#23272f] text-gray-300   w-[25vw]  my-2"
         >
           <div id="optionList" className=" w-[90%] mx-auto">
-            <ul className="text-xl font-bold gap-2 border-b">
-              <span className="text-sm my-4 mx-4">Personal</span>
+            <ul className="text-sm gap-2 font-bold border-b py-4">
+              <span className="text-sm text-blue-400  ">Personal</span>
 
-              <li
-                className="my-4"
-                id={"ProfileSetting"}
-                onClick={(e) => handleSettingChange(e)}
-              >
-                Profile
-              </li>
-              <li
-                className="my-4"
-                id={"AccountSetting"}
-                onClick={(e) => handleSettingChange(e)}
-              >
-                Account
-              </li>
-              <li
-                id="SecuritySetting"
-                className="my-4"
-                onClick={(e) => handleSettingChange(e)}
-              >
-                Security
-              </li>
-              <li
-                className="my-4"
-                id={"PersonalInfo"}
-                onClick={(e) => handleSettingChange(e)}
-              >
-                Personal Information
-              </li>
-              <li
-                className="my-4"
-                id={"BillingSetting"}
-                onClick={(e) => handleSettingChange(e)}
-              >
-                Billings
-              </li>
-              <li
-                className="my-4"
-                id={"EmailSetting"}
-                onClick={(e) => handleSettingChange(e)}
-              >
-                Emails
-              </li>
+              {Object.entries(personalComponents).map(([key, component]) => (
+                <li
+                  key={key}
+                  className={`my-4 cursor-pointer p-2 rounded-lg  ${activeBtn==key?"bg-[#505a6d] border-l-4 border-blue-400":""}`}
+                  id={key}
+                  onClick={(e) => handleSettingChange(e)}
+                >
+                  {key}
+                </li>
+              ))}
             </ul>
 
-            <ul className="text-xl font-bold gap-2 my-4 border-b">
+            <ul className="text-sm gap-2 border-b font-bold my-4 ">
               <span className="text-sm my-4 mx-4">Products</span>
               <li className="my-4">Articles</li>
               <li className="my-4">Videos</li>
