@@ -6,13 +6,12 @@ import axios from "axios";
 import { ThemeContext } from "@/utils (Context)/ThemeContext";
 import { AuthContext, useAuth } from "@/utils (Context)/authContext";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
-import { ShimmerThumbnail } from "react-shimmer-effects";
 import { YoutubeContext } from "@/utils (Context)/YoutubeDetails";
 import Link from "next/link";
 
 function AddNewArticles() {
   const [isNewArticle, setIsNewArticle] = useState(false);
-  const [articlesData, setArticlesData] = useState([]);
+  const [articlesData, setArticlesData] = useState(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { theme } = useContext(ThemeContext);
@@ -20,14 +19,14 @@ function AddNewArticles() {
   const { currentUser } = useContext(AuthContext);
   const [dataToBeSend, setDataToBeSend] = useState({
     youtubeLink: "",
-    userName: "",
+    title: "",
     tags: [],
   });
 
   const { youtubeId, setYoutubeId } = useContext(YoutubeContext);
 
-  const handleUserNameChange = (e) => {
-    setDataToBeSend((prev) => ({ ...prev, userName: e.target.value }));
+  const handleTitleChange = (e) => {
+    setDataToBeSend((prev) => ({ ...prev, title: e.target.value }));
   };
 
   const handleYoutubeLinkChange = (e) => {
@@ -45,61 +44,61 @@ function AddNewArticles() {
 
     return match && match[2].length === 11 ? setYoutubeId(match[2]) : null;
   }
-
+  // add youtube videos in the database
   function writeArticle() {
     try {
       setIsSubmitting(true);
       setTimeout(async () => {
-        const data = await axios.post("http://localhost:4000/new-article", {
-          userId: currentUser.uid,
-          name: dataToBeSend.userName,
-          youtubeLink: youtubeVideoThumbnail + youtubeId + "/maxresdefault.jpg",
-          tags: dataToBeSend.tags,
-          uniqueId: youtubeId,
+        fetch("http://localhost:4000/add-yt-vid", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: currentUser.uid,
+            title: dataToBeSend.title,
+            vid_id: youtubeId,
+          }),
         });
         setIsSubmitting(false);
         setIsNewArticle(false);
       }, 2000);
+      getYoutubeVideoData();
     } catch (error) {
       console.log("data not added due to: ", error);
     }
   }
-
-  //Get all article code from database code
-  useEffect(() => {
-    async function getData() {
-      try {
-        const allData = [];
-
-        const response = await axios.get("http://localhost:4000/all-data");
-        // console.log("All data:", response.data);
-        response.data.forEach((item) => {
-          Object.values(item).forEach((obj) => {
-            allData.push(obj);
-          });
-        });
-
-        setArticlesData(allData);
-      } catch (error) {
-        console.log("Error fetching data:", error);
-      }
+  // get all the youtube videos from the data base
+  async function getYoutubeVideoData() {
+    try {
+      const response = axios.get("http://localhost:4000/get-yt-vid");
+      response.then((result) => {
+        // console.log("result: ", result);
+        setArticlesData(result.data);
+      });
+    } catch (error) {
+      console.log("error during fetching data: ", error);
     }
-    getData();
-  }, []);
+  }
+
+  useEffect(() => {
+    getYoutubeVideoData();
+  }, [isNewArticle]);
 
   useEffect(() => {
     getId(dataToBeSend.youtubeLink);
   }, [dataToBeSend.youtubeLink]);
-  // console.log(articlesData);
+
   return (
     <section
       className={`${
         theme === "dark" && "bg-[#23272F]"
-      } w-full px-12 py-12 relative min-h-screen grid lg:grid-cols-3 gap-8`}
+      } w-full px-12 py-12 relative min-h-screen gap-8`}
     >
       {articlesData?.map((data) => {
+        // console.log("data: ", data);
         return articlesData.length !== 0 ? (
-          <Link href={`/video/${data.uniqueId}`} key={data.uniqueId}>
+          <Link href={`/video/${data.vid_id}`} key={data.vid_id}>
             <ArticleCard data={data} />
           </Link>
         ) : (
@@ -155,16 +154,16 @@ function AddNewArticles() {
           <div className="flex flex-col gap-8">
             <div className="flex flex-col">
               <label
-                htmlhtmlFor="username"
+                htmlFor="title"
                 className={`${theme === "dark" && "text-gray-300"}`}
               >
-                Enter name
+                Enter title
               </label>
               <input
-                id="username"
+                id="title"
                 type="text"
-                value={dataToBeSend.userName}
-                onChange={handleUserNameChange}
+                value={dataToBeSend.title}
+                onChange={handleTitleChange}
                 className={`${
                   theme === "dark" &&
                   "bg-extraDark border border-gray-600 text-gray-200 "
@@ -173,7 +172,7 @@ function AddNewArticles() {
             </div>
             <div className="flex flex-col">
               <label
-                htmlhtmlFor="youtubelink"
+                htmlFor="youtubelink"
                 className={`${theme === "dark" && "text-gray-300"}`}
               >
                 Enter a valid Youtube Vide Link
@@ -191,7 +190,7 @@ function AddNewArticles() {
             </div>
             <div className="flex flex-col">
               <label
-                htmlhtmlFor="tags"
+                htmlFor="tags"
                 className={`${theme === "dark" && "text-gray-300"}`}
               >
                 Enter a valid Tags
@@ -238,3 +237,9 @@ function AddNewArticles() {
 }
 
 export default AddNewArticles;
+
+// function AddNewArticles() {
+//   return <div>hello world</div>;
+// }
+
+// export default AddNewArticles;

@@ -16,7 +16,6 @@ function Page() {
   const { userLoggedIn, currentUser } = useAuth();
 
   async function addUserIdInPostgresql(uid) {
-    console.log("uid got as argument: ", uid);
     fetch("http://localhost:4000/adduser", {
       method: "POST",
       headers: {
