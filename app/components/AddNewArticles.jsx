@@ -49,7 +49,7 @@ function AddNewArticles() {
     try {
       setIsSubmitting(true);
       setTimeout(async () => {
-        fetch("http://localhost:4000/add-yt-vid", {
+        const addVideoResponse = fetch("http://localhost:4000/add-yt-vid", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -62,7 +62,20 @@ function AddNewArticles() {
         });
         setIsSubmitting(false);
         setIsNewArticle(false);
+        if (addVideoResponse) {
+          const addVideoIdInTotalLikesTableResponse = await fetch(
+            "http://localhost:4000/api/addVideoId",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ vid_id: youtubeId }),
+            }
+          );
+        }
       }, 2000);
+
       getYoutubeVideoData();
     } catch (error) {
       console.log("data not added due to: ", error);

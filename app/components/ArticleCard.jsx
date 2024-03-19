@@ -6,10 +6,6 @@ function ArticleCard({ data }) {
   const { theme } = useContext(ThemeContext);
   const [like, setLike] = useState(data.like_count);
 
-  // function increaseLikeCount() {
-
-  // }
-  // console.log("data-got: ", data);
   // async function handleLikeCount(e, video_id) {
   //   e.preventDefault(); // Prevent default behavior (navigation)
   //   e.stopPropagation();
@@ -25,71 +21,46 @@ function ArticleCard({ data }) {
   //         body: JSON.stringify({ video_id: video_id }),
   //       }
   //     );
-  //     if (response) {
-  //       const likeCountResponse = await fetch(
-  //         "http://localhost:4000/get-like-count",
-  //         {
-  //           method: "POST",
-  //           body: JSON.stringify({ video_id: video_id }),
-  //         }
-  //       );
-  //       // console.log("likeCount: ", likeCount);
-  //       // setLike(likeCount);
-  //       if (likeCountResponse.ok) {
-  //         const likeCountData = await likeCountResponse.json();
-  //         const likeCount = likeCountData.rowCount;
-  //         setLike(likeCount);
-  //         console.log("likeCountData: ", likeCountData);
-  //         console.log("likeCount: ", likeCount);
-  //       } else {
-  //         console.log("Failed to fetch like count", likeCountData.status);
-  //       }
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
   //     }
-
-  //     // console.log("response: ", response);
+  //     const likeCountResponse = await fetch(
+  //       "http://localhost:4000/get-like-count",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ video_id: video_id }),
+  //       }
+  //     );
+  //     if (!likeCountResponse.ok) {
+  //       throw new Error(`HTTP error! status: ${likeCountResponse.status}`);
+  //     }
+  //     const likeCountData = await likeCountResponse.json();
+  //     const likeCount = likeCountData.rowCount;
+  //     setLike(likeCount);
+  //     console.log("likeCountData: ", likeCountData);
+  //     console.log("likeCount: ", likeCount);
   //   } catch (error) {
   //     console.log("error while increasing like count: ", error);
   //   }
   // }
 
-  async function handleLikeCount(e, video_id) {
+  async function handleLikeCount(e) {
     e.preventDefault(); // Prevent default behavior (navigation)
     e.stopPropagation();
-    console.log("video id: ", video_id);
+
     try {
-      const response = await fetch(
-        "http://localhost:4000/vid/increment-like-count",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ video_id: video_id }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const likeCountResponse = await fetch(
-        "http://localhost:4000/get-like-count",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ video_id: video_id }),
-        }
-      );
-      if (!likeCountResponse.ok) {
-        throw new Error(`HTTP error! status: ${likeCountResponse.status}`);
-      }
-      const likeCountData = await likeCountResponse.json();
-      const likeCount = likeCountData.rowCount;
-      setLike(likeCount);
-      console.log("likeCountData: ", likeCountData);
-      console.log("likeCount: ", likeCount);
+      console.log("userId: ", data.user_id, "videoId: ", data.vid_id);
+      const likeCountResponse = await fetch("http://localhost:4000/add-like", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ userId: data.user_id, vid_id: data.vid_id }),
+      });
+      console.log("like-count-response: ", likeCountResponse);
     } catch (error) {
-      console.log("error while increasing like count: ", error);
+      console.log("error while adding like: ", error);
     }
   }
 
@@ -123,7 +94,7 @@ function ArticleCard({ data }) {
               strokeWidth={1.5}
               stroke={`${theme === "dark" && "lightgray"}`}
               className="w-6 h-6"
-              onClick={(e) => handleLikeCount(e, data.vid_id)}
+              onClick={(e) => handleLikeCount(e)}
             >
               <path
                 strokeLinecap="round"
