@@ -62,7 +62,7 @@ const Navbar = () => {
     <>
       <nav
         className={`
-           bg-dark text-white   
+           bg-dark   
          sticky top-0 w-full z-40 py-2 `}
       >
         <div className="flex flex-wrap items-center justify-between mx-auto md:px-8 ">
@@ -149,7 +149,7 @@ const Navbar = () => {
                     </div>
                   </div>
                 </li>
-                <li>
+                <li className="border bordder-2 rounded-full p-2">
                   {theme === "dark" ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -173,7 +173,7 @@ const Navbar = () => {
                       fill="none"
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
-                      stroke={theme === "light" && "white"}
+                      stroke={theme === "light" && "black"}
                       className="w-6 h-6 cursor-pointer"
                       onClick={()=>toggleTheme()}
                     >

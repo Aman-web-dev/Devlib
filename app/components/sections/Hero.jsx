@@ -14,11 +14,11 @@ function Hero() {
             <div className="space-y-8">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <span className="rounded-full uppercase bg-pink-500 px-3 py-0.5 text-sm font-semibold leading-5 text-black   dark:text-white">
+                  <span className="rounded-full uppercase bg-pink-500 px-3 py-0.5 text-sm font-semibold leading-5  dark:text-white">
                     Early Access
                   </span>
-                  <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
-                    <span className="sm:text-6xl text-black"></span> Dont Waste Time to
+                  <h1 className="text-4xl font-bold tracking-tight  sm:text-5xl md:text-6xl">
+                    <span className="sm:text-6xl "></span> Dont Waste Time to
                     FInd Perfect Resources,
                     <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-600">
                       Dev Lib
@@ -28,7 +28,7 @@ function Hero() {
                   </h1>
                 </div>
 
-                <p className="text-base text-gray-200 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                <p className="text-base  sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                   Unlock the power of seamless coding with Dev Lib - where
                   precision meets efficiency. No more time wasted in the pursuit
                   of perfect resources; Dev Lib has got your back, empowering
@@ -38,7 +38,7 @@ function Hero() {
 
               <div className="border-t border-gray-700"></div>
 
-              <div className="flex space-x-4 items-center text-white">
+              <div className="flex space-x-4 items-center ">
                 <div className="flex items-center space-x-2">
                   <div className="flex  ">
                     <img
