@@ -3,7 +3,6 @@
 import { useContext, useEffect, useState } from "react";
 import ArticleCard from "./ArticleCard";
 import axios from "axios";
-import { ThemeContext } from "@/utils (Context)/ThemeContext";
 import { AuthContext, useAuth } from "@/utils (Context)/authContext";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 import { YoutubeContext } from "@/utils (Context)/YoutubeDetails";
@@ -14,7 +13,6 @@ function AddNewArticles() {
   const [articlesData, setArticlesData] = useState(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { theme } = useContext(ThemeContext);
 
   const { currentUser } = useContext(AuthContext);
   const [dataToBeSend, setDataToBeSend] = useState({
@@ -91,9 +89,7 @@ function AddNewArticles() {
 
   return (
     <section
-      className={`${
-        theme === "dark" && "bg-[#23272F]"
-      } w-full px-12 py-12 relative min-h-screen gap-8`}
+      className={` dark:bg-[#23272F] w-full px-12 py-12 relative min-h-screen gap-8`}
     >
       {articlesData?.map((data) => {
         // console.log("data: ", data);
@@ -106,9 +102,7 @@ function AddNewArticles() {
         );
       })}
       <button
-        className={`${
-          theme === "dark" && "bg-light"
-        }  fixed right-10 bottom-10 p-4 rounded-full`}
+        className={`dark:bg-light fixed right-10 bottom-10 p-4 rounded-full`}
         onClick={() => setIsNewArticle(true)}
       >
         <svg
@@ -128,9 +122,7 @@ function AddNewArticles() {
       </button>
       {isNewArticle && (
         <section
-          className={`${
-            theme === "dark" && "bg-extraDark"
-          } flex flex-col  px-6 py-12 absolute rounded top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2`}
+          className={`dark:bg-extraDark flex flex-col  px-6 py-12 absolute rounded top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2`}
         >
           <button
             className="absolute  right-5 top-5 bg-light p-1 rounded-full"
@@ -155,7 +147,7 @@ function AddNewArticles() {
             <div className="flex flex-col">
               <label
                 htmlFor="title"
-                className={`${theme === "dark" && "text-gray-300"}`}
+                className={`dark:text-gray-300`}
               >
                 Enter title
               </label>
@@ -164,16 +156,14 @@ function AddNewArticles() {
                 type="text"
                 value={dataToBeSend.title}
                 onChange={handleTitleChange}
-                className={`${
-                  theme === "dark" &&
-                  "bg-extraDark border border-gray-600 text-gray-200 "
-                } py-2 px-2 rounded-md`}
+                className={`dark:bg-extraDark border border-gray-600 text-gray-200 "
+                 py-2 px-2 rounded-md`}
               />
             </div>
             <div className="flex flex-col">
               <label
                 htmlFor="youtubelink"
-                className={`${theme === "dark" && "text-gray-300"}`}
+                className={`dark:text-gray-300`}
               >
                 Enter a valid Youtube Vide Link
               </label>
@@ -182,16 +172,13 @@ function AddNewArticles() {
                 type="url"
                 value={dataToBeSend.youtubeLink}
                 onChange={handleYoutubeLinkChange}
-                className={`${
-                  theme === "dark" &&
-                  "bg-extraDark border border-gray-600 text-gray-200 "
-                } py-2 px-2 rounded-md`}
+                className={`dark:bg-extraDark border border-gray-600 text-gray-200 py-2 px-2 rounded-md`}
               />
             </div>
             <div className="flex flex-col">
               <label
                 htmlFor="tags"
-                className={`${theme === "dark" && "text-gray-300"}`}
+                className={`dark:text-gray-300`}
               >
                 Enter a valid Tags
               </label>
@@ -200,19 +187,15 @@ function AddNewArticles() {
                 type="url"
                 value={dataToBeSend.tags}
                 onChange={handleTagsChange}
-                className={`${
-                  theme === "dark" &&
-                  "bg-extraDark border border-gray-600 text-gray-200"
-                } py-2 px-2 rounded-md`}
+                className={`dark:bg-extraDark border border-gray-600 text-gray-200"
+                 py-2 px-2 rounded-md`}
               />
             </div>
           </div>
           <button
             onClick={writeArticle}
             disabled={isSubmitting}
-            className={`${
-              theme === "dark" && "bg-light"
-            } border border-black flex gap-4 justify-center py-2 rounded-full my-6`}
+            className={`dark:bg-light border border-black flex gap-4 justify-center py-2 rounded-full my-6`}
           >
             <span>{isSubmitting ? "Uploading..." : "Upload"}</span>
             <svg

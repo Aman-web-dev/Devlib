@@ -1,19 +1,20 @@
 "use client";
 
-import { ThemeContext } from "@/utils (Context)/ThemeContext";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { doSignOut } from "@/app/firebase/auth";
 import Image from "next/image";
 import Sidebar from "./Sidebar";
+import {useTheme} from 'next-themes'
 
 const Navbar = () => {
   const defaultPhotoUrl =
     "https://firebasestorage.googleapis.com/v0/b/devlib-c6572.appspot.com/o/assets%2Fpexels-sora-shimazaki-5668837.jpg?alt=media&token=6f17f0c5-dd45-4a69-a06b-28705ecd846e";
   const [navShow, setNavShow] = useState(false);
+  const [mounted, setMounted] = useState(false)
   const [photoUrl, setPhotoUrl] = useState(defaultPhotoUrl);
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme, setTheme } = useTheme()
   const { userLoggedIn, currentUser } = useAuth();
 
   const CheckSize = function () {
@@ -30,6 +31,11 @@ const Navbar = () => {
     }
   };
 
+  const toggleTheme=()=>{
+    console.log("Current Theme:",theme)
+    setTheme(theme==="light"?"dark":'light')
+}
+
   useEffect(() => {
     if (currentUser != null) {
       // console.log(currentUser.photoURL);
@@ -44,12 +50,20 @@ const Navbar = () => {
     }
   }, [currentUser]);
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
+
   return (
     <>
       <nav
-        className={`${
-          theme === "dark" ? "bg-dark text-white" : "bg-light text-black"
-        } sticky top-0 w-full z-40 py-2 `}
+        className={`
+           bg-dark text-white   
+         sticky top-0 w-full z-40 py-2 `}
       >
         <div className="flex flex-wrap items-center justify-between mx-auto md:px-8 ">
           <Link href="/">
@@ -144,7 +158,8 @@ const Navbar = () => {
                       strokeWidth={1.5}
                       stroke="currentColor"
                       className="w-6 h-6 cursor-pointer"
-                      onClick={toggleTheme}
+                      onClick={()=>toggleTheme()}
+
                     >
                       <path
                         strokeLinecap="round"
@@ -158,9 +173,9 @@ const Navbar = () => {
                       fill="none"
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
-                      stroke={theme === "light" && "black"}
+                      stroke={theme === "light" && "white"}
                       className="w-6 h-6 cursor-pointer"
-                      onClick={toggleTheme}
+                      onClick={()=>toggleTheme()}
                     >
                       <path
                         strokeLinecap="round"
@@ -168,6 +183,8 @@ const Navbar = () => {
                         d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
                       />
                     </svg>
+
+
                   )}
                 </li>
               </ul>

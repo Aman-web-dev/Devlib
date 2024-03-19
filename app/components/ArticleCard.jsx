@@ -1,9 +1,7 @@
-import { ThemeContext } from "@/utils (Context)/ThemeContext";
 import { useContext, useState } from "react";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 
 function ArticleCard({ data }) {
-  const { theme } = useContext(ThemeContext);
   const [like, setLike] = useState(data.like_count);
 
   // function increaseLikeCount() {
@@ -105,9 +103,8 @@ function ArticleCard({ data }) {
       <div>
         <div className="pt-2 px-4">
           <span
-            className={`${
-              theme === "dark" && "text-gray-300"
-            } text-black text-lg`}
+            className={`dark:text-gray-300"
+             text-black text-lg`}
           >
             {data?.title?.length > 40
               ? data?.title?.slice(0, 40) + "..."
@@ -121,7 +118,7 @@ function ArticleCard({ data }) {
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
-              stroke={`${theme === "dark" && "lightgray"}`}
+              stroke={`dark:lightgray`}
               className="w-6 h-6"
               onClick={(e) => handleLikeCount(e, data.vid_id)}
             >
@@ -132,15 +129,13 @@ function ArticleCard({ data }) {
               />
             </svg>
           </span>
-          <span className={`${theme === "dark" && "text-gray-300"}`}>
+          <span className={`dark:text-gray-300`}>
             {like}
           </span>
         </div>
         <div className="px-4 pb-2">
           <span
-            className={`${
-              theme === "dark" && "text-blue-500"
-            } text-black text-xs`}
+            className={`dark:text-blue-500 text-black text-xs`}
           >
             {new Date(data?.created_at).toDateString()}
           </span>

@@ -1,14 +1,12 @@
 "use client";
 
-import { ThemeContext } from "@/utils (Context)/ThemeContext";
 import React, { useContext } from "react";
+
+
 function Hero() {
-  const { theme } = useContext(ThemeContext);
   return (
     <div
-      className={` ${
-        theme === "dark" ? "bg-dark" : "bg-white"
-      } min-h-screen w-full m-auto bg-black`}
+      className={`dark:bg-blue-300  min-h-screen w-full m-auto`}
     >
       <div className="mx-auto max-w-7xl pt-16 sm:pt-24">
         <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-8">
@@ -20,7 +18,7 @@ function Hero() {
                     Early Access
                   </span>
                   <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
-                    <span className="sm:text-6xl"></span> Dont Waste Time to
+                    <span className="sm:text-6xl text-black"></span> Dont Waste Time to
                     FInd Perfect Resources,
                     <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-600">
                       Dev Lib

@@ -2,9 +2,12 @@ import { Inter } from "next/font/google";
 import React from "react";
 import "./globals.css";
 import Navbar from "./components/Navbar";
-import { ThemeProvider } from "next-themes";
 import Provider from "./provider";
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+})
+import { ThemeProvider } from "next-themes";
 export const metadata = {
   title: "Devlib",
   description: "A Library For Developers",
@@ -12,9 +15,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-      <ThemeProvider enableSystem={true} attribute="class">
+    <html lang="en" className={inter.className}>
+      <body >
+        <ThemeProvider>
         <Provider>
           <Navbar />
           {children}
