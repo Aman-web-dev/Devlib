@@ -16,7 +16,7 @@ function Hero() {
             <div className="space-y-8">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <span className="rounded-full uppercase bg-pink-500 px-3 py-0.5 text-sm font-semibold leading-5 text-white">
+                  <span className="rounded-full uppercase bg-pink-500 px-3 py-0.5 text-sm font-semibold leading-5 text-black   dark:text-white">
                     Early Access
                   </span>
                   <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
