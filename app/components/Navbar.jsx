@@ -6,6 +6,7 @@ import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { doSignOut } from "@/app/firebase/auth";
 import Image from "next/image";
 import Sidebar from "./Sidebar";
+import SessionTimer from "./sessionTimer";
 import {useTheme} from 'next-themes'
 
 const Navbar = () => {
@@ -108,11 +109,21 @@ const Navbar = () => {
               <ul
                 className={`font-medium flex flex-col md:flex-row p-4 md:p-0 md:items-center mt-4 border md:mt-0 md:border-0 gap-8`}
               >
+
+
+                {userLoggedIn?
+                <li>
+                  <SessionTimer/>
+                </li>:""}
+
+
                 <li>
                   <Link href="/articles" className="dark: ">
                     Articles
                   </Link>
                 </li>
+
+                
 
                 <li>
                   <Link href="/documentation" className="">
