@@ -7,6 +7,8 @@ const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
 })
+
+
 import { ThemeProvider } from "next-themes";
 export const metadata = {
   title: "Devlib",
@@ -14,16 +16,15 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="en" className={inter.className}>
-      <body >
-        <ThemeProvider>
+      <body className="">
         <Provider>
           <Navbar />
           {children}
           <div id="portal"></div>
         </Provider>
-        </ThemeProvider>
       </body>
     </html>
   );
