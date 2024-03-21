@@ -1,3 +1,4 @@
+import { youtubeLink } from "@/utils (Context)/constants";
 import React from "react";
 
 function Youtube({ link }) {
@@ -6,7 +7,7 @@ function Youtube({ link }) {
       <iframe
         width="560"
         height="315"
-        src={link}
+        src={youtubeLink + link}
         title="YouTube video player"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen

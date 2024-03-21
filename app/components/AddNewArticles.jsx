@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, useEffect, useState } from "react";
-import ArticleCard from "./ArticleCard";
+import YoutubeCard from "./YoutubeCard";
 import axios from "axios";
 import { AuthContext, useAuth } from "@/utils (Context)/authContext";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
@@ -11,6 +11,7 @@ import Link from "next/link";
 function AddNewArticles() {
   const [isNewArticle, setIsNewArticle] = useState(false);
   const [articlesData, setArticlesData] = useState(null);
+  const [likedVideo, setLikedVideos] = useState(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -84,13 +85,30 @@ function AddNewArticles() {
     try {
       const response = axios.get("http://localhost:4000/get-yt-vid");
       response.then((result) => {
-        // console.log("result: ", result);
         setArticlesData(result.data);
       });
     } catch (error) {
       console.log("error during fetching data: ", error);
     }
   }
+
+  async function getAllLikedVideos() {
+    try {
+      const response = await fetch("http://localhost:4000/api/likedVideo", {
+        method: "GET",
+      });
+      const likedVideos = await response.json();
+      if (response.ok && likedVideos) {
+        setLikedVideos(likedVideos.data);
+      }
+    } catch (error) {
+      console.log("error getting likes: ", error);
+    }
+  }
+
+  useEffect(() => {
+    getAllLikedVideos();
+  }, []);
 
   useEffect(() => {
     getYoutubeVideoData();
@@ -99,7 +117,6 @@ function AddNewArticles() {
   useEffect(() => {
     getId(dataToBeSend.youtubeLink);
   }, [dataToBeSend.youtubeLink]);
-
   return (
     <section
       className={` dark:bg-[#23272F] w-full px-12 py-12 relative min-h-screen gap-8`}
@@ -107,8 +124,8 @@ function AddNewArticles() {
       {articlesData?.map((data) => {
         // console.log("data: ", data);
         return articlesData.length !== 0 ? (
-          <Link href={`/video/${data.vid_id}`} key={data.vid_id}>
-            <ArticleCard data={data} />
+          <Link href={`/videos/${data.vid_id}`} key={data.vid_id}>
+            <YoutubeCard data={data} likedVideos={likedVideo} />
           </Link>
         ) : (
           <ShimmerThumbnail height={250} width={250} />
@@ -135,7 +152,7 @@ function AddNewArticles() {
       </button>
       {isNewArticle && (
         <section
-          className={`dark:bg-extraDark flex flex-col  px-6 py-12 absolute rounded top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2`}
+          className={`bg-extraDark flex flex-col  px-6 py-12 absolute rounded top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2`}
         >
           <button
             className="absolute  right-5 top-5 bg-light p-1 rounded-full"
@@ -158,10 +175,7 @@ function AddNewArticles() {
           </button>
           <div className="flex flex-col gap-8">
             <div className="flex flex-col">
-              <label
-                htmlFor="title"
-                className={`dark:text-gray-300`}
-              >
+              <label htmlFor="title" className={`dark:text-gray-300`}>
                 Enter title
               </label>
               <input
@@ -174,10 +188,7 @@ function AddNewArticles() {
               />
             </div>
             <div className="flex flex-col">
-              <label
-                htmlFor="youtubelink"
-                className={`dark:text-gray-300`}
-              >
+              <label htmlFor="youtubelink" className={`dark:text-gray-300`}>
                 Enter a valid Youtube Vide Link
               </label>
               <input
@@ -189,10 +200,7 @@ function AddNewArticles() {
               />
             </div>
             <div className="flex flex-col">
-              <label
-                htmlFor="tags"
-                className={`dark:text-gray-300`}
-              >
+              <label htmlFor="tags" className={`dark:text-gray-300`}>
                 Enter a valid Tags
               </label>
               <input
