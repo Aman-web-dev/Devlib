@@ -7,15 +7,15 @@ import { doSignOut } from "@/app/firebase/auth";
 import Image from "next/image";
 import Sidebar from "./Sidebar";
 import SessionTimer from "./sessionTimer";
-import {useTheme} from 'next-themes'
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
   const defaultPhotoUrl =
     "https://firebasestorage.googleapis.com/v0/b/devlib-c6572.appspot.com/o/assets%2Fpexels-sora-shimazaki-5668837.jpg?alt=media&token=6f17f0c5-dd45-4a69-a06b-28705ecd846e";
   const [navShow, setNavShow] = useState(false);
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
   const [photoUrl, setPhotoUrl] = useState(defaultPhotoUrl);
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme();
   const { userLoggedIn, currentUser } = useAuth();
 
   const CheckSize = function () {
@@ -32,10 +32,10 @@ const Navbar = () => {
     }
   };
 
-  const toggleTheme=()=>{
-    console.log("Current Theme:",theme)
-    setTheme(theme==="light"?"dark":'light')
-}
+  const toggleTheme = () => {
+    console.log("Current Theme:", theme);
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
   useEffect(() => {
     if (currentUser != null) {
@@ -52,19 +52,19 @@ const Navbar = () => {
   }, [currentUser]);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   if (!mounted) {
-    return null
+    return null;
   }
 
   return (
     <>
       <nav
         className={`
-           bg-dark   
-         sticky top-0 w-full z-40 py-2 `}
+           dark:bg-black bg-gray-300  
+         sticky top-0 w-full z-40 py-2`}
       >
         <div className="flex flex-wrap items-center justify-between mx-auto md:px-8 ">
           <Link href="/">
@@ -109,21 +109,19 @@ const Navbar = () => {
               <ul
                 className={`font-medium flex flex-col md:flex-row p-4 md:p-0 md:items-center mt-4 border md:mt-0 md:border-0 gap-8`}
               >
+                {userLoggedIn ? (
+                  <li>
+                    <SessionTimer />
+                  </li>
+                ) : (
+                  ""
+                )}
 
-
-                {userLoggedIn?
                 <li>
-                  <SessionTimer/>
-                </li>:""}
-
-
-                <li>
-                  <Link href="/articles" className="dark: ">
-                    Articles
+                  <Link href="/videos" className="dark: ">
+                    Videos
                   </Link>
                 </li>
-
-                
 
                 <li>
                   <Link href="/documentation" className="">
@@ -133,7 +131,7 @@ const Navbar = () => {
 
                 <li>
                   <Link href="/video" className="">
-                    Videos
+                    Articles
                   </Link>
                 </li>
 
@@ -169,8 +167,7 @@ const Navbar = () => {
                       strokeWidth={1.5}
                       stroke="currentColor"
                       className="w-6 h-6 cursor-pointer"
-                      onClick={()=>toggleTheme()}
-
+                      onClick={() => toggleTheme()}
                     >
                       <path
                         strokeLinecap="round"
@@ -186,7 +183,7 @@ const Navbar = () => {
                       strokeWidth={1.5}
                       stroke={theme === "light" && "black"}
                       className="w-6 h-6 cursor-pointer"
-                      onClick={()=>toggleTheme()}
+                      onClick={() => toggleTheme()}
                     >
                       <path
                         strokeLinecap="round"
@@ -194,8 +191,6 @@ const Navbar = () => {
                         d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
                       />
                     </svg>
-
-
                   )}
                 </li>
               </ul>

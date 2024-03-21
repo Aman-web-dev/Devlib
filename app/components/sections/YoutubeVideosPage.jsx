@@ -1,7 +1,10 @@
 import Youtube from "../YoutubeComponent";
 import { youtubeLink } from "@/utils (Context)/constants";
+import { useParams } from "next/navigation";
 
-function YoutubeArticlesDetailsPage({ id }) {
+function YoutubeVideoPage() {
+  const id = useParams();
+  console.log(id);
   return (
     <section>
       <Youtube link={youtubeLink + id} />
@@ -9,4 +12,4 @@ function YoutubeArticlesDetailsPage({ id }) {
   );
 }
 
-export default YoutubeArticlesDetailsPage;
+export default YoutubeVideoPage;
