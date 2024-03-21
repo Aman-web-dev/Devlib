@@ -8,6 +8,7 @@ import Image from "next/image";
 import Sidebar from "./Sidebar";
 import SessionTimer from "./sessionTimer";
 import {useTheme} from 'next-themes'
+import NavSearchButton from "./search/navSearchButton";
 
 const Navbar = () => {
   const defaultPhotoUrl =
@@ -64,7 +65,7 @@ const Navbar = () => {
       <nav
         className={`
            bg-dark   
-         sticky top-0 w-full z-40 py-2 `}
+          top-0 w-full z-40 py-2 `}
       >
         <div className="flex flex-wrap items-center justify-between mx-auto md:px-8 ">
           <Link href="/">
@@ -76,6 +77,8 @@ const Navbar = () => {
               className=""
             />
           </Link>
+
+          <NavSearchButton/>
 
           <button
             onClick={() => {
@@ -117,6 +120,10 @@ const Navbar = () => {
                 </li>:""}
 
 
+             
+
+
+                
                 <li>
                   <Link href="/articles" className="dark: ">
                     Articles
