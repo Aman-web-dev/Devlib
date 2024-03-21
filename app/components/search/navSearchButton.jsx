@@ -7,6 +7,14 @@ function navSearchButton() {
 
     const [visible,setVisible]=useState(false)
 
+
+   const  handleDialogueBoxClose=(e)=>{
+    console.log(e.target.id)
+    if(e.target.id=='bg-grayScale'){
+        setVisible(prev=>!prev)
+    }
+   }
+
   return (
     <div>
       
@@ -31,8 +39,16 @@ function navSearchButton() {
 
 {
 visible?
-<div className='top-0  left-[10%] absolute'>    
-<MainSearchComponent/>
+<div  className='w-full  top-0 h-screen left-0 fixed' >
+{/* Background with lower opacity */}
+<div id="bg-grayScale" className="w-full  top-0 h-screen left-0 opacity-40 bg-slate-50 absolute inset-0" onClick={(e) => handleDialogueBoxClose(e)}></div>
+
+{/* MainSearchComponent */}
+<div  className="relative md:max-w-[80vw] w-[90vw] m-auto">
+    <MainSearchComponent />
+</div>
+
+
 </div>
 :""
 }
