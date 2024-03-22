@@ -7,6 +7,8 @@ import { doSignOut } from "@/app/firebase/auth";
 import Image from "next/image";
 import Sidebar from "./Sidebar";
 import SessionTimer from "./sessionTimer";
+
+import NavSearchButton from "./search/navSearchButton";
 import { useTheme } from "next-themes";
 
 const Navbar = () => {
@@ -77,6 +79,8 @@ const Navbar = () => {
             />
           </Link>
 
+          <NavSearchButton/>
+
           <button
             onClick={() => {
               setNavShow(!navShow);
@@ -117,6 +121,10 @@ const Navbar = () => {
                   ""
                 )}
 
+             
+
+
+                
                 <li>
                   <Link href="/videos" className="dark: ">
                     Videos
