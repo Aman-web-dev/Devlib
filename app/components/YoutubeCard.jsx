@@ -126,9 +126,12 @@ function YoutubeCard({ data, likedVideos }) {
             }),
           }
         );
-        console.log("Video added to saved list");
+        if (addVideoInSavedList.ok) {
+          setSavedVideos((prev) => [...prev, data.vid_id]);
+        }
+        // console.log("Video added to saved list");
         // Fetch saved videos again after successful addition
-        getAllSavedVideosData();
+        // getAllSavedVideosData();
       } else {
         const removeVideoFromSavedList = await fetch(
           "http://localhost:4000/api/removeVideoFromSavedVideos",
@@ -143,9 +146,16 @@ function YoutubeCard({ data, likedVideos }) {
             }),
           }
         );
-        console.log("Video removed from saved list");
+        if (removeVideoFromSavedList.ok) {
+          const newSavedVideoList = savedVideos.filter(
+            (id) => id !== data.vid_id
+          );
+          console.log(newSavedVideoList);
+          setSavedVideos(newSavedVideoList);
+        }
+        // console.log("Video removed from saved list");
         // Fetch saved videos again after successful removal
-        getAllSavedVideosData();
+        // getAllSavedVideosData();
       }
     } catch (error) {
       console.log("Error while adding/removing video:", error);
