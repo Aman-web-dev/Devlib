@@ -5,6 +5,7 @@ import { useAuth } from "@/utils (Context)/authContext";
 function YoutubeCard({ data, likedVideos }) {
   const [likesCount, setLikesCount] = useState(data.likes_count);
   const [action, setAction] = useState(null);
+  const [savedVideos, setSavedVideos] = useState([]);
   const { currentUser } = useAuth();
   // async function handleLikeCount(e) {
   //   e.preventDefault();
@@ -67,56 +68,87 @@ function YoutubeCard({ data, likedVideos }) {
     e.preventDefault();
     e.stopPropagation();
   }
+
+  useEffect(() => {
+    getAllSavedVideosData();
+  }, []);
+
+  async function getAllSavedVideosData() {
+    try {
+      const savedVideosResponse = await fetch(
+        "http://localhost:4000/api/getAllSavedVideos",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: currentUser.uid }),
+        }
+      );
+      const response = await savedVideosResponse.json();
+      setSavedVideos(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async function addVideosToSavedList(e) {
     e.preventDefault();
     e.stopPropagation();
-    const ifVideoIdExistsResponse = await fetch(
-      "http://localhost:4000/api/checkIfVideoIdExists",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: currentUser.uid,
-          vid_id: data.vid_id,
-        }),
+    try {
+      const ifVideoIdExistsResponse = await fetch(
+        "http://localhost:4000/api/checkIfVideoIdExists",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: currentUser.uid,
+            vid_id: data.vid_id,
+          }),
+        }
+      );
+      const response = await ifVideoIdExistsResponse.json();
+      console.log("Check if video exists response:", response);
+
+      if (response.data < 1) {
+        const addVideoInSavedList = await fetch(
+          "http://localhost:4000/api/updateSavedPost",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: currentUser.uid,
+              vid_id: data.vid_id,
+            }),
+          }
+        );
+        console.log("Video added to saved list");
+        // Fetch saved videos again after successful addition
+        getAllSavedVideosData();
+      } else {
+        const removeVideoFromSavedList = await fetch(
+          "http://localhost:4000/api/removeVideoFromSavedVideos",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: currentUser.uid,
+              vid_id: data.vid_id,
+            }),
+          }
+        );
+        console.log("Video removed from saved list");
+        // Fetch saved videos again after successful removal
+        getAllSavedVideosData();
       }
-    );
-    const response = await ifVideoIdExistsResponse.json();
-    console.log(response);
-    console.log("response: ", response.data);
-    if (response.data < 1) {
-      const addVideoInSavedList = await fetch(
-        "http://localhost:4000/api/updateSavedPost",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: currentUser.uid,
-            vid_id: data.vid_id,
-          }),
-        }
-      );
-      console.log("performing add video");
-    } else {
-      const removeVideoFromSavedList = await fetch(
-        "http://localhost:4000/api/removeVideoFromSavedVideos",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: currentUser.uid,
-            vid_id: data.vid_id,
-          }),
-        }
-      );
-      console.log("performing remove video");
-      console.log("remove video: ", removeVideoFromSavedList);
+    } catch (error) {
+      console.log("Error while adding/removing video:", error);
     }
   }
   // Add this useEffect to monitor changes in 'action' state and make the fetch call
@@ -211,10 +243,12 @@ function YoutubeCard({ data, likedVideos }) {
       <div className="px-4 py-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          fill="none"
+          fill={
+            savedVideos.some((id) => id === data.vid_id) ? "lightgray" : "none"
+          }
           viewBox="0 0 24 24"
           strokeWidth={1.5}
-          stroke="currentColor"
+          stroke="lightgray"
           className="w-6 h-6"
           onClick={(e) => addVideosToSavedList(e)}
         >
