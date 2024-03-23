@@ -6,7 +6,7 @@ import React, { useContext } from "react";
 function Hero() {
   return (
     <div
-      className={`dark:bg-blue-300  min-h-screen w-full m-auto`}
+      className={`  min-h-screen w-full m-auto`}
     >
       <div className="mx-auto max-w-7xl pt-16 sm:pt-24">
         <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-8">

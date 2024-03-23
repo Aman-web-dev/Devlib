@@ -65,7 +65,7 @@ const Navbar = () => {
     <>
       <nav
         className={`
-           dark:bg-black bg-gray-300  
+           dark:bg-[#121212] dark:border-b border-0.5 bg-gray-300  
          sticky top-0 w-full z-40 py-2`}
       >
         <div className="flex flex-wrap items-center justify-between mx-auto md:px-8 ">
