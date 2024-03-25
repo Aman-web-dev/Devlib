@@ -1,5 +1,6 @@
 import React from 'react'
 import FileIcon from '../components/search/assests/fileIcon'
+import PostIcon from '../assets/BookIconusedAspost'
 
 function page() {
 
@@ -12,7 +13,6 @@ function page() {
 
         <section id='userProfilePhotoAndDetails' className='flex flex-col p-4 '>
           <img src='https://img.freepik.com/free-psd/man-with-thumbs-up_1154-467.jpg?t=st=1711171878~exp=1711175478~hmac=d363f0a905b253a34ff6cef4497910476bfd6af075c9f183e977aaa4d5a8621c&w=826' className=' md:h-[25vw] md:w-[25vw] w-[300px] h-[300px] object-cover  mx-auto border p-1 dark:border-gray-400 border-black' style={{ borderRadius: "100%" }} />
-          
           <h2 className='text-3xl mt-4'>John Wick</h2>
           <h2 className='text-2xl font-thin' >User Name ./ Gender</h2>
           <h2 className=' mt-4 ' >Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam, libero earum. Iste officia ut totam culpa numquam cumque asperiores fugit!</h2>
@@ -29,8 +29,28 @@ function page() {
           <RepoContainer />
           <RepoContainer />
           <RepoContainer />
+          <RepoContainer />
+          <RepoContainer />
+
         </section>
-        hi
+
+
+        <h1 className='text-gray-300 text-xl my-4'>Posts</h1>
+
+
+        <div className='bg-[#2d333b] p-2 border rounded-t-lg'> hi</div>
+        <section id='Posts' className='grid grid-cols-1 mx-auto w-full'>
+        <PostContainer/>
+        <PostContainer/>
+        <PostContainer/>
+        <PostContainer/>
+        <PostContainer/>
+        <PostContainer/>
+
+
+        </section>
+
+       
       </div>
     </div>
   )
@@ -57,6 +77,37 @@ const RepoContainer = () => {
         <h1 className='text-green-400 mt-2'>#React</h1>
         <h1 className='text-yellow-400 mt-2'>#React</h1>
       </section>
+    </div>
+  )
+}
+
+
+
+const PostContainer=()=>{
+  return(
+    <div className='border py-4 px-4  '>
+
+
+      <section className='flex items-center gap-4 my-2'>
+      <section className='h-12 w-12 bg-blue-300 flex items-center'>  
+      <PostIcon/>
+      </section>
+
+      <h1 className=' text-gray-200 font-bold'>@My first Project</h1>
+      </section>
+
+
+      <section className='flex flex-row gap-4'>
+      <h1 className=' text-gray-200 font-bold'>project</h1>
+      <h1 className='text-xs text-gray-200 border rounded-full pt-1  px-2'>Private</h1>       
+      </section>
+      <h1 className='text-sm text-[#717e8b] '>Uploaded on   Date: 12/05/2023</h1>
+
+
+      
+
+     
+     
     </div>
   )
 }
