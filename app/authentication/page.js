@@ -89,12 +89,15 @@ function Page() {
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
       <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
-        <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-          <div>
-            <img
-              src="https://storage.googleapis.com/devitary-image-host.appspot.com/15846435184459982716-LogoMakr_7POjrN.png"
-              className="w-32 mx-auto"
-            />
+        <div className=" xl:w-7/12 p-4 sm:p-12">
+          <div className="text-left mx-auto">
+            <h1 id="title" className="text-4xl mx-auto  font-bold   text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-600" >Dev
+            <span className="text-black text-xl">-Developer&#39;s</span>
+            </h1>
+            <h1 id="title" className="text-4xl mx-auto font-bold   text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-600" >Lib
+            <span className="text-black text-xl">-Library</span>
+            </h1>
+            
           </div>
           <div className="mt-12 flex flex-col items-center">
             <h1 className="text-2xl xl:text-3xl font-extrabold">Sign up</h1>
@@ -104,7 +107,7 @@ function Page() {
                   onClick={(e) => {
                     googleSignIn(e);
                   }}
-                  className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
+                  className="w-full max-w-xl font-bold shadow-sm rounded-lg py-3 px-3 bg-indigo-100 text-gray-800 flex items-center justify-center  duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
                 >
                   <div className="bg-white p-2 rounded-full">
                     <svg className="w-4" viewBox="0 0 533.5 544.3">
@@ -206,10 +209,10 @@ function Page() {
       <div className="flex-1 bg-indigo-100 text-center hidden lg:flex">
         <div
           className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
-          style={{
-            backgroundImage:
-              "url('https://storage.googleapis.com/devitary-image-host.appspot.com/15848031292911696601-undraw_designer_life_w96d.svg')",
-          }}
+          // style={{
+          //   backgroundImage:
+          //     "url('https://storage.googleapis.com/devitary-image-host.appspot.com/15848031292911696601-undraw_designer_life_w96d.svg')",
+          // }}
         ></div>
       </div>
     </div>

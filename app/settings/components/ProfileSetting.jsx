@@ -40,7 +40,7 @@ function ProfileSetting() {
             <div className="grid gap-6 mb-6 md:grid-cols-1">
               <div>
                 <label
-                  htmlFor="first_name"
+                  htmlhtmlFor="first_name"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Display Name
@@ -56,7 +56,7 @@ function ProfileSetting() {
                 />
 
                 <label
-                  htmlFor="first_name"
+                  htmlhtmlFor="first_name"
                   className="block mb-2 text-sm font-medium text-[#768390] dark:text--[#768390] "
                 >
                   Your name may appear around Devlib where you post Your
@@ -65,7 +65,7 @@ function ProfileSetting() {
               </div>
               <div>
                 <label
-                  htmlFor="last_name"
+                  htmlhtmlFor="last_name"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Email
@@ -83,7 +83,7 @@ function ProfileSetting() {
                 />
 
                 <label
-                  htmlFor="first_name"
+                  htmlhtmlFor="first_name"
                   className="block mb-2 text-sm font-medium text-[#768390] dark:text--[#768390] "
                 >
                   Changing the primary email address associated with Your
@@ -92,7 +92,7 @@ function ProfileSetting() {
               </div>
               <div>
                 <label
-                  htmlFor="company"
+                  htmlhtmlFor="company"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   User Name
@@ -106,7 +106,7 @@ function ProfileSetting() {
                 />
 
                 <label
-                  htmlFor="first_name"
+                  htmlhtmlFor="first_name"
                   className="block mb-2 text-sm font-medium text-[#768390] dark:text--[#768390] "
                 >
                   Every User in Devlib has Their own Unique Username which helps
@@ -115,7 +115,7 @@ function ProfileSetting() {
               </div>
               <div>
                 <label
-                  htmlFor="phone"
+                  htmlhtmlFor="phone"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Phone number
@@ -130,7 +130,7 @@ function ProfileSetting() {
                 />
 
                 <label
-                  htmlFor="first_name"
+                  htmlhtmlFor="first_name"
                   className="block mb-2 text-sm font-medium text-[#768390] dark:text--[#768390] "
                 >
                   Phone Number Helps In accessing Ypur Account in Times when you
@@ -139,7 +139,7 @@ function ProfileSetting() {
               </div>
               <div>
                 <label
-                  htmlFor="website"
+                  htmlhtmlFor="website"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Pronoun
@@ -157,7 +157,7 @@ function ProfileSetting() {
                 </select>
 
                 <label
-                  htmlFor="first_name"
+                  htmlhtmlFor="first_name"
                   className="block mb-2 text-sm font-medium text-[#768390] dark:text--[#768390] "
                 >
                  Select your Pronouns this helps other Users to not misgender you and treat you 
@@ -166,7 +166,7 @@ function ProfileSetting() {
 
               <div>
                 <label
-                  htmlFor="message"
+                  htmlhtmlFor="message"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Your Bio
@@ -179,7 +179,7 @@ function ProfileSetting() {
                 ></textarea>
 
                 <label
-                  htmlFor="first_name"
+                  htmlhtmlFor="first_name"
                   className="block mb-2 text-sm font-medium text-[#768390] dark:text--[#768390] "
                 >
                   Your Bio acts as a Summary Of Your Account that Tells Others Users about you and Your Work.

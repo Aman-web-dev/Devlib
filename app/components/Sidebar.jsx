@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { useAuth } from "@/utils (Context)/authContext";
 import { doSignOut } from "../firebase/auth";
 import { redirect } from "next/navigation";
+import SavedIcon from "../assets/SavedIcon";
 
 import Link from "next/link";
 
@@ -83,11 +84,12 @@ function Sidebar(props) {
                 <span className="ms-3">Settings</span>
               </Link>
             </li>
-            <li>
+            <li onClick={(e) => props.handleLinkClick(e)}>
               <Link
                 href="/saved-post"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
+               <SavedIcon/> 
                 <span className="flex-1 ms-3 whitespace-nowrap">
                   Saved Post
                 </span>
