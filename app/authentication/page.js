@@ -92,7 +92,7 @@ function Page() {
         <div className=" xl:w-7/12 p-4 sm:p-12">
           <div className="text-left mx-auto">
             <h1 id="title" className="text-4xl mx-auto  font-bold   text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-600" >Dev
-            <span className="text-black text-xl">-Developer's</span>
+            <span className="text-black text-xl">-Developer&#39;s</span>
             </h1>
             <h1 id="title" className="text-4xl mx-auto font-bold   text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-600" >Lib
             <span className="text-black text-xl">-Library</span>

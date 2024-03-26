@@ -14,7 +14,7 @@ const SearchResults = (props) => {
 
 {props.searchResults.map((elem)=>{
   return(
-<div id="searchBox" className='flex rounded  h-10 align-center my-2'>
+<div key={elem.id} id="searchBox" className='flex rounded  h-10 align-center my-2'>
 <div className='rounded-full  h-10 w-10 my-auto p-2'><AlienIcon/></div>
 <p className=' mx-2 my-auto'>{elem.name}</p> 
 </div>

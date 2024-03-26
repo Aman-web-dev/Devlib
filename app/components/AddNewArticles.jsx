@@ -128,7 +128,8 @@ function AddNewArticles() {
             <YoutubeCard data={data} likedVideos={likedVideo} />
           </Link>
         ) : (
-          <ShimmerThumbnail height={250} width={250} />
+          ""
+          // <ShimmerThumbnail height={250} width={250} />
         );
       })}
       <button

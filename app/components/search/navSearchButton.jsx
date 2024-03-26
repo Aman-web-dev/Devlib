@@ -3,7 +3,7 @@
 import React,{useState} from 'react'
 import MainSearchComponent from './MainSearchComponent'
 
-function navSearchButton() {
+function NavSearchButton() {
 
     const [visible,setVisible]=useState(false)
 
@@ -54,4 +54,4 @@ visible?
   )
 }
 
-export default navSearchButton
+export default NavSearchButton
