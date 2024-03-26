@@ -43,10 +43,10 @@ const MainSearchComponent = () => {
 
   return (
     <div onClick={fetchRes} className='md:h-[50vh] md:w-[80vw] w-[90vw] dark:bg-[#22272e] bg-white border rounded-xl my-2 mx-auto'>
-     <form class="flex items-center  mx-4 my-2 ">   
-    <label for="voice-search" class="sr-only">Search</label>
-    <div class="relative w-full">
-        <input type="text" id="voice-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mockups, Logos, Design Templates..." required onChange={(e)=>handleSearch(e)}/>
+     <form className="flex items-center  mx-4 my-2 ">   
+    <label htmlFor="voice-search" className="sr-only">Search</label>
+    <div className="relative w-full">
+        <input type="text" id="voice-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mockups, Logos, Design Templates..." required onChange={(e)=>handleSearch(e)}/>
        
     </div>
   

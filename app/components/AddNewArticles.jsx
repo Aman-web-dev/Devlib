@@ -175,7 +175,7 @@ function AddNewArticles() {
           </button>
           <div className="flex flex-col gap-8">
             <div className="flex flex-col">
-              <label htmlFor="title" className={`dark:text-gray-300`}>
+              <label htmlhtmlFor="title" className={`dark:text-gray-300`}>
                 Enter title
               </label>
               <input
@@ -188,7 +188,7 @@ function AddNewArticles() {
               />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="youtubelink" className={`dark:text-gray-300`}>
+              <label htmlhtmlFor="youtubelink" className={`dark:text-gray-300`}>
                 Enter a valid Youtube Vide Link
               </label>
               <input
@@ -200,7 +200,7 @@ function AddNewArticles() {
               />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="tags" className={`dark:text-gray-300`}>
+              <label htmlhtmlFor="tags" className={`dark:text-gray-300`}>
                 Enter a valid Tags
               </label>
               <input
