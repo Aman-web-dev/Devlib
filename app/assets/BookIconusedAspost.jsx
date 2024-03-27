@@ -10,14 +10,10 @@ const PostIcon = (props) =>{
     return (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={20}
-    height={22}
-    cx={58}
-    cy={58}
-    rx={58}
-    ry={58}
-    className="bg-gray-300"
-    viewBox="0 0 12 100"
+    width={8}
+    height={12}
+    viewBox=" 0 0 120 190"
+    className="mx-auto bg-blue-300 w-full h-full"
     id="book"
     {...props}
   >

@@ -36,7 +36,7 @@ function NavSearchButton() {
 visible?
 <div  className='w-full  top-0 h-screen left-0 fixed' >
 {/* Background with lower opacity */}
-<div id="bg-grayScale" className="w-full  top-0 h-screen left-0 opacity-40 bg-slate-50 absolute inset-0" onClick={(e) => handleDialogueBoxClose(e)}></div>
+<div id="bg-grayScale" className="w-full  top-0 h-screen left-0 opacity-40 bg-slate-50 absolute inset-0" onClick={(e) => handleDialogueBoxClose(e)} ></div>
 
 {/* MainSearchComponent */}
 <div  className="relative md:max-w-[80vw] w-[90vw] m-auto">

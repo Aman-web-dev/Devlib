@@ -1,6 +1,7 @@
 import React from 'react'
 import FileIcon from '../components/search/assests/fileIcon'
 import PostIcon from '../assets/BookIconusedAspost'
+import BookIcon from '../assets/bookSvg'
 
 function page() {
 
@@ -23,7 +24,7 @@ function page() {
 
       <div id="otherDetails" className='  md:w-full mt-4 px-2'>
 
-        <h1 className='text-gray-300 text-xl my-4'>Pinned</h1>
+        <h1 className='dark:text-gray-300 text-xl my-4'>Pinned</h1>
         <section className='grid md:grid-cols-2 grid-cols-1 mx-auto w-full '>
           <RepoContainer />
           <RepoContainer />
@@ -35,10 +36,15 @@ function page() {
         </section>
 
 
-        <h1 className='text-gray-300 text-xl my-4'>Posts</h1>
+        <h1 className='dark:text-gray-300 text-xl my-4'>Posts</h1>
+
+        <section className=' flex flex-wrap dark:bg-[#2d333b] px-2 py-4 border rounded-t-lg'>
+        <div className='dark:text-gray-300 p-2 text-lg'>Number Of Projects</div>  
+        <div className=' p-2 text-lg'>Projects </div>
+        <div className='font-bold p-2 text-xl'>@UserName </div>
+        </section>
 
 
-        <div className='bg-[#2d333b] p-2 border rounded-t-lg'> hi</div>
         <section id='Posts' className='grid grid-cols-1 mx-auto w-full'>
         <PostContainer/>
         <PostContainer/>
@@ -46,12 +52,12 @@ function page() {
         <PostContainer/>
         <PostContainer/>
         <PostContainer/>
-
-
         </section>
-
-       
       </div>
+
+
+
+
     </div>
   )
 }
@@ -89,25 +95,17 @@ const PostContainer=()=>{
 
 
       <section className='flex items-center gap-4 my-2'>
-      <section className='h-12 w-12 bg-blue-300 flex items-center'>  
-      <PostIcon/>
+      <section className='  flex items-center'>  
+      <BookIcon/>
       </section>
 
-      <h1 className=' text-gray-200 font-bold'>@My first Project</h1>
+      <h1 className=' dark:text-gray-200 font-bold'>@My first Project</h1>
       </section>
-
-
-      <section className='flex flex-row gap-4'>
-      <h1 className=' text-gray-200 font-bold'>project</h1>
-      <h1 className='text-xs text-gray-200 border rounded-full pt-1  px-2'>Private</h1>       
+      <section className='flex flex-row gap-4 my-2x'>
+      <h1 className=' dark:text-gray-200 font-bold'>project</h1>
+      <h1 className='text-xs  text-green-700 border border-green-400 rounded-full pt-1  px-2'>Private</h1>       
       </section>
-      <h1 className='text-sm text-[#717e8b] '>Uploaded on   Date: 12/05/2023</h1>
-
-
-      
-
-     
-     
+      <h1 className='text-sm dark:text-[#717e8b] '>Uploaded on   Date: 12/05/2023</h1>
     </div>
   )
 }

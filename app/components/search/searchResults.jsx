@@ -38,13 +38,6 @@ const SearchResults = (props) => {
       })}
 
 </div>
-
-
-
-
-
-
-
     </div>
   )
 }
