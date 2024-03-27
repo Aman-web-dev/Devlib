@@ -1,77 +1,131 @@
 import { useContext, useState, useEffect } from "react";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 import { useAuth } from "@/utils (Context)/authContext";
-
+// http://localhost:4000
 function YoutubeCard({ data, likedVideos }) {
   const [likesCount, setLikesCount] = useState(data.likes_count);
+  const [userLikes, setUserLikes] = useState([]);
   const [action, setAction] = useState(null);
   const [savedVideos, setSavedVideos] = useState([]);
   const { currentUser } = useAuth();
-  // async function handleLikeCount(e) {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  //   try {
-  //     // action === "unlike" ? setAction("like") : setAction("unlike");
-  //     const isAlreadyLiked = await fetch(
-  //       "http://localhost:4000/api/checkLike",
-  //       {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify({
-  //           userId: currentUser.uid,
-  //           vid_id: data.vid_id,
-  //         }),
-  //       }
-  //     );
-  //     if (isAlreadyLiked.ok) {
-  //       const resultAlreadyLiked = await isAlreadyLiked.json();
-  //       console.log("isalreadyliked: ", resultAlreadyLiked);
-  //       if (!resultAlreadyLiked.data || !resultAlreadyLiked.data.action) {
-  //         setAction("like");
-  //       } else {
-  //         setAction(resultAlreadyLiked.data.action);
-  //         console.log("action: ", resultAlreadyLiked.data.action);
-  //       }
-  //     }
-  //     // console.log("action-first: ", action);
-  //     const likeCountResponse = await fetch("http://localhost:4000/addLike", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         vid_id: data.vid_id,
-  //         action: action,
-  //       }),
-  //     });
+  // console.log(currentUser?.uid);
+  useEffect(() => {
+    getAllLikedVideobyUser();
+  }, []);
 
-  //     if (likeCountResponse.ok) {
-  //       await fetch("http://localhost:4000/api/updateUserLikes", {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify({
-  //           userId: currentUser.uid,
-  //           vid_id: data.vid_id,
-  //           action: action,
-  //         }),
-  //       });
-  //     }
-
-  //     if (likeCountResponse.ok && action === "like") {
-  //       setLikesCount(likesCount + 1);
-  //     } else if (likeCountResponse.ok && action === "unlike") {
-  //       setLikesCount(likesCount - 1);
-  //     }
-  //   } catch (error) {
-  //     console.log("error while adding like: ", error);
-  //   }
-  // }
   async function handleLikeCount(e) {
     e.preventDefault();
     e.stopPropagation();
+    addLike();
   }
 
   useEffect(() => {
     getAllSavedVideosData();
   }, []);
+
+  async function addLike() {
+    try {
+      const ifLikeAlreadyExists = await fetch(
+        "http://localhost:4000/api/checkIfLikeExists",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: currentUser.uid,
+            vid_id: data.vid_id,
+          }),
+        }
+      );
+      const response = await ifLikeAlreadyExists.json();
+      if (response.data < 1) {
+        setLikesCount(likesCount + 1);
+        const incrementLikeCountPromise = fetch(
+          "http://localhost:4000/api/incrementLikeCount",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ vid_id: data.vid_id }),
+          }
+        );
+        const addUserLikePromise = fetch("http://localhost:4000/api/addLike", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: currentUser.uid,
+            vid_id: data.vid_id,
+          }),
+        });
+
+        const [incrementLikeCountResponse, addUserLikeResponse] =
+          await Promise.all([incrementLikeCountPromise, addUserLikePromise]);
+        if (!incrementLikeCountResponse.ok || !addUserLikeResponse.ok) {
+          setLikesCount(likesCount - 1);
+        }
+        // console.log(incrementLikeCountResponse, addUserLikeResponse);
+      } else {
+        setLikesCount(likesCount - 1);
+        const removeLikeVideoPromise = fetch(
+          "http://localhost:4000/api/removeUserLikedVideo",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: currentUser.uid,
+              vid_id: data.vid_id,
+            }),
+          }
+        );
+        const decrementLikeCountPromise = fetch(
+          "http://localhost:4000/api/decrementLikeCount",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ vid_id: data.vid_id }),
+          }
+        );
+
+        const [removeLikeVideoResponse, decrementLikeCountResponse] =
+          await Promise.all([
+            removeLikeVideoPromise,
+            decrementLikeCountPromise,
+          ]);
+
+        console.log(removeLikeVideoResponse, decrementLikeCountResponse);
+      }
+    } catch (error) {
+      console.log("error while checking for likes: ", error);
+    }
+  }
+
+  async function getAllLikedVideobyUser() {
+    try {
+      const likedVideoResponse = await fetch(
+        "http://localhost:4000/api/getAllLikedVideos",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: currentUser.uid }),
+        }
+      );
+      console.log(likedVideoResponse);
+      const response = await likedVideoResponse.json();
+      setUserLikes(response.data.liked_videos);
+    } catch (error) {
+      console.log("error in getting all likes: ", error);
+    }
+  }
 
   async function getAllSavedVideosData() {
     try {
@@ -86,6 +140,7 @@ function YoutubeCard({ data, likedVideos }) {
         }
       );
       const response = await savedVideosResponse.json();
+      // console.log("saved-video data: ", response);
       setSavedVideos(response.data);
     } catch (error) {
       console.log(error);
@@ -110,7 +165,7 @@ function YoutubeCard({ data, likedVideos }) {
         }
       );
       const response = await ifVideoIdExistsResponse.json();
-      console.log("Check if video exists response:", response);
+      // console.log("Check if video exists response:", response);
 
       if (response.data < 1) {
         const addVideoInSavedList = await fetch(
@@ -129,9 +184,6 @@ function YoutubeCard({ data, likedVideos }) {
         if (addVideoInSavedList.ok) {
           setSavedVideos((prev) => [...prev, data.vid_id]);
         }
-        // console.log("Video added to saved list");
-        // Fetch saved videos again after successful addition
-        // getAllSavedVideosData();
       } else {
         const removeVideoFromSavedList = await fetch(
           "http://localhost:4000/api/removeVideoFromSavedVideos",
@@ -153,57 +205,11 @@ function YoutubeCard({ data, likedVideos }) {
           console.log(newSavedVideoList);
           setSavedVideos(newSavedVideoList);
         }
-        // console.log("Video removed from saved list");
-        // Fetch saved videos again after successful removal
-        // getAllSavedVideosData();
       }
     } catch (error) {
       console.log("Error while adding/removing video:", error);
     }
   }
-  // Add this useEffect to monitor changes in 'action' state and make the fetch call
-  useEffect(() => {
-    if (action) {
-      async function addLike() {
-        let likeCountResponse;
-        try {
-          if (action === "like") {
-            likeCountResponse = await fetch("http://localhost:4000/addLike", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                vid_id: data.vid_id,
-                action: action,
-              }),
-            });
-          } else if (action === "unlike") {
-          }
-
-          if (likeCountResponse.ok) {
-            await fetch("http://localhost:4000/api/updateUserLikes", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                userId: currentUser.uid,
-                vid_id: data.vid_id,
-                action: action,
-              }),
-            });
-          }
-
-          if (likeCountResponse.ok && action === "like") {
-            setLikesCount(likesCount + 1);
-          } else if (likeCountResponse.ok && action === "unlike") {
-            setLikesCount(likesCount - 1);
-          }
-        } catch (error) {
-          console.log("error while adding like: ", error);
-        }
-      }
-
-      addLike();
-    }
-  }, [action]);
 
   return (
     <div className="w-full flex h-fit bg-extraDark my-4 border border-gray-500">
@@ -224,23 +230,26 @@ function YoutubeCard({ data, likedVideos }) {
             </span>
           </div>
           <div className="px-4 flex gap-2">
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill={"none"}
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke={`lightgray`}
-                className="w-6 h-6"
-                onClick={(e) => handleLikeCount(e)}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z"
-                />
-              </svg>
-            </span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill={
+                userLikes.some((id) => data.vid_id === id)
+                  ? "lightgray"
+                  : "none"
+              }
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke={`lightgray`}
+              className="w-6 h-6"
+              onClick={(e) => handleLikeCount(e)}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z"
+              />
+            </svg>
+
             <span className={`dark:text-gray-300`}>{likesCount}</span>
           </div>
           <div className="px-4 pb-2">

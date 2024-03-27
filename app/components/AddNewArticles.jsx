@@ -92,19 +92,19 @@ function AddNewArticles() {
     }
   }
 
-  async function getAllLikedVideos() {
-    try {
-      const response = await fetch("http://localhost:4000/api/likedVideo", {
-        method: "GET",
-      });
-      const likedVideos = await response.json();
-      if (response.ok && likedVideos) {
-        setLikedVideos(likedVideos.data);
-      }
-    } catch (error) {
-      console.log("error getting likes: ", error);
-    }
-  }
+  // async function getAllLikedVideos() {
+  //   try {
+  //     const response = await fetch("http://localhost:4000/api/likedVideo", {
+  //       method: "GET",
+  //     });
+  //     const likedVideos = await response.json();
+  //     if (response.ok && likedVideos) {
+  //       setLikedVideos(likedVideos.data);
+  //     }
+  //   } catch (error) {
+  //     console.log("error getting likes: ", error);
+  //   }
+  // }
 
   useEffect(() => {
     getAllLikedVideos();
