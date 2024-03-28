@@ -99,8 +99,10 @@ function YoutubeCard({ data, likedVideos }) {
             removeLikeVideoPromise,
             decrementLikeCountPromise,
           ]);
-
-        console.log(removeLikeVideoResponse, decrementLikeCountResponse);
+        if (!removeLikeVideoResponse.ok || !decrementLikeCountResponse.ok) {
+          setLikesCount(likesCount + 1);
+        }
+        // console.log(removeLikeVideoResponse, decrementLikeCountResponse);
       }
     } catch (error) {
       console.log("error while checking for likes: ", error);
