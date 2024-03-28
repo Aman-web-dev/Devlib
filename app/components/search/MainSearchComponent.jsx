@@ -14,7 +14,7 @@ const MainSearchComponent = () => {
       .then(response => response.json())
       .then((json) => {const result = json.filter((user)=>{
         return user && user.name && user.name.toLowerCase().includes(value)
-      }); setSearchResultData(result)})
+      }); setSearchResultData(result);console.log(result)})
 
 
 
