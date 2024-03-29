@@ -87,6 +87,7 @@ function AddNewArticles() {
       response.then((result) => {
         setArticlesData(result.data);
       });
+      
     } catch (error) {
       console.log("error during fetching data: ", error);
     }
@@ -107,7 +108,7 @@ function AddNewArticles() {
   // }
 
   useEffect(() => {
-    getAllLikedVideos();
+    // getAllLikedVideos();
   }, []);
 
   useEffect(() => {
