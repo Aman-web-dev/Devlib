@@ -22,6 +22,8 @@ function AddNewArticles() {
     tags: [],
   });
 
+  const [errors, setErrors] = useState({});
+
   const { youtubeId, setYoutubeId } = useContext(YoutubeContext);
 
   const handleTitleChange = (e) => {
@@ -40,11 +42,10 @@ function AddNewArticles() {
     const regExp =
       /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
-
     return match && match[2].length === 11 ? setYoutubeId(match[2]) : null;
   }
   // add youtube videos in the database
-  function writeArticle() {
+  function addYoutubeVideo() {
     try {
       setIsSubmitting(true);
       setTimeout(async () => {
@@ -80,6 +81,21 @@ function AddNewArticles() {
       console.log("data not added due to: ", error);
     }
   }
+
+  const handleAddYoutubueVideo = () => {
+    const newErrors = [];
+    if (!dataToBeSend.title.trim()) {
+      newErrors.title = "Title is required";
+    } else if (!/^[A-Za-z0-9\s\-_,\.;:()]+$/.test(dataToBeSend.title)) {
+      newErrors.title = "Invalid title";
+    }
+
+    if (!dataToBeSend.youtubeLink.trim()) {
+      newErrors.youtubeLink = "Video link is required";
+    }
+
+    addYoutubeVideo();
+  };
   // get all the youtube videos from the data base
   async function getYoutubeVideoData() {
     try {
@@ -93,24 +109,6 @@ function AddNewArticles() {
     }
   }
 
-  // async function getAllLikedVideos() {
-  //   try {
-  //     const response = await fetch("http://localhost:4000/api/likedVideo", {
-  //       method: "GET",
-  //     });
-  //     const likedVideos = await response.json();
-  //     if (response.ok && likedVideos) {
-  //       setLikedVideos(likedVideos.data);
-  //     }
-  //   } catch (error) {
-  //     console.log("error getting likes: ", error);
-  //   }
-  // }
-
-  useEffect(() => {
-    // getAllLikedVideos();
-  }, []);
-
   useEffect(() => {
     getYoutubeVideoData();
   }, [isNewArticle]);
@@ -118,6 +116,7 @@ function AddNewArticles() {
   useEffect(() => {
     getId(dataToBeSend.youtubeLink);
   }, [dataToBeSend.youtubeLink]);
+
   return (
     <section
       className={` dark:bg-[#23272F] w-full px-12 py-12 relative min-h-screen gap-8`}
@@ -216,7 +215,7 @@ function AddNewArticles() {
             </div>
           </div>
           <button
-            onClick={writeArticle}
+            onClick={handleAddYoutubueVideo}
             disabled={isSubmitting}
             className={`dark:bg-light border border-black flex gap-4 justify-center py-2 rounded-full my-6`}
           >
