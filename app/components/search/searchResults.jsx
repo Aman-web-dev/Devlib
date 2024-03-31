@@ -1,6 +1,7 @@
 import React from 'react'
 import UserSVG from './assests/user.jsx'
 import AlienIcon from './assests/Alien.jsx'
+import Link from 'next/link.js'
 
 const SearchResults = (props) => {
   return (
@@ -16,12 +17,12 @@ const SearchResults = (props) => {
   return(
 <>    
 
-<a href={`allUsers/${elem.id}`} key={elem.id}>
+<Link href={`allUsers/${elem.id}`} key={elem.id}>
 <div key={elem.id} id="searchBox" className='flex rounded  h-10 align-center my-2'>
 <div className='rounded-full  h-10 w-10 my-auto p-2'><AlienIcon/></div>
 <p className=' mx-2 my-auto'>{elem.name}</p> 
 </div>
-</a>
+</Link>
 </>
   )
 })}
@@ -35,12 +36,12 @@ const SearchResults = (props) => {
 
       {props.searchdRepoData.map((elem)=>{
         return (
-          <a href={`allUsers/${elem.id}`} key={elem.id}>
+          <Link href={`allUsers/${elem.id}`} key={elem.id}>
           <div key={elem.id} id="searchBox" className='flex rounded  h-10 align-center my-2'>
           <div className='rounded-full  h-10 w-10 my-auto p-2'><AlienIcon/></div>
           <p className=' mx-2 my-auto'>{elem.title}</p> 
           </div>
-          </a>
+          </Link>
         )
       })}
 

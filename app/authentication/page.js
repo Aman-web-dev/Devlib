@@ -9,6 +9,7 @@ import {
 import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { redirect } from "next/navigation";
 import axios from "axios";
+import Link from "next/link";
 
 function Page() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -194,13 +195,13 @@ function Page() {
 
               <p className="mt-6 text-xs text-gray-600 text-center">
                 I agree to abide by templatana &apos; s
-                <a href="#" className="border-b border-gray-500 border-dotted">
+                <Link href="#" className="border-b border-gray-500 border-dotted">
                   Terms of Service
-                </a>
+                </Link>
                 and its
-                <a href="#" className="border-b border-gray-500 border-dotted">
+                <Link href="#" className="border-b border-gray-500 border-dotted">
                   Privacy Policy
-                </a>
+                </Link>
               </p>
             </div>
           </div>
