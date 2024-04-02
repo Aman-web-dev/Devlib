@@ -8,7 +8,8 @@ const SearchResults = (props) => {
     <div className=" w-[95%] mx-auto h-[80%]  overflow-auto overflow-x-hidden">
       <div id="userResults" className="w-[120%] border-b my-4">
         <p className="dark:text-gray-300  text-sm my-4">Users</p>
-        {props.searchResults.map((elem) => {
+        {props.searchResults?.map((elem) => {
+          console.log(elem)
           return (
             <>
               <Link href={`allUsers/${elem.id}`} key={elem.id}>

@@ -20,7 +20,7 @@ const Navbar = () => {
   const [photoUrl, setPhotoUrl] = useState(defaultPhotoUrl);
   const { theme, setTheme } = useTheme();
   const { userLoggedIn, currentUser } = useAuth();
-  const pathName=usePathname()
+  const pathName = usePathname();
 
   const CheckSize = function () {
     if (typeof window !== "undefined") {
@@ -81,7 +81,7 @@ const Navbar = () => {
             />
           </Link>
 
-          <NavSearchButton/>
+          <NavSearchButton />
 
           <button
             onClick={() => {
@@ -123,23 +123,35 @@ const Navbar = () => {
                   ""
                 )}
 
-             
-
-
-                
-                <li className={`${pathName==="/videos"?"dark:text-yellow-300 text-blue-500":""}`}>
-                  <Link href="/videos" >
-                    Videos
-                  </Link>
+                <li
+                  className={`${
+                    pathName === "/videos"
+                      ? "dark:text-yellow-300 text-blue-500"
+                      : ""
+                  }`}
+                >
+                  <Link href="/videos">Videos</Link>
                 </li>
 
-                <li className={`${pathName==="/documentation"?"dark:text-yellow-300 text-blue-500":""}`}>
+                <li
+                  className={`${
+                    pathName === "/documentation"
+                      ? "dark:text-yellow-300 text-blue-500"
+                      : ""
+                  }`}
+                >
                   <Link href="/documentation" className="">
                     Documentation
                   </Link>
                 </li>
 
-                <li className={`${pathName==="/video"?"dark:text-yellow-300 text-blue-500":""}`}>
+                <li
+                  className={`${
+                    pathName === "/video"
+                      ? "dark:text-yellow-300 text-blue-500"
+                      : ""
+                  }`}
+                >
                   <Link href="/video" className="">
                     Articles
                   </Link>
@@ -228,9 +240,12 @@ const ProfileSection = (props) => {
       <div>
         <img
           src={props.ImgUrl}
-          className="h-full w-[40%] rounded-full cursor-pointer"
+          className="size-12 rounded-full cursor-pointer"
           onClick={() => setOptionVisible(!optionsVisible)}
+
         />
+
+
         {optionsVisible ? (
           <Sidebar
             handleScreenClick={() => setOptionVisible(!optionsVisible)}

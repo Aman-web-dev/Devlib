@@ -17,7 +17,7 @@ const MainSearchComponent = (props) => {
           return user && user.name && user.name.toLowerCase().includes(value);
         });
         setSearchResultData(result);
-        console.log(result);
+        console.log(result);  
       });
 
     await fetch("https://jsonplaceholder.typicode.com/posts")

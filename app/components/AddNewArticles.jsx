@@ -7,6 +7,7 @@ import { AuthContext, useAuth } from "@/utils (Context)/authContext";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 import { YoutubeContext } from "@/utils (Context)/YoutubeDetails";
 import Link from "next/link";
+import DialogueWrapper from "./dialogueWrapper";
 
 function AddNewArticles() {
   const [isNewArticle, setIsNewArticle] = useState(false);
@@ -151,9 +152,14 @@ function AddNewArticles() {
           />
         </svg>
       </button>
+
+
+
       {isNewArticle && (
+
+       <DialogueWrapper> 
         <section
-          className={`bg-extraDark flex flex-col  px-6 py-12 absolute rounded top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2`}
+          className={`dark:bg-[#121212] flex flex-col  px-6 py-12 absolute rounded top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2`}
         >
           <button
             className="absolute  right-5 top-5 bg-light p-1 rounded-full"
@@ -236,6 +242,7 @@ function AddNewArticles() {
             </svg>
           </button>
         </section>
+        </DialogueWrapper>
       )}
     </section>
   );
@@ -243,8 +250,4 @@ function AddNewArticles() {
 
 export default AddNewArticles;
 
-// function AddNewArticles() {
-//   return <div>hello world</div>;
-// }
 
-// export default AddNewArticles;
