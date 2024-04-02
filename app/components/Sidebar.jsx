@@ -53,18 +53,18 @@ function Sidebar(props) {
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
-              <a
-                href="#"
+              <Link
+                href={`/user/${currentUser.uid}`}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <img
                   className="w-9 h-9 rounded-full"
                   src={currentUser.photoURL}
-                  alt=""
+                  alt={currentUser.displayName}
                 />
 
                 <span className="ms-3">{currentUser.displayName}</span>
-              </a>
+              </Link>
             </li>
             <li onClick={(e) => props.handleLinkClick(e)}>
               <Link
@@ -89,7 +89,7 @@ function Sidebar(props) {
                 href="/saved-post"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
-               <SavedIcon/> 
+                <SavedIcon />
                 <span className="flex-1 ms-3 whitespace-nowrap">
                   Saved Post
                 </span>
