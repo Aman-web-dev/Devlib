@@ -8,14 +8,10 @@ import useclickOutisdeHook from '@/hooks/useclickOutisdeHook';
 
 function page() {
   const elementRef=useRef(null);
-
-
   const [visible,setVisible]=useState(false)
   useclickOutisdeHook(elementRef,()=>{
     setVisible(false)
   },visible)
-
-
   return (
     <div>
   {visible?  
