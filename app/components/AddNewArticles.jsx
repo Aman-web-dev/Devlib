@@ -103,6 +103,7 @@ function AddNewArticles() {
       response.then((result) => {
         setArticlesData(result.data);
       });
+      
     } catch (error) {
       console.log("error during fetching data: ", error);
     }

@@ -16,7 +16,7 @@ function Sidebar(props) {
     redirect("/");
   };
 
-  return ReactDOM.createPortal(
+  return(
     <div className="bg-blue-400 my-2">
       <button
         data-drawer-target="cta-button-sidebar"
@@ -177,8 +177,7 @@ function Sidebar(props) {
           </ul>
         </div>
       </aside>
-    </div>,
-    document.getElementById("portal")
+    </div>
   );
 }
 

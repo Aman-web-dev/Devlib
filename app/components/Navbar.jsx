@@ -7,6 +7,7 @@ import { doSignOut } from "@/app/firebase/auth";
 import Image from "next/image";
 import Sidebar from "./Sidebar";
 import SessionTimer from "./sessionTimer";
+import { usePathname } from "next/navigation";
 
 import NavSearchButton from "./search/navSearchButton";
 import { useTheme } from "next-themes";
@@ -19,6 +20,7 @@ const Navbar = () => {
   const [photoUrl, setPhotoUrl] = useState(defaultPhotoUrl);
   const { theme, setTheme } = useTheme();
   const { userLoggedIn, currentUser } = useAuth();
+  const pathName=usePathname()
 
   const CheckSize = function () {
     if (typeof window !== "undefined") {
@@ -125,19 +127,19 @@ const Navbar = () => {
 
 
                 
-                <li>
-                  <Link href="/videos" className="dark: ">
+                <li className={`${pathName==="/videos"?"dark:text-yellow-300 text-blue-500":""}`}>
+                  <Link href="/videos" >
                     Videos
                   </Link>
                 </li>
 
-                <li>
+                <li className={`${pathName==="/documentation"?"dark:text-yellow-300 text-blue-500":""}`}>
                   <Link href="/documentation" className="">
                     Documentation
                   </Link>
                 </li>
 
-                <li>
+                <li className={`${pathName==="/video"?"dark:text-yellow-300 text-blue-500":""}`}>
                   <Link href="/video" className="">
                     Articles
                   </Link>
