@@ -67,6 +67,7 @@ function YoutubeCard({ data, likedVideos }) {
         if (!incrementLikeCountResponse.ok || !addUserLikeResponse.ok) {
           setLikesCount(likesCount - 1);
         }
+        getAllLikedVideobyUser();
         // console.log(incrementLikeCountResponse, addUserLikeResponse);
       } else {
         setLikesCount(likesCount - 1);
@@ -103,6 +104,7 @@ function YoutubeCard({ data, likedVideos }) {
           setLikesCount(likesCount + 1);
         }
         // console.log(removeLikeVideoResponse, decrementLikeCountResponse);
+        getAllLikedVideobyUser();
       }
     } catch (error) {
       console.log("error while checking for likes: ", error);
