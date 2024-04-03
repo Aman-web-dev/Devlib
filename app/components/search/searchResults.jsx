@@ -12,7 +12,7 @@ const SearchResults = (props) => {
           console.log(elem)
           return (
             <>
-              <Link href={`allUsers/${elem.id}`} key={elem.id}>
+              <Link href={`/allUsers/${elem.id}`} key={elem.id}>
                 <div
                   key={elem.id}
                   id="searchBox"

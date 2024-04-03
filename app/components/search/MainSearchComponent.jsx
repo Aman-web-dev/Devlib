@@ -5,9 +5,11 @@ import SearchResults from "@/app/components/search/searchResults";
 import DialogueWrapper from "../dialogueWrapper";
 
 
+
 const MainSearchComponent = (props) => {
   const [searchResultData, setSearchResultData] = useState([]);
   const [searchdRepoData, setSearchedRepoData] = useState([]);
+
 
   const fetchRes = async (value) => {
     await fetch("https://jsonplaceholder.typicode.com/users")
@@ -41,7 +43,7 @@ const MainSearchComponent = (props) => {
     <div
       onClick={fetchRes}
       ref={props.reference}
-      className="bg-blue-500 md:h-[50vh] md:w-[80vw] w-[80vw] top-0 h-screen md:left-20 left-10 fixed dark:bg-[#22272e]  border rounded-xl my-2 mx-auto"
+      className="bg-blue-500 md:h-[50vh] md:w-[80vw] w-[80vw] top-0 h-screen md:left-20 left-10 fixed dark:bg-[#121212]  border rounded-xl my-2 mx-auto"
     >
       <form className="flex items-center  mx-4 my-2 ">
         <label htmlFor="voice-search" className="sr-only">

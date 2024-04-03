@@ -25,12 +25,9 @@ const Navbar = () => {
   const CheckSize = function () {
     if (typeof window !== "undefined") {
       if (window.innerWidth > 764) {
-        //   console.log("changing Nav Show to row");
         setNavShow(true);
       }
-
       if (window.innerWidth < 764) {
-        console.log("changing Nav Show to col");
         setNavShow(false);
       }
     }
@@ -43,7 +40,6 @@ const Navbar = () => {
 
   useEffect(() => {
     if (currentUser != null) {
-      // console.log(currentUser.photoURL);
       if (currentUser.photoURL) {
         setPhotoUrl(currentUser.photoURL);
       }
@@ -242,7 +238,6 @@ const ProfileSection = (props) => {
           src={props.ImgUrl}
           className="size-12 rounded-full cursor-pointer"
           onClick={() => setOptionVisible(!optionsVisible)}
-
         />
 
 
