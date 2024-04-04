@@ -8,12 +8,6 @@ function page() {
 
   const [userData,setUserData]=useState({})
 
-
-
-
-  
-
-
   async function getUserData(userId) {
     try {
         const response = await axios.get("http://localhost:4000/get-userDeta",
@@ -27,14 +21,13 @@ function page() {
     }
 }
 
-const user_id = "g6jvHvLep0aPXi32g4261t63y7P2" // Replace "your_user_id_here" with the actual user ID
+const user_id = "F4k3Us3r1D" 
 
 
   return (
     <div>
       <button onClick={()=>getUserData(user_id)}>Click to fetch</button>
       {userData.user_id}
-     
     </div>
   )
 }

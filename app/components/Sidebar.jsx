@@ -17,7 +17,7 @@ function Sidebar(props) {
   };
 
   return(
-    <div className="bg-blue-400 my-2">
+    <div className="bg-blue-400">
       <button
         data-drawer-target="cta-button-sidebar"
         data-drawer-toggle="cta-button-sidebar"
@@ -44,13 +44,13 @@ function Sidebar(props) {
         className="fixed  top-0 right-0 left-0 bottom-0 bg-gray-200 bg-opacity-50"
         onClick={() => props.handleScreenClick()}
       />
-      hello
+    
       <aside
         id="cta-button-sidebar"
-        className="fixed top-1 right-0 rounded-xl z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        className="fixed top-0 right-0 rounded-xl z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+        <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-[#121212]">
           <ul className="space-y-2 font-medium">
             <li>
               <Link

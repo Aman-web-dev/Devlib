@@ -1,18 +1,26 @@
 "use client";
 
-import React, { useState,useRef } from "react";
+import React, { useState,useRef,useEffect } from "react";
 import MainSearchComponent from "./MainSearchComponent";
 import SearchIcon from "@/app/assets/searchSvg";
 import useclickOutisdeHook from "@/hooks/useclickOutisdeHook";
-
+import { usePathname } from "next/navigation";
 function NavSearchButton() {
   const [visible, setVisible] = useState(false);
+  const pathName=usePathname()
+
+  
+
   const searchRef=useRef(null)
 
   useclickOutisdeHook(searchRef,()=>{
     setVisible(false)
   },visible)
+  
 
+  useEffect(()=>{
+    setVisible(false)
+  },[pathName])
 
 
   return (
