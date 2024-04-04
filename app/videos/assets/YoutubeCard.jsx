@@ -221,14 +221,21 @@ function YoutubeCard({ data, likedVideos }) {
   return (
     <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit bg-extraDark my-4 border border-gray-500 rounded-xl">
       <div className="flex ">
-        <div className="w-6/12">
-          <img
+        <div className="w-6/12 rounded-l-xl" style={{ backgroundImage: `url(${youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"})`,backgroundSize: 'cover',
+      backgroundPosition: 'center' }} key={data.youtubeVideoId}>
+
+
+        <div className="bg-black w-[80%] mx-auto my-4 h-10 bg-opacity-75 rounded-full py-2 px-1">
+uploaders Profile Pic
+        </div>
+
+          {/* <img
             src={youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"}
             className="w-full h-full object-cover rounded-l-xl"
             key={data.youtubeVideoId}
-          />
+          /> */}
         </div>
-        <div>
+        <div className="w-9/12">
           <div className="pt-2 px-4">
             <span className={`dark:text-gray-300 text-lg`}>
               {data?.title?.length > 40
@@ -271,7 +278,7 @@ function YoutubeCard({ data, likedVideos }) {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill={
-            savedVideos.some((id) => id === data.vid_id) ? "lightgray" : "none"
+            savedVideos?.some((id) => id === data.vid_id) ? "lightgray" : "none"
           }
           viewBox="0 0 24 24"
           strokeWidth={1.5}
