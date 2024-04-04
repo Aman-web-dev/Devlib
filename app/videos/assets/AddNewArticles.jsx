@@ -7,7 +7,7 @@ import { AuthContext, useAuth } from "@/utils (Context)/authContext";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 import { YoutubeContext } from "@/utils (Context)/YoutubeDetails";
 import Link from "next/link";
-import DialogueWrapper from "./dialogueWrapper";
+import DialogueWrapper from "../../components/dialogueWrapper";
 
 function AddNewArticles() {
   const [isNewArticle, setIsNewArticle] = useState(false);
@@ -120,14 +120,14 @@ function AddNewArticles() {
 
   return (
     <section
-      className={` dark:bg-[#23272F] w-full px-12 py-12 relative min-h-screen gap-8`}
+      className={` dark:bg-[# 121212] w-full px-12 py-12 relative min-h-screen gap-8`}
     >
       {articlesData?.map((data) => {
         // console.log("data: ", data);
         return articlesData.length !== 0 ? (
-          <Link href={`/videos/${data.vid_id}`} key={data.vid_id}>
+          // <Link href={`/videos/${data.vid_id}`} key={data.vid_id}>
             <YoutubeCard data={data} likedVideos={likedVideo} />
-          </Link>
+          // </Link>
         ) : (
           ""
           // <ShimmerThumbnail height={250} width={250} />

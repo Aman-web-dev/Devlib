@@ -1,14 +1,17 @@
 import { useContext, useState, useEffect } from "react";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 import { useAuth } from "@/utils (Context)/authContext";
-// http://localhost:4000
+import FeedbackComponent from "./feedbackComponent";
+
+
+
 function YoutubeCard({ data, likedVideos }) {
   const [likesCount, setLikesCount] = useState(data.likes_count);
   const [userLikes, setUserLikes] = useState([]);
   const [action, setAction] = useState(null);
   const [savedVideos, setSavedVideos] = useState([]);
   const { currentUser } = useAuth();
-  // console.log(currentUser?.uid);
+
   useEffect(() => {
     getAllLikedVideobyUser();
   }, []);
@@ -216,12 +219,12 @@ function YoutubeCard({ data, likedVideos }) {
   }
 
   return (
-    <div className="w-full flex h-fit bg-extraDark my-4 border border-gray-500">
-      <div className="flex">
-        <div className="w-3/12">
+    <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit bg-extraDark my-4 border border-gray-500 rounded-xl">
+      <div className="flex ">
+        <div className="w-6/12">
           <img
             src={youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-l-xl"
             key={data.youtubeVideoId}
           />
         </div>
@@ -261,6 +264,7 @@ function YoutubeCard({ data, likedVideos }) {
               {new Date(data?.created_at).toDateString()}
             </span>
           </div>
+          <FeedbackComponent />
         </div>
       </div>
       <div className="px-4 py-2">

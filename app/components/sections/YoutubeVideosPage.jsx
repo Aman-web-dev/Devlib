@@ -1,4 +1,4 @@
-import Youtube from "../YoutubeComponent";
+import Youtube from "../../videos/assets/YoutubeComponent";
 import { youtubeLink } from "@/utils (Context)/constants";
 import { useParams } from "next/navigation";
 
