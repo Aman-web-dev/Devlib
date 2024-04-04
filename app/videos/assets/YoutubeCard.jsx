@@ -1,21 +1,18 @@
 import { useContext, useState, useEffect } from "react";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 import { useAuth } from "@/utils (Context)/authContext";
-// import userLikedVideosStore from "@/utils (Context)/zustStores";
-// http://localhost:4000
+
 import useLikeStore from "@/utils (Context)/zustStores";
+import FeedbackComponent from "./feedbackComponent";
 
 function YoutubeCard({ data, likedVideos }) {
   const [likesCount, setLikesCount] = useState(data.likes_count);
   const [userLikes, setUserLikes] = useState([]);
-  const [action, setAction] = useState(null);
+
   const [savedVideos, setSavedVideos] = useState([]);
   const { currentUser } = useAuth();
 
-  // const response = useLikeStore((state) => state.getUserLikes());
-  // console.log("response: ", response);
   const result = useLikeStore((state) => state.likeStore);
-  // console.log("result: ", result);
 
   useEffect(() => {
     getAllLikedVideobyUser();
@@ -46,6 +43,7 @@ function YoutubeCard({ data, likedVideos }) {
           }),
         }
       );
+
       const response = await ifLikeAlreadyExists.json();
       if (response.data < 1) {
         setLikesCount(likesCount + 1);
@@ -133,6 +131,7 @@ function YoutubeCard({ data, likedVideos }) {
       );
       // console.log(likedVideoResponse);
       const response = await likedVideoResponse.json();
+      console.log("response", response);
       setUserLikes(response.data.liked_videos);
     } catch (error) {
       console.log("error in getting all likes: ", error);
@@ -226,19 +225,20 @@ function YoutubeCard({ data, likedVideos }) {
   return (
     <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit bg-extraDark my-4 border border-gray-500 rounded-xl">
       <div className="flex ">
-        <div className="w-6/12 rounded-l-xl" style={{ backgroundImage: `url(${youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"})`,backgroundSize: 'cover',
-      backgroundPosition: 'center' }} key={data.youtubeVideoId}>
-
-
-        <div className="bg-black w-[80%] mx-auto my-4 h-10 bg-opacity-75 rounded-full py-2 px-1">
-uploaders Profile Pic
-        </div>
-
-          {/* <img
-            src={youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"}
-            className="w-full h-full object-cover rounded-l-xl"
-            key={data.youtubeVideoId}
-          /> */}
+        <div
+          className="w-6/12 rounded-l-xl"
+          style={{
+            backgroundImage: `url(${
+              youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"
+            })`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+          key={data.youtubeVideoId}
+        >
+          <div className="bg-black w-[80%] mx-auto my-4 h-10 bg-opacity-75 rounded-full py-2 px-1">
+            uploaders Profile Pic
+          </div>
         </div>
         <div className="w-9/12">
           <div className="pt-2 px-4">
