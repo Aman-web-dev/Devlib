@@ -1,9 +1,9 @@
 import { useContext, useState, useEffect } from "react";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 import { useAuth } from "@/utils (Context)/authContext";
-import FeedbackComponent from "./feedbackComponent";
-
-
+// import userLikedVideosStore from "@/utils (Context)/zustStores";
+// http://localhost:4000
+import useLikeStore from "@/utils (Context)/zustStores";
 
 function YoutubeCard({ data, likedVideos }) {
   const [likesCount, setLikesCount] = useState(data.likes_count);
@@ -11,6 +11,11 @@ function YoutubeCard({ data, likedVideos }) {
   const [action, setAction] = useState(null);
   const [savedVideos, setSavedVideos] = useState([]);
   const { currentUser } = useAuth();
+
+  // const response = useLikeStore((state) => state.getUserLikes());
+  // console.log("response: ", response);
+  const result = useLikeStore((state) => state.likeStore);
+  // console.log("result: ", result);
 
   useEffect(() => {
     getAllLikedVideobyUser();
@@ -126,7 +131,7 @@ function YoutubeCard({ data, likedVideos }) {
           body: JSON.stringify({ userId: currentUser.uid }),
         }
       );
-      console.log(likedVideoResponse);
+      // console.log(likedVideoResponse);
       const response = await likedVideoResponse.json();
       setUserLikes(response.data.liked_videos);
     } catch (error) {
@@ -209,7 +214,7 @@ function YoutubeCard({ data, likedVideos }) {
           const newSavedVideoList = savedVideos.filter(
             (id) => id !== data.vid_id
           );
-          console.log(newSavedVideoList);
+          // console.log(newSavedVideoList);
           setSavedVideos(newSavedVideoList);
         }
       }
