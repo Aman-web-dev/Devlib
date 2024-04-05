@@ -1,6 +1,8 @@
 import { useContext, useState, useEffect } from "react";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 import { useAuth } from "@/utils (Context)/authContext";
+import { TbArrowBigUp } from "react-icons/tb";
+import { TbArrowBigDown } from "react-icons/tb";
 
 import useLikeStore from "@/utils (Context)/zustStores";
 import FeedbackComponent from "./feedbackComponent";
@@ -228,76 +230,97 @@ function YoutubeCard({ data, likedVideos }) {
   }
   //
   return (
-    <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit my-4 border border-gray-500 rounded-xl justify-between">
-      <div className="flex w-full">
-        <div
-          className="rounded-l-xl bg-green-500 flex-1"
-          style={{
-            backgroundImage: `url(${
-              youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"
-            })`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-          key={data.youtubeVideoId}
-        >
-          <div className="bg-black w-12 h-12  rounded-full m-4">Pfp</div>
-        </div>
-        <div className="w-2/3">
-          <div className="pt-2 px-4">
-            <span className={`dark:text-gray-300 text-lg`}>
-              {data?.title?.length > 100
-                ? data?.title?.slice(0, 100) + "..."
-                : data?.title}
-            </span>
-          </div>
-          <div className="px-4 flex gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="red"
-              fill={
-                likeStore?.some((id) => data.vid_id === id) ? "red" : "none"
-              }
-              className="w-6 h-6 cursor-pointer"
-              onClick={(e) => handleLikeCount(e)}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+    <div className="dark:bg-[#1d1e23] px-4 pt-4 my-4 rounded-xl">
+      <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit justify-between">
+        <div className="flex w-full">
+          <div className="flex-1">
+            <div className="relative">
+              <img
+                className="rounded-xl flex-1 "
+                style={{
+                  backgroundImage: `url(${
+                    youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"
+                  })`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+                src={youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"}
+                key={data.youtubeVideoId}
               />
-            </svg>
+              <div className="bg-black w-12 h-12 rounded-full absolute m-2 top-0">
+                Pfp
+              </div>
+            </div>
 
-            <span className={`dark:text-gray-300`}>{likesCount}</span>
+            <div className="flex gap-2 items-center bg-[#121212] w-fit px-1 rounded-full py-1 my-2">
+              <span className="flex">
+                <TbArrowBigUp className="w-6 h-6 cursor-pointer" />
+                <span className={`dark:text-gray-300`}>{likesCount}</span>
+              </span>
+              <TbArrowBigDown className="w-6 h-6 cursor-pointer" />
+            </div>
           </div>
-          <div className="px-4 pb-2">
-            <FeedbackComponent />
-            <span className={`text-blue-500 text-xs`}>
-              {new Date(data?.created_at).toDateString()}
-            </span>
+          <div className="w-2/3 ">
+            <div className="pt-2 px-4">
+              <span className={`dark:text-gray-300 text-lg`}>
+                {data?.title?.length > 100
+                  ? data?.title?.slice(0, 100) + "..."
+                  : data?.title}
+              </span>
+            </div>
+            {/* <div className="px-4 flex gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="red"
+                fill={
+                  likeStore?.some((id) => data.vid_id === id) ? "red" : "none"
+                }
+                className="w-6 h-6 cursor-pointer"
+                onClick={(e) => handleLikeCount(e)}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                />
+              </svg>
+
+              <span className={`dark:text-gray-300`}>{likesCount}</span>
+            </div> */}
+            <div className="px-4 pb-2">
+              <span className={`text-blue-500 text-xs`}>
+                {new Date(data?.created_at).toDateString()}
+              </span>
+            </div>
+            <hr className="mx-4" />
+            <div className="px-4 py-3">
+              <FeedbackComponent />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="px-4 py-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill={
-            savedVideos?.some((id) => id === data.vid_id) ? "lightgray" : "none"
-          }
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="lightgray"
-          className="w-6 h-6"
-          onClick={(e) => addVideosToSavedList(e)}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-          />
-        </svg>
+        <div className="px-4 py-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill={
+              savedVideos?.some((id) => id === data.vid_id)
+                ? "lightgray"
+                : "none"
+            }
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="lightgray"
+            className="w-6 h-6"
+            onClick={(e) => addVideosToSavedList(e)}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+            />
+          </svg>
+        </div>
       </div>
     </div>
   );

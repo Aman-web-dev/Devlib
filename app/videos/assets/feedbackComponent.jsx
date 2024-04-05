@@ -66,11 +66,11 @@ function FeedbackComponent() {
     },
   ];
 
-  function nextCommment() {
-    setFeedbackIndex((prev) => (prev === feedbacks.length - 1 ? 0 : prev + 1));
-  }
+  // function nextCommment() {
+  //   setFeedbackIndex((prev) => (prev === feedbacks.length - 1 ? 0 : prev + 1));
+  // }
 
-  // setInterval(nextCommment, 3000);
+  // setInterval(nextCommment, 8000);
 
   return (
     <div className="">
@@ -96,14 +96,14 @@ function FeedbackComponent() {
 
       {feedbacks?.map((elem, index) => {
         return feedbackIndex == index ? (
-          <div id={index} key={index}>
+          <div id={index} key={index} className="">
             <section className="flex py-2">
-              {/* <div className="flex items-start mr-4">
+              <div className="flex items-start mr-4">
                 <img
-                  className="w-12 h-12  rounded-full object-cover object-top border"
+                  className="w-6 h-6 rounded-full object-cover object-top border"
                   src={elem.userProfilePic}
                 />
-              </div> */}
+              </div>
 
               <div className="w-9/12">
                 <p className="text-sm">{elem.user}</p>
