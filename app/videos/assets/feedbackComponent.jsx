@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import { MdKeyboardArrowLeft } from "react-icons/md";
 
 function FeedbackComponent() {
   const [feedbackIndex, setFeedbackIndex] = useState(0);
@@ -72,32 +74,20 @@ function FeedbackComponent() {
 
   // setInterval(nextCommment, 8000);
 
+  function nextComment() {
+    setFeedbackIndex((prev) => (prev === feedbacks.length - 1 ? 0 : prev + 1));
+  }
+
+  function previousComment() {
+    setFeedbackIndex((prev) => (prev === 0 ? feedbacks.length - 1 : prev - 1));
+  }
+
   return (
-    <div className="">
-      {/* <button
-        className="w-20 h-100 "
-        onClick={() => {
-          setFeedbackIndex((prev) => (prev != 0 ? prev - 1 : 0));
-        }}
-      >
-        Previous
-      </button> */}
-
-      {/* <button
-        className="w-20 h-100 bg-blue-400"
-        onClick={() => {
-          setFeedbackIndex((prev) =>
-            prev == feedbacks.length - 1 ? 0 : prev + 1
-          );
-        }}
-      >
-        Next
-      </button> */}
-
+    <div>
       {feedbacks?.map((elem, index) => {
         return feedbackIndex == index ? (
           <div id={index} key={index} className="">
-            <section className="flex py-2">
+            <section className="flex py-2 transition ease-in-out">
               <div className="flex items-start mr-4">
                 <img
                   className="w-6 h-6 rounded-full object-cover object-top border"
@@ -112,7 +102,7 @@ function FeedbackComponent() {
                     ? elem.feedBack.slice(0, 100) + "..."
                     : elem.feedBack}
                 </p>
-                <div className="flex gap-2 text-sm">
+                <div className="flex gap-2 text-sm items-center">
                   <div className="flex items-center gap-1">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -137,6 +127,20 @@ function FeedbackComponent() {
                     </svg>
                     <span className="text-gray-400">
                       {elem.dislikesOnfeedback}
+                    </span>
+                  </div>
+                  <div className="flex gap-4 w-full justify-end">
+                    <span>
+                      <MdKeyboardArrowLeft
+                        onClick={previousComment}
+                        className="w-5 h-5 text-black bg-gray-500 cursor-pointer rounded-full"
+                      />
+                    </span>
+                    <span>
+                      <MdKeyboardArrowRight
+                        onClick={nextComment}
+                        className="w-5 h-5 text-black bg-gray-500 cursor-pointer rounded-full"
+                      />
                     </span>
                   </div>
                 </div>

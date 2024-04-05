@@ -3,6 +3,7 @@ import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 import { useAuth } from "@/utils (Context)/authContext";
 import { TbArrowBigUp } from "react-icons/tb";
 import { TbArrowBigDown } from "react-icons/tb";
+import { TbArrowBigUpFilled } from "react-icons/tb";
 
 import useLikeStore from "@/utils (Context)/zustStores";
 import FeedbackComponent from "./feedbackComponent";
@@ -17,25 +18,25 @@ function YoutubeCard({ data, likedVideos }) {
   const [zustLikeStore, setZustLikeStore] = useState(null);
   const { likeStore, toggleVideoId, getUserLikes } = useLikeStore();
   const likeStoreCopy = [...likeStore];
-  // useEffect(() => {
-  //   const response = getUserLikes(currentUser.uid);
-  // }, []);
+  useEffect(() => {
+    const response = getUserLikes(currentUser.uid);
+  }, []);
 
   function removeVideoIdFromZustandStore(vid_id) {
     toggleVideoId(vid_id);
   }
 
-  // useEffect(() => {
-  //   // console.log(likeStoreCopy);
-  // }, [likeStore]);
+  useEffect(() => {
+    console.log(likeStoreCopy);
+  }, [likeStore]);
 
   function addVideoIdInLikeStore(vid_id) {
     toggleVideoId(vid_id);
   }
 
-  useEffect(() => {
-    // getAllLikedVideoByUser();
-  }, []);
+  // useEffect(() => {
+  //   getAllLikedVideoByUser();
+  // }, []);
 
   async function handleLikeCount(e) {
     e.preventDefault();
@@ -252,7 +253,17 @@ function YoutubeCard({ data, likedVideos }) {
               </div>
               <div className="flex gap-2 items-center bg-[#121212] w-fit px-1 m-2 border border-white rounded-full py-1 my-2 absolute bottom-0">
                 <span className="flex">
-                  <TbArrowBigUp className="w-6 h-6 cursor-pointer" />
+                  {likeStoreCopy.includes(data.vid_id) ? (
+                    <TbArrowBigUpFilled
+                      className="w-6 h-6 cursor-pointer"
+                      onClick={(e) => handleLikeCount(e)}
+                    />
+                  ) : (
+                    <TbArrowBigUp
+                      className="w-6 h-6 cursor-pointer"
+                      onClick={(e) => handleLikeCount(e)}
+                    />
+                  )}
                   <span className={`dark:text-gray-300`}>{likesCount}</span>
                 </span>
                 <TbArrowBigDown className="w-6 h-6 cursor-pointer" />
