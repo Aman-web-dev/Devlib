@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
-import FileIcon from "../components/search/assests/fileIcon";
-import BookIcon from "../assets/bookSvg";
+
+import FileIcon from "@/app/components/search/assests/fileIcon";
+import BookIcon from "@/app/assets/bookSvg";
 import { AuthContext } from "@/utils (Context)/authContext";
 
 function page() {

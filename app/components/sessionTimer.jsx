@@ -23,7 +23,6 @@ const timer=()=>{
             minutes=0
             hours=hours+1
         }
-        console.log(hours,minutes,seconds)
         setTime(prev=>({...prev,"hours":hours,"minutes":minutes,"seconds":seconds}))
     },1000)
     setIntervalID(id)
@@ -37,7 +36,7 @@ const timer=()=>{
 
 
 useEffect(()=>{
-    console.log(time)
+   
 },[time])
 
   return (
