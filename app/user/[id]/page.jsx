@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
-import FileIcon from "../components/search/assests/fileIcon";
-import BookIcon from "../assets/bookSvg";
+// import FileIcon from "../components/search/assests/fileIcon";
+// import BookIcon from "../assets/bookSvg";
 import { AuthContext } from "@/utils (Context)/authContext";
 
 function page() {
   const { currentUser } = useContext(AuthContext);
   const [userPostCount, setUserPostCount] = useState(0);
-  
+
   async function getUserPostCount() {
     try {
       const response = await fetch(
@@ -92,7 +92,7 @@ const RepoContainer = () => {
       className="border mx-1 dark:bg-[#374151] my-1   px-4 py-2 rounded-md"
     >
       <section className="flex gap-2 my-2">
-        <FileIcon Height={20} Width={20} />
+        {/* <FileIcon Height={20} Width={20} /> */}
         <h1 className="text-green-400">Repo</h1>
       </section>
       <p className="text-sm">
@@ -115,9 +115,7 @@ const PostContainer = () => {
   return (
     <div className="border py-4 px-4  ">
       <section className="flex items-center gap-4 my-2">
-        <section className="  flex items-center">
-          <BookIcon />
-        </section>
+        <section className="  flex items-center">{/* <BookIcon /> */}</section>
 
         <h1 className=" dark:text-gray-200 font-bold">@My first Project</h1>
       </section>
