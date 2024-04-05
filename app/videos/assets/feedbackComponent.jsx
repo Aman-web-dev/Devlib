@@ -95,9 +95,9 @@ function FeedbackComponent() {
               <section>
                 <div className="flex items-center gap-2  h-20 w-40">
                   <img
-                    className="size-12 rounded-full "
+                    className="size-12 rounded-full object-cover object-top border"
                     src={elem.userProfilePic}
-                  ></img>
+                  />
                   <p className="font-bold text-sm w-6/12">{elem.user}</p>
                 </div>
                 <section className="flex gap-5 my-2">
