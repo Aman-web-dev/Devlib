@@ -9,6 +9,7 @@ import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 import { YoutubeContext } from "@/utils (Context)/YoutubeDetails";
 import Link from "next/link";
 import DialogueWrapper from "../../components/dialogueWrapper";
+import ShimmerEffect from "@/app/components/ShimmerEffect";
 
 function AddNewArticles() {
   const [isNewArticle, setIsNewArticle] = useState(false);
@@ -105,7 +106,6 @@ function AddNewArticles() {
       response.then((result) => {
         setArticlesData(result.data);
       });
-      
     } catch (error) {
       console.log("error during fetching data: ", error);
     }
@@ -123,17 +123,16 @@ function AddNewArticles() {
     <section
       className={` dark:bg-[# 121212] w-full px-12 py-12 relative min-h-screen gap-8`}
     >
-      {articlesData?.map((data) => {
-        // console.log("data: ", data);
-        return articlesData.length !== 0 ? (
+      {articlesData ? (
+        articlesData.map((data) => (
           // <Link href={`/videos/${data.vid_id}`} key={data.vid_id}>
-            <YoutubeCard data={data} likedVideos={likedVideo} />
+          <YoutubeCard data={data} likedVideos={likedVideo} />
           // </Link>
-        ) : (
-          ""
-          // <ShimmerThumbnail height={250} width={250} />
-        );
-      })}
+        ))
+      ) : (
+        <ShimmerEffect />
+        // <ShimmerThumbnail height={250} width={250} />
+      )}
       <button
         className={`dark:bg-light fixed right-10 bottom-10 p-4 rounded-full`}
         onClick={() => setIsNewArticle(true)}
@@ -154,95 +153,95 @@ function AddNewArticles() {
         </svg>
       </button>
 
-
-
       {isNewArticle && (
-
-       <DialogueWrapper> 
-        <section
-          className={`dark:bg-[#121212] flex flex-col  px-6 py-12 absolute rounded top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2`}
-        >
-          <button
-            className="absolute  right-5 top-5 bg-light p-1 rounded-full"
-            onClick={() => setIsNewArticle(false)}
+        <DialogueWrapper>
+          <section
+            className={`dark:bg-[#121212] flex flex-col  px-6 py-12 absolute rounded top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2`}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-4 h-4"
+            <button
+              className="absolute  right-5 top-5 bg-light p-1 rounded-full"
+              onClick={() => setIsNewArticle(false)}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18 18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-          <div className="flex flex-col gap-8">
-            <div className="flex flex-col">
-              <label htmlhtmlFor="title" className={`dark:text-gray-300`}>
-                Enter title
-              </label>
-              <input
-                id="title"
-                type="text"
-                value={dataToBeSend.title}
-                onChange={handleTitleChange}
-                className={`dark:bg-extraDark border border-gray-600 text-gray-200 "
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <div className="flex flex-col gap-8">
+              <div className="flex flex-col">
+                <label htmlhtmlFor="title" className={`dark:text-gray-300`}>
+                  Enter title
+                </label>
+                <input
+                  id="title"
+                  type="text"
+                  value={dataToBeSend.title}
+                  onChange={handleTitleChange}
+                  className={`dark:bg-extraDark border border-gray-600 text-gray-200 "
                  py-2 px-2 rounded-md`}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label htmlhtmlFor="youtubelink" className={`dark:text-gray-300`}>
-                Enter a valid Youtube Vide Link
-              </label>
-              <input
-                id="youtubelink"
-                type="url"
-                value={dataToBeSend.youtubeLink}
-                onChange={handleYoutubeLinkChange}
-                className={`dark:bg-extraDark border border-gray-600 text-gray-200 py-2 px-2 rounded-md`}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label htmlhtmlFor="tags" className={`dark:text-gray-300`}>
-                Enter a valid Tags
-              </label>
-              <input
-                id="tags"
-                type="url"
-                value={dataToBeSend.tags}
-                onChange={handleTagsChange}
-                className={`dark:bg-extraDark border border-gray-600 text-gray-200"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlhtmlFor="youtubelink"
+                  className={`dark:text-gray-300`}
+                >
+                  Enter a valid Youtube Vide Link
+                </label>
+                <input
+                  id="youtubelink"
+                  type="url"
+                  value={dataToBeSend.youtubeLink}
+                  onChange={handleYoutubeLinkChange}
+                  className={`dark:bg-extraDark border border-gray-600 text-gray-200 py-2 px-2 rounded-md`}
+                />
+              </div>
+              <div className="flex flex-col">
+                <label htmlhtmlFor="tags" className={`dark:text-gray-300`}>
+                  Enter a valid Tags
+                </label>
+                <input
+                  id="tags"
+                  type="url"
+                  value={dataToBeSend.tags}
+                  onChange={handleTagsChange}
+                  className={`dark:bg-extraDark border border-gray-600 text-gray-200"
                  py-2 px-2 rounded-md`}
-              />
+                />
+              </div>
             </div>
-          </div>
-          <button
-            onClick={handleAddYoutubueVideo}
-            disabled={isSubmitting}
-            className={`dark:bg-light border border-black flex gap-4 justify-center py-2 rounded-full my-6`}
-          >
-            <span>{isSubmitting ? "Uploading..." : "Upload"}</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
+            <button
+              onClick={handleAddYoutubueVideo}
+              disabled={isSubmitting}
+              className={`dark:bg-light border border-black flex gap-4 justify-center py-2 rounded-full my-6`}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
-              />
-            </svg>
-          </button>
-        </section>
+              <span>{isSubmitting ? "Uploading..." : "Upload"}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
+                />
+              </svg>
+            </button>
+          </section>
         </DialogueWrapper>
       )}
     </section>
@@ -250,5 +249,3 @@ function AddNewArticles() {
 }
 
 export default AddNewArticles;
-
-

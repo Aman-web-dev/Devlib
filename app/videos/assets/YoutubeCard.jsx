@@ -1,6 +1,9 @@
 import { useContext, useState, useEffect } from "react";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 import { useAuth } from "@/utils (Context)/authContext";
+import { TbArrowBigUp } from "react-icons/tb";
+import { TbArrowBigDown } from "react-icons/tb";
+import { TbArrowBigUpFilled } from "react-icons/tb";
 
 import useLikeStore from "@/utils (Context)/zustStores";
 import FeedbackComponent from "./feedbackComponent";
@@ -12,11 +15,28 @@ function YoutubeCard({ data, likedVideos }) {
   const [savedVideos, setSavedVideos] = useState([]);
   const { currentUser } = useAuth();
 
-  const result = useLikeStore((state) => state.likeStore);
+  const [zustLikeStore, setZustLikeStore] = useState(null);
+  const { likeStore, toggleVideoId, getUserLikes } = useLikeStore();
+  const likeStoreCopy = [...likeStore];
+  useEffect(() => {
+    const response = getUserLikes(currentUser.uid);
+  }, []);
+
+  function removeVideoIdFromZustandStore(vid_id) {
+    toggleVideoId(vid_id);
+  }
 
   useEffect(() => {
-    getAllLikedVideobyUser();
-  }, []);
+    console.log(likeStoreCopy);
+  }, [likeStore]);
+
+  function addVideoIdInLikeStore(vid_id) {
+    toggleVideoId(vid_id);
+  }
+
+  // useEffect(() => {
+  //   getAllLikedVideoByUser();
+  // }, []);
 
   async function handleLikeCount(e) {
     e.preventDefault();
@@ -25,28 +45,14 @@ function YoutubeCard({ data, likedVideos }) {
   }
 
   useEffect(() => {
-    getAllSavedVideosData();
+    // getAllSavedVideosData();
   }, []);
 
   async function addLike() {
     try {
-      const ifLikeAlreadyExists = await fetch(
-        "http://localhost:4000/api/checkIfLikeExists",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: currentUser.uid,
-            vid_id: data.vid_id,
-          }),
-        }
-      );
-
-      const response = await ifLikeAlreadyExists.json();
-      if (response.data < 1) {
+      if (!likeStoreCopy.includes(data.vid_id)) {
         setLikesCount(likesCount + 1);
+        addVideoIdInLikeStore(data.vid_id);
         const incrementLikeCountPromise = fetch(
           "http://localhost:4000/api/incrementLikeCount",
           {
@@ -73,10 +79,11 @@ function YoutubeCard({ data, likedVideos }) {
         if (!incrementLikeCountResponse.ok || !addUserLikeResponse.ok) {
           setLikesCount(likesCount - 1);
         }
-        getAllLikedVideobyUser();
+        // getAllLikedVideoByUser();
         // console.log(incrementLikeCountResponse, addUserLikeResponse);
       } else {
         setLikesCount(likesCount - 1);
+        removeVideoIdFromZustandStore(data.vid_id);
         const removeLikeVideoPromise = fetch(
           "http://localhost:4000/api/removeUserLikedVideo",
           {
@@ -110,14 +117,15 @@ function YoutubeCard({ data, likedVideos }) {
           setLikesCount(likesCount + 1);
         }
         // console.log(removeLikeVideoResponse, decrementLikeCountResponse);
-        getAllLikedVideobyUser();
+        // getAllLikedVideoByUser();
       }
     } catch (error) {
+      throw error;
       console.log("error while checking for likes: ", error);
     }
   }
 
-  async function getAllLikedVideobyUser() {
+  async function getAllLikedVideoByUser() {
     try {
       const likedVideoResponse = await fetch(
         "http://localhost:4000/api/getAllLikedVideos",
@@ -221,82 +229,108 @@ function YoutubeCard({ data, likedVideos }) {
       console.log("Error while adding/removing video:", error);
     }
   }
-
+  //
   return (
-    <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit bg-extraDark my-4 border border-gray-500 rounded-xl">
-      <div className="flex ">
-        <div
-          className="w-6/12 rounded-l-xl"
-          style={{
-            backgroundImage: `url(${
-              youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"
-            })`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-          key={data.youtubeVideoId}
-        >
-          <div className="bg-black w-[80%] mx-auto my-4 h-10 bg-opacity-75 rounded-full py-2 px-1">
-            uploaders Profile Pic
-          </div>
-        </div>
-        <div className="w-9/12">
-          <div className="pt-2 px-4">
-            <span className={`dark:text-gray-300 text-lg`}>
-              {data?.title?.length > 40
-                ? data?.title?.slice(0, 40) + "..."
-                : data?.title}
-            </span>
-          </div>
-          <div className="px-4 flex gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill={
-                userLikes.some((id) => data.vid_id === id)
-                  ? "lightgray"
-                  : "none"
-              }
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke={`lightgray`}
-              className="w-6 h-6"
-              onClick={(e) => handleLikeCount(e)}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z"
+    <div className="dark:bg-[#1d1e23] px-4 py-4 my-4 rounded-xl">
+      <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit justify-between">
+        <div className="flex w-full">
+          <div className="flex-1">
+            <div className="relative">
+              <img
+                className="rounded-xl flex-1 "
+                style={{
+                  backgroundImage: `url(${
+                    youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"
+                  })`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+                src={youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"}
+                key={data.youtubeVideoId}
               />
-            </svg>
+              <div className="bg-black w-12 h-12 rounded-full absolute m-2 top-0">
+                Pfp
+              </div>
+              <div className="flex gap-2 items-center bg-[#121212] w-fit px-1 m-2 border border-white rounded-full py-1 my-2 absolute bottom-0">
+                <span className="flex">
+                  {likeStoreCopy.includes(data.vid_id) ? (
+                    <TbArrowBigUpFilled
+                      className="w-6 h-6 cursor-pointer"
+                      onClick={(e) => handleLikeCount(e)}
+                    />
+                  ) : (
+                    <TbArrowBigUp
+                      className="w-6 h-6 cursor-pointer"
+                      onClick={(e) => handleLikeCount(e)}
+                    />
+                  )}
+                  <span className={`dark:text-gray-300`}>{likesCount}</span>
+                </span>
+                <TbArrowBigDown className="w-6 h-6 cursor-pointer" />
+              </div>
+            </div>
+          </div>
+          <div className="w-2/3 ">
+            <div className="pt-2 px-4">
+              <span className={`dark:text-gray-300 text-lg`}>
+                {data?.title?.length > 100
+                  ? data?.title?.slice(0, 100) + "..."
+                  : data?.title}
+              </span>
+            </div>
+            {/* <div className="px-4 flex gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="red"
+                fill={
+                  likeStore?.some((id) => data.vid_id === id) ? "red" : "none"
+                }
+                className="w-6 h-6 cursor-pointer"
+                onClick={(e) => handleLikeCount(e)}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                />
+              </svg>
 
-            <span className={`dark:text-gray-300`}>{likesCount}</span>
+              <span className={`dark:text-gray-300`}>{likesCount}</span>
+            </div> */}
+            <div className="px-4 pb-2">
+              <span className={`text-blue-500 text-xs`}>
+                {new Date(data?.created_at).toDateString()}
+              </span>
+            </div>
+            <hr className="mx-4" />
+            <div className="px-4 py-3">
+              <FeedbackComponent />
+            </div>
           </div>
-          <div className="px-4 pb-2">
-            <span className={`text-blue-500 text-xs`}>
-              {new Date(data?.created_at).toDateString()}
-            </span>
-          </div>
-          <FeedbackComponent />
         </div>
-      </div>
-      <div className="px-4 py-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill={
-            savedVideos?.some((id) => id === data.vid_id) ? "lightgray" : "none"
-          }
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="lightgray"
-          className="w-6 h-6"
-          onClick={(e) => addVideosToSavedList(e)}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-          />
-        </svg>
+        <div className="px-4 py-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill={
+              savedVideos?.some((id) => id === data.vid_id)
+                ? "lightgray"
+                : "none"
+            }
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="lightgray"
+            className="w-6 h-6"
+            onClick={(e) => addVideosToSavedList(e)}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+            />
+          </svg>
+        </div>
       </div>
     </div>
   );
