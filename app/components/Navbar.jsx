@@ -143,12 +143,12 @@ const Navbar = () => {
 
                 <li
                   className={`${
-                    pathName === "/video"
+                    pathName === "/articles"
                       ? "dark:text-yellow-300 text-blue-500"
                       : ""
                   }`}
                 >
-                  <Link href="/video" className="">
+                  <Link href="/articles" className="">
                     Articles
                   </Link>
                 </li>

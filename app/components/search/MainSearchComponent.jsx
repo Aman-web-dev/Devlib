@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import SearchResults from "@/app/components/search/searchResults";
 import DialogueWrapper from "../dialogueWrapper";
+import axios from "axios";
 
 
 
@@ -11,26 +12,58 @@ const MainSearchComponent = (props) => {
   const [searchdRepoData, setSearchedRepoData] = useState([]);
 
 
+  // const fetchRes = async (value) => {
+  //   await fetch("https://jsonplaceholder.typicode.com/users")
+  //     .then((response) => response.json())
+  //     .then((json) => {
+  //       const result = json.filter((user) => {
+  //         return user && user.name && user.name.toLowerCase().includes(value);
+  //       });
+  //       setSearchResultData(result);
+  //       console.log(result);  
+  //     });
+
+  //   await fetch("https://jsonplaceholder.typicode.com/posts")
+  //     .then((res) => res.json())
+  //     .then((val) => {
+  //       const result = val.filter((elem) => {
+  //         return elem && elem.title && elem.title.toLowerCase().includes(value);
+  //       });
+
+  //       setSearchedRepoData(result);
+  //     });
+  // };
+
+
   const fetchRes = async (value) => {
-    await fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((json) => {
-        const result = json.filter((user) => {
-          return user && user.name && user.name.toLowerCase().includes(value);
-        });
-        setSearchResultData(result);
-        console.log(result);  
-      });
+    // setSearch(value);
+    console.log(value.length)
+    if(value.length<=0){
+        setSearchResultData([])
+        console.log("length is Short")
+        return 0
+    }
 
-    await fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((res) => res.json())
-      .then((val) => {
-        const result = val.filter((elem) => {
-          return elem && elem.title && elem.title.toLowerCase().includes(value);
-        });
-
-        setSearchedRepoData(result);
+    try {
+      const response = await axios.get("http://localhost:4000/get-userData", {
+        params: {
+          searchedWords: value,
+        },
       });
+     const endResult=response.data.map((user)=>{
+        if(user.name.toLowerCase().includes(value)){
+            return user 
+        }
+       })
+       console.log(endResult)
+       setSearchResultData(endResult)
+        console.log(response.data);
+        console.log(endResult)
+        console.log(searchResultData);
+    } catch (error) {
+      console.log("we Got an Error");
+      console.log(error);
+    }
   };
 
   const handleSearch = (e) => {

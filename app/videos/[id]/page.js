@@ -1,5 +1,5 @@
 "use client";
-import Youtube from "@/app/components/YoutubeComponent";
+import Youtube from "@/app/videos/assets/YoutubeComponent";
 import { useParams } from "next/navigation";
 
 export default function Page() {

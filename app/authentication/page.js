@@ -29,6 +29,8 @@ function Page() {
     });
   }
 
+  
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (!isSigningIn) {
