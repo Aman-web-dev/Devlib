@@ -12,16 +12,30 @@ function YoutubeCard({ data, likedVideos }) {
   const [savedVideos, setSavedVideos] = useState([]);
   const { currentUser } = useAuth();
 
-  // const response = useLikeStore((state) => state.getUserLikes());
-  // console.log("response: ", response);
-  const result = useLikeStore((state) => state.likeStore);
-  // console.log("result: ", result);
-
+  const [zustLikeStore, setZustLikeStore] = useState(null);
+  const { likeStore, toggleVideoId, getUserLikes } = useLikeStore();
+  const likeStoreCopy = [...likeStore];
   useEffect(() => {
-    getAllLikedVideobyUser();
+    const response = getUserLikes(currentUser.uid);
   }, []);
 
-  async function handleLikeCount(e) {
+  function removeVideoIdFromZustandStore(vid_id) {
+    toggleVideoId(vid_id);
+  }
+
+  useEffect(() => {
+    console.log(likeStoreCopy);
+  }, [likeStore]);
+
+  function addVideoIdInLikeStore(vid_id) {
+    toggleVideoId(vid_id);
+  }
+
+  useEffect(() => {
+    getAllLikedVideoByUser();
+  }, []);
+
+  async function handleLikeCount(e, vid_id) {
     e.preventDefault();
     e.stopPropagation();
     addLike();
@@ -33,22 +47,24 @@ function YoutubeCard({ data, likedVideos }) {
 
   async function addLike() {
     try {
-      const ifLikeAlreadyExists = await fetch(
-        "http://localhost:4000/api/checkIfLikeExists",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: currentUser.uid,
-            vid_id: data.vid_id,
-          }),
-        }
-      );
-      const response = await ifLikeAlreadyExists.json();
-      if (response.data < 1) {
+      // const ifLikeAlreadyExists = await fetch(
+      //   "http://localhost:4000/api/checkIfLikeExists",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       userId: currentUser.uid,
+      //       vid_id: data.vid_id,
+      //     }),
+      //   }
+      // );
+      // const response = await ifLikeAlreadyExists.json();
+
+      if (!likeStoreCopy.includes(data.vid_id)) {
         setLikesCount(likesCount + 1);
+        addVideoIdInLikeStore(data.vid_id);
         const incrementLikeCountPromise = fetch(
           "http://localhost:4000/api/incrementLikeCount",
           {
@@ -75,10 +91,11 @@ function YoutubeCard({ data, likedVideos }) {
         if (!incrementLikeCountResponse.ok || !addUserLikeResponse.ok) {
           setLikesCount(likesCount - 1);
         }
-        getAllLikedVideobyUser();
+        getAllLikedVideoByUser();
         // console.log(incrementLikeCountResponse, addUserLikeResponse);
       } else {
         setLikesCount(likesCount - 1);
+        removeVideoIdFromZustandStore(data.vid_id);
         const removeLikeVideoPromise = fetch(
           "http://localhost:4000/api/removeUserLikedVideo",
           {
@@ -112,14 +129,15 @@ function YoutubeCard({ data, likedVideos }) {
           setLikesCount(likesCount + 1);
         }
         // console.log(removeLikeVideoResponse, decrementLikeCountResponse);
-        getAllLikedVideobyUser();
+        getAllLikedVideoByUser();
       }
     } catch (error) {
+      throw error;
       console.log("error while checking for likes: ", error);
     }
   }
 
-  async function getAllLikedVideobyUser() {
+  async function getAllLikedVideoByUser() {
     try {
       const likedVideoResponse = await fetch(
         "http://localhost:4000/api/getAllLikedVideos",
@@ -245,7 +263,7 @@ function YoutubeCard({ data, likedVideos }) {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill={
-                userLikes.some((id) => data.vid_id === id)
+                likeStore?.some((id) => data.vid_id === id)
                   ? "lightgray"
                   : "none"
               }
@@ -253,7 +271,7 @@ function YoutubeCard({ data, likedVideos }) {
               strokeWidth={1.5}
               stroke={`lightgray`}
               className="w-6 h-6"
-              onClick={(e) => handleLikeCount(e)}
+              onClick={(e) => handleLikeCount(e, data.vid_id)}
             >
               <path
                 strokeLinecap="round"
