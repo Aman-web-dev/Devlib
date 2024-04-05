@@ -230,7 +230,7 @@ function YoutubeCard({ data, likedVideos }) {
   }
   //
   return (
-    <div className="dark:bg-[#1d1e23] px-4 pt-4 my-4 rounded-xl">
+    <div className="dark:bg-[#1d1e23] px-4 py-4 my-4 rounded-xl">
       <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit justify-between">
         <div className="flex w-full">
           <div className="flex-1">
@@ -250,14 +250,13 @@ function YoutubeCard({ data, likedVideos }) {
               <div className="bg-black w-12 h-12 rounded-full absolute m-2 top-0">
                 Pfp
               </div>
-            </div>
-
-            <div className="flex gap-2 items-center bg-[#121212] w-fit px-1 rounded-full py-1 my-2">
-              <span className="flex">
-                <TbArrowBigUp className="w-6 h-6 cursor-pointer" />
-                <span className={`dark:text-gray-300`}>{likesCount}</span>
-              </span>
-              <TbArrowBigDown className="w-6 h-6 cursor-pointer" />
+              <div className="flex gap-2 items-center bg-[#121212] w-fit px-1 m-2 border border-white rounded-full py-1 my-2 absolute bottom-0">
+                <span className="flex">
+                  <TbArrowBigUp className="w-6 h-6 cursor-pointer" />
+                  <span className={`dark:text-gray-300`}>{likesCount}</span>
+                </span>
+                <TbArrowBigDown className="w-6 h-6 cursor-pointer" />
+              </div>
             </div>
           </div>
           <div className="w-2/3 ">
