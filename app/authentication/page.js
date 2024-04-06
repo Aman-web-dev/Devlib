@@ -10,26 +10,16 @@ import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { redirect } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
+import {
+  doesUserExistInDatabase,
+  makeNewVideoBucket,
+  saveUserDataToDatabase,
+} from "./api/apiCalls";
 
 function Page() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isSigningIn, setIsSigningIn] = useState(false);
   const { userLoggedIn, currentUser } = useAuth();
-
-  async function addUserIdInPostgresql(uid) {
-    fetch("http://localhost:4000/adduser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId: uid }),
-    }).then((response) => {
-      console.log("response: ", response);
-      return response.text();
-    });
-  }
-
-  
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -51,7 +41,18 @@ function Page() {
   useEffect(() => {
     if (currentUser && currentUser.uid) {
       console.log("uid: ", currentUser.uid);
-      addUserIdInPostgresql(currentUser.uid);
+
+      doesUserExistInDatabase(currentUser.uid).then((result) => {
+        console.log(typeof result);
+        if (result == "true") {;
+         console.log("the user was old so data has't been saved and the bucket is also not created")
+        }
+        if (result == "false") {
+          saveUserDataToDatabase(currentUser);
+          makeNewVideoBucket(currentUser.uid)
+        }
+        return result;
+      });
     }
   }, [currentUser]);
 
@@ -73,9 +74,6 @@ function Page() {
         setIsSigningIn(true);
         await doSignInWithGoogle();
         setIsSigningIn(false);
-        // Pass currentUser.uid to addUserIdInPostgresql
-        // console.log("currentuser: ", currentUser);
-        // await addUserIdInPostgresql(currentUser.uid);
       } catch (error) {
         console.error("Error signing in with Google:", error);
         setIsSigningIn(false);
@@ -94,13 +92,20 @@ function Page() {
       <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         <div className=" xl:w-7/12 p-4 sm:p-12">
           <div className="text-left mx-auto">
-            <h1 id="title" className="text-4xl mx-auto  font-bold   text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-600" >Dev
-            <span className="text-black text-xl">-Developer&#39;s</span>
+            <h1
+              id="title"
+              className="text-4xl mx-auto  font-bold   text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-600"
+            >
+              Dev
+              <span className="text-black text-xl">-Developer&#39;s</span>
             </h1>
-            <h1 id="title" className="text-4xl mx-auto font-bold   text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-600" >Lib
-            <span className="text-black text-xl">-Library</span>
+            <h1
+              id="title"
+              className="text-4xl mx-auto font-bold   text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-600"
+            >
+              Lib
+              <span className="text-black text-xl">-Library</span>
             </h1>
-            
           </div>
           <div className="mt-12 flex flex-col items-center">
             <h1 className="text-2xl xl:text-3xl font-extrabold">Sign up</h1>
@@ -197,11 +202,17 @@ function Page() {
 
               <p className="mt-6 text-xs text-gray-600 text-center">
                 I agree to abide by templatana &apos; s
-                <Link href="#" className="border-b border-gray-500 border-dotted">
+                <Link
+                  href="#"
+                  className="border-b border-gray-500 border-dotted"
+                >
                   Terms of Service
                 </Link>
                 and its
-                <Link href="#" className="border-b border-gray-500 border-dotted">
+                <Link
+                  href="#"
+                  className="border-b border-gray-500 border-dotted"
+                >
                   Privacy Policy
                 </Link>
               </p>

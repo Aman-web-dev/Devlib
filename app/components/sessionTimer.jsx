@@ -21,7 +21,6 @@ function SessionTimer() {
           minutes = 0;
           hours = hours + 1;
         }
-        // console.log(hours,minutes,seconds)
         setTime((prev) => ({
           ...prev,
           hours: hours,
@@ -38,9 +37,7 @@ function SessionTimer() {
     return { Start, Stop };
   };
 
-  // useEffect(()=>{
-  //     console.log(time)
-  // },[time])
+  useEffect(() => {}, [time]);
 
   return (
     <div
