@@ -3,11 +3,8 @@
 import { useContext, useEffect, useState } from "react";
 import YoutubeCard from "./YoutubeCard";
 import axios from "axios";
-import { AuthContext, useAuth } from "@/utils (Context)/authContext";
-
-import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
+import { AuthContext } from "@/utils (Context)/authContext";
 import { YoutubeContext } from "@/utils (Context)/YoutubeDetails";
-import Link from "next/link";
 import DialogueWrapper from "../../components/dialogueWrapper";
 import ShimmerEffect from "@/app/components/ShimmerEffect";
 

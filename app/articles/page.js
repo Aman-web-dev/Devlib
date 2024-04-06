@@ -1,37 +1,34 @@
+"use client";
 import YoutubeArticlesDetailsPage from "@/app/components/sections/YoutubeVideosPage";
+import AddNewArticles from "../components/AddNewArticle";
+import { useState } from "react";
+import Link from "next/link";
 
 function Page({ params }) {
+  const [isNewArticle, setIsNewArticle] = useState(false);
   return (
-    <div>
-      <div className="bg-gray-900 h-screen flex flex-col items-center justify-center text-center">
-        <div className="text-white">
-          <h1 className="text-4xl font-bold">Coming Soon</h1>
-          <p className="mt-4 text-lg">
-            We &apos; re working on something awesome!
-          </p>
-        </div>
-        <div className="mt-8">
-          <form action="#" method="post" className="flex items-center">
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              className="py-2 px-4 bg-gray-800 text-white rounded-l-md focus:outline-none"
-              required
-            />
-            <button
-              type="submit"
-              className="bg-blue-500 py-2 px-4 text-white rounded-r-md hover:bg-blue-600 focus:outline-none"
-            >
-              Subscribe
-            </button>
-          </form>
-          <p className="mt-2 text-gray-400 text-sm">
-            Be the first to know when we launch!
-          </p>
-        </div>
-      </div>
-    </div>
+    <>
+      <Link
+        href={"/articles/addArticle"}
+        className={`dark:bg-light fixed right-10 bottom-10 p-4 rounded-full`}
+        onClick={() => setIsNewArticle(true)}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+          />
+        </svg>
+      </Link>
+    </>
   );
 }
 
