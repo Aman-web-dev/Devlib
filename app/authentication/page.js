@@ -14,7 +14,7 @@ import {
   doesUserExistInDatabase,
   makeNewVideoBucket,
   saveUserDataToDatabase,
-} from "../personalization/api/apiCalls";
+} from "./api/apiCalls";
 
 function Page() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -44,13 +44,12 @@ function Page() {
 
       doesUserExistInDatabase(currentUser.uid).then((result) => {
         console.log(typeof result);
-        if (result == "true") {
-          console.log("OldUser");
+        if (result == "true") {;
+         console.log("the user was old so data has't been saved and the bucket is also not created")
         }
         if (result == "false") {
-          console.log("newUser");
           saveUserDataToDatabase(currentUser);
-          // makeNewVideoBucket(currentUser.uid)
+          makeNewVideoBucket(currentUser.uid)
         }
         return result;
       });
