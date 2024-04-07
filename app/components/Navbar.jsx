@@ -121,6 +121,18 @@ const Navbar = () => {
 
                 <li
                   className={`${
+                    pathName === "/"
+                      ? "dark:text-yellow-300 text-blue-500"
+                      : ""
+                  }`}
+                >
+                  <Link href="/" className="">
+                    Home
+                  </Link>
+                </li>
+
+                <li
+                  className={`${
                     pathName === "/videos"
                       ? "dark:text-yellow-300 text-blue-500"
                       : ""
@@ -239,7 +251,6 @@ const ProfileSection = (props) => {
           className="size-12 rounded-full cursor-pointer"
           onClick={() => setOptionVisible(!optionsVisible)}
         />
-
 
         {optionsVisible ? (
           <Sidebar
