@@ -1,20 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ErrorMessage, Field, Formik } from "formik";
 import { FaSadCry } from "react-icons/fa";
 import { RiEmotionNormalFill } from "react-icons/ri";
 import { IoHappySharp } from "react-icons/io5";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
+import { serverUrl } from "@/utils (Context)/constants";
+import { AuthContext } from "@/utils (Context)/authContext";
 
 const AddNewArticles = () => {
   const [userReview, setUserReview] = useState(null);
-  const userResponse = [
-    { value: "1", response: <FaSadCry /> },
-    { value: "2", response: <RiEmotionNormalFill /> },
-    { value: "3", response: <IoHappySharp /> },
-  ];
+  const { currentUser } = useContext(AuthContext);
 
-  useEffect(() => {
-    console.log("user-review: ", userReview);
-  }, [userReview]);
+  const handleReviewSelection = (value) => {
+    setUserReview(value);
+  };
+  const errorSchema = Yup.object().shape({
+    title: Yup.string()
+      .min(8, "Title must be greater that 8 characters")
+      .max(60, "Title can't exceed 60 characters")
+      .required("Please enter a title"),
+
+    url: Yup.string()
+      .matches(
+        /^(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i,
+        "Invalid URL"
+      )
+      .required("Please enter a Article URL"),
+    review: Yup.string().required("Please select one"),
+  });
+
+  const handleFormSubmission = async (values, { setSubmitting }) => {
+    try {
+      console.log("handle form submission");
+      const response = await fetch(serverUrl + "/api/addNewArticle", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: currentUser.uid,
+          title: values.title,
+          url: values.url,
+          comment: values.comment,
+          review: values.review,
+        }),
+      });
+      console.log(response);
+      if (response.ok) {
+        toast.dark("Form is submitted for review.");
+      }
+    } catch (error) {
+      console.log("error while adding article in article bucket: ", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="w-2/3 py-12 px-6">
       <div className="mb-8">
@@ -22,30 +64,10 @@ const AddNewArticles = () => {
         <i>Required fields are marked with an asterisk (*).</i>
       </div>
       <Formik
-        initialValues={{ title: "", url: "", comment: "" }}
-        validate={(values) => {
-          const errors = {};
-          if (!values.title) {
-            errors.title = "Required";
-          } else if (!/[A-Z][a-z]+/g.test(values.title)) {
-            errors.title = "Invalid title address";
-          }
-          if (!values.url) {
-            errors.url = "Required";
-          } else if (
-            !/(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/g.test(
-              values.url
-            )
-          ) {
-            errors.url = "Invalid URL";
-          }
-          return errors;
-        }}
+        initialValues={{ title: "", url: "", comment: "", review: "" }}
+        validationSchema={errorSchema}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
+          handleFormSubmission(values, { setSubmitting });
         }}
       >
         {({
@@ -56,7 +78,7 @@ const AddNewArticles = () => {
           handleBlur,
           handleSubmit,
           isSubmitting,
-          /* and other goodies */
+          isValid,
         }) => (
           <form
             onSubmit={handleSubmit}
@@ -117,47 +139,56 @@ const AddNewArticles = () => {
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  value={1}
-                  id="1"
-                  onClick={() => setUserReview("1")}
+                  onClick={() => {
+                    handleReviewSelection("1");
+                    handleChange("review")("1");
+                  }}
                 >
                   <FaSadCry
                     className={`${
-                      userReview === "1" && "text-yellow-400"
+                      values.review === "1" && "text-yellow-400"
                     } w-6 h-6`}
                   />
                 </button>
                 <button
                   type="button"
-                  value={2}
-                  id="2"
-                  onClick={() => setUserReview("2")}
+                  onClick={() => {
+                    handleReviewSelection("2");
+                    handleChange("review")("2");
+                  }}
                 >
                   <RiEmotionNormalFill
                     className={`${
-                      userReview === "2" && "text-yellow-400"
+                      values.review === "2" && "text-yellow-400"
                     } w-7 h-7`}
                   />
                 </button>
                 <button
                   type="button"
-                  value={3}
-                  id="3"
-                  onClick={() => setUserReview("3")}
+                  onClick={() => {
+                    handleReviewSelection("3");
+                    handleChange("review")("3");
+                  }}
                 >
                   <IoHappySharp
                     className={`${
-                      userReview === "3" && "text-yellow-400"
+                      values.review === "3" && "text-yellow-400"
                     } w-7 h-7`}
                   />
                 </button>
               </div>
+              <ErrorMessage
+                component={"span"}
+                name="review"
+                className="text-red-600 text-sm"
+              />
             </div>
-            {/* {errors.url && touched.url && errors.url} */}
+
             <button
               className="bg-[#1497c1] py-1 px-4 hover:bg-[#469fbc] rounded-full"
               type="submit"
               disabled={isSubmitting}
+              // onClick={notify}
             >
               Submit
             </button>

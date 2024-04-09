@@ -4,10 +4,11 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import Provider from "./provider";
 const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-})
-
+  subsets: ["latin"],
+  display: "swap",
+});
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { ThemeProvider } from "next-themes";
 export const metadata = {
@@ -16,11 +17,11 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-
   return (
-    <html lang="en" className={inter.className+"antialiased "}>
+    <html lang="en" className={inter.className + "antialiased "}>
       <body className="">
         <Provider>
+          <ToastContainer />
           <Navbar />
           {children}
           <div id="portal"></div>
