@@ -30,7 +30,7 @@ const AddNewArticles = () => {
     review: Yup.string().required("Please select one"),
   });
 
-  const handleFormSubmission = async (values, { setSubmitting }) => {
+  const handleFormSubmission = async (values, { setSubmitting, resetForm }) => {
     try {
       console.log("handle form submission");
       const response = await fetch(serverUrl + "/api/addNewArticle", {
@@ -46,9 +46,10 @@ const AddNewArticles = () => {
           review: values.review,
         }),
       });
-      console.log(response);
+      // console.log(response);
       if (response.ok) {
         toast.dark("Form is submitted for review.");
+        resetForm();
       }
     } catch (error) {
       console.log("error while adding article in article bucket: ", error);
@@ -66,8 +67,8 @@ const AddNewArticles = () => {
       <Formik
         initialValues={{ title: "", url: "", comment: "", review: "" }}
         validationSchema={errorSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          handleFormSubmission(values, { setSubmitting });
+        onSubmit={(values, { setSubmitting, resetForm }) => {
+          handleFormSubmission(values, { setSubmitting, resetForm });
         }}
       >
         {({
