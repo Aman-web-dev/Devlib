@@ -26,10 +26,11 @@ const result=await fetch(url, {
 export const saveUserDataToDatabase = async (userObj) => {
   const { displayName, email, photoURL, uid, metadata } = userObj;
   const userName=generateUsername();
+  console.log("generated username:",userName)
   
   const user = {
     name: displayName,
-    user_name:  userName!=null?userName:"userWithNoUserName",
+    user_name:  userName,
     email: email,
     profilepicture: photoURL,
     user_id: uid,

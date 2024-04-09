@@ -45,7 +45,7 @@ const MainSearchComponent = (props) => {
     }
 
     try {
-      const response = await axios.get("http://localhost:4000/get-userData", {
+      const response = await axios.get("http://localhost:4000/searchUsers", {
         params: {
           searchedWords: value,
         },
