@@ -3,15 +3,16 @@ import YoutubeArticlesDetailsPage from "@/app/components/sections/YoutubeVideosP
 import AddNewArticles from "../components/AddNewArticle";
 import { useState } from "react";
 import Link from "next/link";
+import ArticlePage from "./assets/ArticlePage";
 
 function Page({ params }) {
   const [isNewArticle, setIsNewArticle] = useState(false);
   return (
     <>
+      <ArticlePage />
       <Link
         href={"/articles/addArticle"}
         className={`dark:bg-light fixed right-10 bottom-10 p-4 rounded-full`}
-        onClick={() => setIsNewArticle(true)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

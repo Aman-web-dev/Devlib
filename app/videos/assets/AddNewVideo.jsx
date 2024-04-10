@@ -1,12 +1,12 @@
 "use client";
 
 import { useContext, useEffect, useState } from "react";
-import YoutubeCard from "./YoutubeCard";
 import axios from "axios";
 import { AuthContext } from "@/utils (Context)/authContext";
 import { YoutubeContext } from "@/utils (Context)/YoutubeDetails";
 import DialogueWrapper from "../../components/dialogueWrapper";
 import ShimmerEffect from "@/app/components/ShimmerEffect";
+import Card from "./YoutubeCard";
 
 function AddNewArticles() {
   const [isNewArticle, setIsNewArticle] = useState(false);
@@ -123,7 +123,7 @@ function AddNewArticles() {
       {articlesData ? (
         articlesData.map((data) => (
           // <Link href={`/videos/${data.vid_id}`} key={data.vid_id}>
-          <YoutubeCard data={data} likedVideos={likedVideo} />
+          <Card data={data} likedVideos={likedVideo} />
           // </Link>
         ))
       ) : (

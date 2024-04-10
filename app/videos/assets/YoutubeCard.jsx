@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
 import { useAuth } from "@/utils (Context)/authContext";
 import { TbArrowBigUp } from "react-icons/tb";
@@ -8,16 +8,15 @@ import { TbArrowBigUpFilled } from "react-icons/tb";
 import useLikeStore from "@/utils (Context)/zustStores";
 import FeedbackComponent from "./feedbackComponent";
 
-function YoutubeCard({ data, likedVideos }) {
-  const [likesCount, setLikesCount] = useState(data.likes_count);
+function Card({ data, likedVideos }) {
+  const [likesCount, setLikesCount] = useState(data?.likes_count);
   const [userLikes, setUserLikes] = useState([]);
 
   const [savedVideos, setSavedVideos] = useState([]);
   const { currentUser } = useAuth();
-
-  const [zustLikeStore, setZustLikeStore] = useState(null);
   const { likeStore, toggleVideoId, getUserLikes } = useLikeStore();
   const likeStoreCopy = [...likeStore];
+
   useEffect(() => {
     const response = getUserLikes(currentUser.uid);
   }, []);
@@ -26,17 +25,9 @@ function YoutubeCard({ data, likedVideos }) {
     toggleVideoId(vid_id);
   }
 
-  useEffect(() => {
-    console.log(likeStoreCopy);
-  }, [likeStore]);
-
   function addVideoIdInLikeStore(vid_id) {
     toggleVideoId(vid_id);
   }
-
-  // useEffect(() => {
-  //   getAllLikedVideoByUser();
-  // }, []);
 
   async function handleLikeCount(e) {
     e.preventDefault();
@@ -315,4 +306,4 @@ function YoutubeCard({ data, likedVideos }) {
   );
 }
 
-export default YoutubeCard;
+export default Card;
