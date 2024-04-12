@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { ErrorMessage, Field, Formik } from "formik";
 import { FaSadCry } from "react-icons/fa";
 import { RiEmotionNormalFill } from "react-icons/ri";
@@ -48,7 +48,7 @@ const AddNewArticles = () => {
       });
       // console.log(response);
       if (response.ok) {
-        toast.dark("Form is submitted for review.");
+        toast.dark("Article is submitted for review.");
         resetForm();
       }
     } catch (error) {

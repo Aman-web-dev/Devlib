@@ -7,6 +7,7 @@ import { YoutubeContext } from "@/utils (Context)/YoutubeDetails";
 import DialogueWrapper from "../../components/dialogueWrapper";
 import ShimmerEffect from "@/app/components/ShimmerEffect";
 import Card from "./YoutubeCard";
+import Link from "next/link";
 
 function AddNewArticles() {
   const [isNewArticle, setIsNewArticle] = useState(false);
@@ -44,6 +45,18 @@ function AddNewArticles() {
     const match = url.match(regExp);
     return match && match[2].length === 11 ? setYoutubeId(match[2]) : null;
   }
+
+  const getYoutubeVideoData = async () => {
+    try {
+      const response = axios.get("http://localhost:4000/get-yt-vid");
+      response.then((result) => {
+        setArticlesData(result.data);
+      });
+    } catch (error) {
+      console.log("error during fetching data: ", error);
+    }
+  };
+
   // add youtube videos in the database
   function addYoutubeVideo() {
     console.log(process.env.NEXT_PUBLIC_SERVER_URL);
@@ -63,18 +76,6 @@ function AddNewArticles() {
         });
         setIsSubmitting(false);
         setIsNewArticle(false);
-        // if (addVideoResponse) {
-        //   const addVideoIdInTotalLikesTableResponse = await fetch(
-        //     "http://localhost:4000/api/addVideoId",
-        //     {
-        //       method: "POST",
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //       },
-        //       body: JSON.stringify({ vid_id: youtubeId }),
-        //     }
-        //   );
-        // }
       }, 2000);
 
       getYoutubeVideoData();
@@ -84,30 +85,9 @@ function AddNewArticles() {
   }
 
   const handleAddYoutubueVideo = () => {
-    // const newErrors = [];
-    // if (!dataToBeSend.title.trim()) {
-    //   newErrors.title = "Title is required";
-    // } else if (!/^[A-Za-z0-9\s\-_,\.;:()]+$/.test(dataToBeSend.title)) {
-    //   newErrors.title = "Invalid title";
-    // }
-
-    // if (!dataToBeSend.youtubeLink.trim()) {
-    //   newErrors.youtubeLink = "Video link is required";
-    // }
-
     addYoutubeVideo();
   };
   // get all the youtube videos from the data base
-  async function getYoutubeVideoData() {
-    try {
-      const response = axios.get("http://localhost:4000/get-yt-vid");
-      response.then((result) => {
-        setArticlesData(result.data);
-      });
-    } catch (error) {
-      console.log("error during fetching data: ", error);
-    }
-  }
 
   useEffect(() => {
     getYoutubeVideoData();
@@ -126,9 +106,10 @@ function AddNewArticles() {
       ) : (
         <ShimmerEffect />
       )}
-      <button
-        className={`dark:bg-light fixed right-10 bottom-10 p-4 rounded-full`}
-        onClick={() => setIsNewArticle(true)}
+      <Link
+        className={`dark:bg-[#149eca] fixed right-10 bottom-10 p-4 rounded-full`}
+        href={"/videos/addNewVideo"}
+        // onClick={() => setIsNewArticle(true)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -144,9 +125,9 @@ function AddNewArticles() {
             d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
           />
         </svg>
-      </button>
+      </Link>
 
-      {isNewArticle && (
+      {/* {isNewArticle && (
         <DialogueWrapper>
           <section
             className={`dark:bg-[#121212] flex flex-col  px-6 py-12 absolute rounded top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2`}
@@ -233,7 +214,7 @@ function AddNewArticles() {
             </button>
           </section>
         </DialogueWrapper>
-      )}
+      )} */}
     </section>
   );
 }

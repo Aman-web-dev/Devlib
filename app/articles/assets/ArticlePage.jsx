@@ -49,7 +49,6 @@ export default function ArticlePage() {
         >
           {articleData ? (
             articleData.map((data) => {
-              // console.log(data.imgurl);
               return (
                 <div
                   className="dark:bg-[#1d1e23] px-4 py-4 my-4 rounded-xl"
