@@ -4,21 +4,18 @@ import { useAuth } from "@/utils (Context)/authContext";
 import { TbArrowBigUp } from "react-icons/tb";
 import { TbArrowBigDown } from "react-icons/tb";
 import { TbArrowBigUpFilled } from "react-icons/tb";
-
 import useLikeStore from "@/utils (Context)/zustStores";
 import FeedbackComponent from "./feedbackComponent";
 
-function Card({ data, likedVideos }) {
+function Card({ data }) {
   const [likesCount, setLikesCount] = useState(data?.likes_count);
-  const [userLikes, setUserLikes] = useState([]);
-
   const [savedVideos, setSavedVideos] = useState([]);
   const { currentUser } = useAuth();
   const { likeStore, toggleVideoId, getUserLikes } = useLikeStore();
-  const likeStoreCopy = [...likeStore];
+  const likeStoreCopy = likeStore !== undefined ? [...likeStore] : [];
 
   useEffect(() => {
-    const response = getUserLikes(currentUser.uid);
+    getUserLikes(currentUser.uid);
   }, []);
 
   function removeVideoIdFromZustandStore(vid_id) {
@@ -34,10 +31,6 @@ function Card({ data, likedVideos }) {
     e.stopPropagation();
     addLike();
   }
-
-  useEffect(() => {
-    // getAllSavedVideosData();
-  }, []);
 
   async function addLike() {
     try {
@@ -70,8 +63,6 @@ function Card({ data, likedVideos }) {
         if (!incrementLikeCountResponse.ok || !addUserLikeResponse.ok) {
           setLikesCount(likesCount - 1);
         }
-        // getAllLikedVideoByUser();
-        // console.log(incrementLikeCountResponse, addUserLikeResponse);
       } else {
         setLikesCount(likesCount - 1);
         removeVideoIdFromZustandStore(data.vid_id);
@@ -107,35 +98,33 @@ function Card({ data, likedVideos }) {
         if (!removeLikeVideoResponse.ok || !decrementLikeCountResponse.ok) {
           setLikesCount(likesCount + 1);
         }
-        // console.log(removeLikeVideoResponse, decrementLikeCountResponse);
-        // getAllLikedVideoByUser();
       }
     } catch (error) {
-      throw error;
       console.log("error while checking for likes: ", error);
+      throw error;
     }
   }
 
-  async function getAllLikedVideoByUser() {
-    try {
-      const likedVideoResponse = await fetch(
-        "http://localhost:4000/api/getAllLikedVideos",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: currentUser.uid }),
-        }
-      );
-      // console.log(likedVideoResponse);
-      const response = await likedVideoResponse.json();
-      console.log("response", response);
-      setUserLikes(response.data.liked_videos);
-    } catch (error) {
-      console.log("error in getting all likes: ", error);
-    }
-  }
+  // async function getAllLikedVideoByUser() {
+  //   try {
+  //     const likedVideoResponse = await fetch(
+  //       "http://localhost:4000/api/getAllLikedVideos",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ userId: currentUser.uid }),
+  //       }
+  //     );
+  //     // console.log(likedVideoResponse);
+  //     const response = await likedVideoResponse.json();
+  //     console.log("response", response);
+  //     setUserLikes(response.data.liked_videos);
+  //   } catch (error) {
+  //     console.log("error in getting all likes: ", error);
+  //   }
+  // }
 
   async function getAllSavedVideosData() {
     try {
@@ -220,7 +209,6 @@ function Card({ data, likedVideos }) {
       console.log("Error while adding/removing video:", error);
     }
   }
-  //
   return (
     <div className="dark:bg-[#1d1e23] px-4 py-4 my-4 rounded-xl">
       <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit justify-between">
