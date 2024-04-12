@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
+import { ImageUpoloadApi } from "../../../User-updating-apis/apiCalls";
 
 
-
+import { useAuth } from "@/utils (Context)/authContext";
 import ReactCrop, {
   centerCrop,
   convertToPixelCrop,
@@ -59,6 +60,8 @@ const ImageCropper = ({ closeModal, updateAvatar }) => {
     setCrop(centeredCrop);
   };
 
+  const {currentUser}=useAuth()
+
   return (
     <>
       <label className="block mb-3 w-fit">
@@ -104,6 +107,7 @@ const ImageCropper = ({ closeModal, updateAvatar }) => {
               const dataUrl = previewCanvasRef.current.toDataURL();
               console.log(dataUrl)
               updateAvatar(dataUrl);
+            ImageUpoloadApi(dataUrl,currentUser.uid)
               closeModal();
             }}
           >

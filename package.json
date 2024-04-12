@@ -14,6 +14,7 @@
     "critters": "^0.0.22",
     "firebase": "^10.8.0",
     "formik": "^2.4.5",
+    "imagemin": "^8.0.1",
     "next": "14.1.0",
     "next-themes": "^0.3.0",
     "prisma": "^5.11.0",
@@ -47,6 +48,8 @@
   "browser": {
     "fs": false,
     "path": false,
-    "os": false
+    "os": false,
+    "net": false, 
+    "tls": false 
   }
 }
