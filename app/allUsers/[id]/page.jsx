@@ -1,10 +1,9 @@
 'use client'
 import React, { useState } from 'react'
-import { useParams } from 'next/navigation'
 import axios from 'axios'
 
-function page() {
-  const params = useParams()
+function Page() {
+  
 
   const [userData,setUserData]=useState({})
 
@@ -35,4 +34,4 @@ const user_id = "F4k3Us3r1D"
 
 
 
-export default page
+export default Page

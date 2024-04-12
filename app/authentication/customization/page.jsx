@@ -1,12 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import DialogueWrapper from "@/app/components/dialogueWrapper";
-
 import PersonalDetailsUpdate from "./components/ProfileUpdater/personalDetailsUpdate";
 import Profile from "./components/ImageUpdater/Profile";
 
-function page() {
+function Page() {
   const [hidden,setHidden]=useState(true)
   return (
     <div className=" dark:bg-[#121212]  text-center my-8">
@@ -38,7 +36,7 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
 
 
 
