@@ -46,10 +46,11 @@ function AddNewArticles() {
   }
   // add youtube videos in the database
   function addYoutubeVideo() {
+    console.log(process.env.NEXT_PUBLIC_SERVER_URL);
     try {
       setIsSubmitting(true);
       setTimeout(async () => {
-        const addVideoResponse = fetch("http://localhost:4000/add-yt-vid", {
+        const addVideoResponse = fetch(`http://localhost:4000/add-yt-vid`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -62,18 +63,18 @@ function AddNewArticles() {
         });
         setIsSubmitting(false);
         setIsNewArticle(false);
-        if (addVideoResponse) {
-          const addVideoIdInTotalLikesTableResponse = await fetch(
-            "http://localhost:4000/api/addVideoId",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ vid_id: youtubeId }),
-            }
-          );
-        }
+        // if (addVideoResponse) {
+        //   const addVideoIdInTotalLikesTableResponse = await fetch(
+        //     "http://localhost:4000/api/addVideoId",
+        //     {
+        //       method: "POST",
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //       },
+        //       body: JSON.stringify({ vid_id: youtubeId }),
+        //     }
+        //   );
+        // }
       }, 2000);
 
       getYoutubeVideoData();
@@ -83,16 +84,16 @@ function AddNewArticles() {
   }
 
   const handleAddYoutubueVideo = () => {
-    const newErrors = [];
-    if (!dataToBeSend.title.trim()) {
-      newErrors.title = "Title is required";
-    } else if (!/^[A-Za-z0-9\s\-_,\.;:()]+$/.test(dataToBeSend.title)) {
-      newErrors.title = "Invalid title";
-    }
+    // const newErrors = [];
+    // if (!dataToBeSend.title.trim()) {
+    //   newErrors.title = "Title is required";
+    // } else if (!/^[A-Za-z0-9\s\-_,\.;:()]+$/.test(dataToBeSend.title)) {
+    //   newErrors.title = "Invalid title";
+    // }
 
-    if (!dataToBeSend.youtubeLink.trim()) {
-      newErrors.youtubeLink = "Video link is required";
-    }
+    // if (!dataToBeSend.youtubeLink.trim()) {
+    //   newErrors.youtubeLink = "Video link is required";
+    // }
 
     addYoutubeVideo();
   };
@@ -121,14 +122,9 @@ function AddNewArticles() {
       className={` dark:bg-[# 121212] w-full px-12 py-12 relative min-h-screen gap-8`}
     >
       {articlesData ? (
-        articlesData.map((data) => (
-          // <Link href={`/videos/${data.vid_id}`} key={data.vid_id}>
-          <Card data={data} likedVideos={likedVideo} />
-          // </Link>
-        ))
+        articlesData.map((data) => <Card data={data} key={data.id} />)
       ) : (
         <ShimmerEffect />
-        // <ShimmerThumbnail height={250} width={250} />
       )}
       <button
         className={`dark:bg-light fixed right-10 bottom-10 p-4 rounded-full`}
@@ -176,7 +172,7 @@ function AddNewArticles() {
             </button>
             <div className="flex flex-col gap-8">
               <div className="flex flex-col">
-                <label htmlhtmlFor="title" className={`dark:text-gray-300`}>
+                <label htmlFor="title" className={`dark:text-gray-300`}>
                   Enter title
                 </label>
                 <input
@@ -189,14 +185,11 @@ function AddNewArticles() {
                 />
               </div>
               <div className="flex flex-col">
-                <label
-                  htmlhtmlFor="youtubelink"
-                  className={`dark:text-gray-300`}
-                >
+                <label htmlFor="youtubeLink" className={`dark:text-gray-300`}>
                   Enter a valid Youtube Vide Link
                 </label>
                 <input
-                  id="youtubelink"
+                  id="youtubeLink"
                   type="url"
                   value={dataToBeSend.youtubeLink}
                   onChange={handleYoutubeLinkChange}
@@ -204,7 +197,7 @@ function AddNewArticles() {
                 />
               </div>
               <div className="flex flex-col">
-                <label htmlhtmlFor="tags" className={`dark:text-gray-300`}>
+                <label htmlFor="tags" className={`dark:text-gray-300`}>
                   Enter a valid Tags
                 </label>
                 <input

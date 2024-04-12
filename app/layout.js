@@ -3,6 +3,7 @@ import React from "react";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Provider from "./provider";
+
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",

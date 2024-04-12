@@ -14,7 +14,7 @@ async function getAllLikedVideoByUser(userId) {
       }
     );
     const response = await likedVideoResponse.json();
-    return response.data.liked_videos;
+    return response?.data?.liked_videos;
   } catch (error) {
     console.log("error in getting all likes: ", error);
   }
