@@ -83,7 +83,7 @@ function Page() {
 
   useEffect(() => {
     if (userLoggedIn) {
-      redirect("/"); // Redirect to the home page if the user is logged in
+      redirect("/authentication/customization"); // Redirect to the home page if the user is logged in
     }
   }, [userLoggedIn]);
 

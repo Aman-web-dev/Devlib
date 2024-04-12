@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import PencilIcon from "./PencilIcon";
-import Modal from "./Modal";
-import { getImageFromUserTable } from "../../User-updating-apis/apiCalls";
+import PencilIcon from "./assets/PencilIcon";
+import Modal from "./assets/Modal";
+import { getDataFromDatabase } from "../../User-updating-apis/apiCalls";
 import { useAuth } from "@/utils (Context)/authContext";
 
 const Profile = () => {
@@ -11,16 +11,12 @@ const Profile = () => {
     currentUser.photoURL ? currentUser.photoURL : "avatar"
   );
 
-  // const avatarUrl = useRef(
-  //   "https://avatarfiles.alphacoders.com/161/161002.jpg"
-  // );
-
   useEffect(() => {
     if (currentUser) {
-      const obj = { user_id: "g6jvHvLep0aPXi32g4261t63y7P2" };
+      const obj = { user_id: currentUser.uid };
       console.log(
         "this is api call:",
-        getImageFromUserTable(
+        getDataFromDatabase(
           obj,
           "http://localhost:4000/get-user-profilepicture",
           (response) => {
@@ -37,7 +33,8 @@ const Profile = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const updateAvatar = (imgSrc) => {
-    avatarUrl.current = imgSrc;
+    setAvatarUrl(imgSrc)
+    // avatarUrl.current = imgSrc;
   };
 
   return (
@@ -56,8 +53,8 @@ const Profile = () => {
           <PencilIcon />
         </button>
       </div>
-      <h2 className="text-white font-bold mt-6">Mack Aroney</h2>
-      <p className="text-gray-500 text-xs mt-2">Software Engineer</p>
+      <h2 className="text-white font-bold mt-6">{currentUser.displayName}</h2>
+      <p className="text-white text-lg mt-2">{currentUser.email}</p>
       {modalOpen && (
         <Modal
           updateAvatar={updateAvatar}

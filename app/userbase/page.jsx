@@ -3,7 +3,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const page = () => {
+const Page = () => {
   const [search, setSearch] = useState("");
   const [searchResultData, setSearchResultData] = useState([]);
 
@@ -58,4 +58,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
