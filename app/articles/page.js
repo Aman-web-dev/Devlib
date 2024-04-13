@@ -1,12 +1,9 @@
 "use client";
-import YoutubeArticlesDetailsPage from "@/app/components/sections/YoutubeVideosPage";
-import AddNewArticles from "./assets/AddNewArticle";
 import { useState } from "react";
 import Link from "next/link";
 import ArticlePage from "./assets/ArticlePage";
 
-function Page({ params }) {
-  const [isNewArticle, setIsNewArticle] = useState(false);
+function Page() {
   return (
     <>
       <ArticlePage />

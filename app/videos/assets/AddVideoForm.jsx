@@ -4,20 +4,19 @@ import { useContext, useEffect, useState } from "react";
 import { useRef } from "react";
 import { AuthContext } from "@/utils (Context)/authContext";
 import { toast } from "react-toastify";
+import { useVideoStore } from "@/utils (Context)/zustStores";
 
-const initialValues = { title: "", url: "", comment: "", review: "" };
+const initialValues = { title: "", url: "", comment: "", review: "", tags: "" };
+
 const AddVideoForm = () => {
-  const [videoId, setVideoId] = useState(null);
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const formRef = useRef();
   const { currentUser } = useContext(AuthContext);
+  // const { getAllVideos, videoStore } = useVideoStore();
 
-  function getId(url) {
-    const regExp =
-      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return match && match[2].length === 11 ? setVideoId(match[2]) : null;
-  }
+  // useEffect(() => {
+  //   getAllVideos();
+  // }, []);
 
   function extractId(url) {
     return new Promise((resolve, reject) => {
@@ -44,6 +43,7 @@ const AddVideoForm = () => {
         "Invalid URL"
       )
       .required("Please enter a Youtube video URL"),
+    tags: Yup.string().required("Tags are required"),
     // review: Yup.string().required("Please select one"),
   });
 
@@ -58,11 +58,32 @@ const AddVideoForm = () => {
   //      }
   //    };
 
+  // const videoData = async () => {
+  //   try {
+  //     const videoResponse = await fetch("http://localhost:4000/get-yt-vid", {
+  //       method: "GET",
+  //     });
+  //     if (videoResponse.ok) {
+  //       const result = await videoResponse.json();
+  //       return result;
+  //     } else {
+  //       return {
+  //         error: "Unable to fulfill your request. Please try again later.",
+  //       };
+  //     }
+  //   } catch (error) {
+  //     console.log("error during fetching data: ", error);
+  //   }
+  // };
+
+  // console.log(videoData());
+
   const handleFormSubmission = async (values, { setSubmitting, resetForm }) => {
     try {
       setIsFormSubmitting(true);
       const id = await extractId(values.url);
       if (id !== null || id !== undefined) {
+        const tags = [values.tags];
         try {
           setTimeout(async () => {
             const addVideoResponse = await fetch(
@@ -76,6 +97,7 @@ const AddVideoForm = () => {
                   userId: currentUser.uid,
                   title: values.title,
                   vid_id: id,
+                  tags: tags,
                 }),
               }
             );
@@ -91,17 +113,19 @@ const AddVideoForm = () => {
           //   getYoutubeVideoData();
         } catch (error) {
           console.log("data not added due to: ", error);
+          setIsFormSubmitting(false);
         }
       }
     } catch (error) {
       console.log("error while form submission: ", error);
+      setIsFormSubmitting(false);
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="w-2/3 py-12 px-6">
+    <div className="w-2/3 py-12 px-6 ">
       <div className="mb-8">
         <h1 className="font-bold text-2xl">Add a new Youtube Video!</h1>
         <i>Required fields are marked with an asterisk (*).</i>
@@ -157,8 +181,10 @@ const AddVideoForm = () => {
             </div>
             <div className="w-full">
               <label htmlFor="comment" className="">
-                Why you liked the Article{" "}
-                <i className="font-normal text-sm">(optional)</i>
+                Why you liked the Video{" "}
+                <small>
+                  <i className="font-normal ">(optional)</i>
+                </small>
               </label>
               <Field
                 as="textarea"
@@ -177,6 +203,28 @@ const AddVideoForm = () => {
               />
             </div>
 
+            {/* tags */}
+            <div className="w-full">
+              <label htmlFor="url" className="">
+                Tags*{" "}
+                <small>
+                  <i className="font-normal ">(use comma to separate tags)</i>
+                </small>
+              </label>
+              <input
+                type="tags"
+                name="tags"
+                className="rounded-xl py-2 px-4 outline-none w-full"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.tags}
+              />
+              <ErrorMessage
+                component={"span"}
+                name="tags"
+                className="text-red-600 text-sm"
+              />
+            </div>
             <button
               className="bg-[#1497c1] py-1 px-4 hover:bg-[#469fbc] rounded-full"
               type="submit"

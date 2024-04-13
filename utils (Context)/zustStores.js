@@ -1,6 +1,7 @@
 "use client";
 import { create } from "zustand";
 
+// function to get all liked videos by user;
 async function getAllLikedVideoByUser(userId) {
   try {
     const likedVideoResponse = await fetch(
@@ -19,6 +20,26 @@ async function getAllLikedVideoByUser(userId) {
     console.log("error in getting all likes: ", error);
   }
 }
+// http://localhost:4000/get-yt-vid
+const videoData = async () => {
+  try {
+    const videoResponse = await fetch("http://localhost:4000/get-yt-vid", {
+      method: "GET",
+    });
+    if (videoResponse.ok) {
+      const result = await videoResponse.json();
+      return result;
+    } else {
+      return {
+        error: "Unable to fulfill your request. Please try again later.",
+      };
+    }
+  } catch (error) {
+    console.log("error during fetching data: ", error);
+  }
+};
+
+// console.log(videoData());
 
 const useLikeStore = create((set) => ({
   likeStore: [],
@@ -38,6 +59,14 @@ const useLikeStore = create((set) => ({
         };
       }
     });
+  },
+}));
+
+export const useVideoStore = create((set) => ({
+  videoStore: [],
+  getAllVideos: async () => {
+    const response = await videoData();
+    set({ videoStore: response });
   },
 }));
 

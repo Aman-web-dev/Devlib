@@ -1,115 +1,28 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import { AuthContext } from "@/utils (Context)/authContext";
-import { YoutubeContext } from "@/utils (Context)/YoutubeDetails";
-import DialogueWrapper from "../../components/dialogueWrapper";
+import { useEffect } from "react";
 import ShimmerEffect from "@/app/components/ShimmerEffect";
 import Card from "./YoutubeCard";
 import Link from "next/link";
+import { useVideoStore } from "@/utils (Context)/zustStores";
 
 function AddNewArticles() {
-  const [isNewArticle, setIsNewArticle] = useState(false);
-  const [articlesData, setArticlesData] = useState(null);
-  const [likedVideo, setLikedVideos] = useState(null);
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const { currentUser } = useContext(AuthContext);
-  const [dataToBeSend, setDataToBeSend] = useState({
-    youtubeLink: "",
-    title: "",
-    tags: [],
-  });
-
-  const [errors, setErrors] = useState({});
-
-  const { youtubeId, setYoutubeId } = useContext(YoutubeContext);
-
-  const handleTitleChange = (e) => {
-    setDataToBeSend((prev) => ({ ...prev, title: e.target.value }));
-  };
-
-  const handleYoutubeLinkChange = (e) => {
-    setDataToBeSend((prev) => ({ ...prev, youtubeLink: e.target.value }));
-  };
-
-  const handleTagsChange = (e) => {
-    setDataToBeSend((prev) => ({ ...prev, tags: [e.target.value] }));
-  };
-
-  function getId(url) {
-    const regExp =
-      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return match && match[2].length === 11 ? setYoutubeId(match[2]) : null;
-  }
-
-  const getYoutubeVideoData = async () => {
-    try {
-      const response = axios.get("http://localhost:4000/get-yt-vid");
-      response.then((result) => {
-        setArticlesData(result.data);
-      });
-    } catch (error) {
-      console.log("error during fetching data: ", error);
-    }
-  };
-
-  // add youtube videos in the database
-  function addYoutubeVideo() {
-    console.log(process.env.NEXT_PUBLIC_SERVER_URL);
-    try {
-      setIsSubmitting(true);
-      setTimeout(async () => {
-        const addVideoResponse = fetch(`http://localhost:4000/add-yt-vid`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: currentUser.uid,
-            title: dataToBeSend.title,
-            vid_id: youtubeId,
-          }),
-        });
-        setIsSubmitting(false);
-        setIsNewArticle(false);
-      }, 2000);
-
-      getYoutubeVideoData();
-    } catch (error) {
-      console.log("data not added due to: ", error);
-    }
-  }
-
-  const handleAddYoutubueVideo = () => {
-    addYoutubeVideo();
-  };
-  // get all the youtube videos from the data base
-
+  const { getAllVideos, videoStore } = useVideoStore();
   useEffect(() => {
-    getYoutubeVideoData();
-  }, [isNewArticle]);
-
-  useEffect(() => {
-    getId(dataToBeSend.youtubeLink);
-  }, [dataToBeSend.youtubeLink]);
-
+    getAllVideos();
+  }, []);
   return (
     <section
       className={` dark:bg-[# 121212] w-full px-12 py-12 relative min-h-screen gap-8`}
     >
-      {articlesData ? (
-        articlesData.map((data) => <Card data={data} key={data.id} />)
+      {videoStore ? (
+        videoStore.map((data) => <Card data={data} key={data.id} />)
       ) : (
         <ShimmerEffect />
       )}
       <Link
         className={`dark:bg-[#149eca] fixed right-10 bottom-10 p-4 rounded-full`}
         href={"/videos/addNewVideo"}
-        // onClick={() => setIsNewArticle(true)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -126,95 +39,6 @@ function AddNewArticles() {
           />
         </svg>
       </Link>
-
-      {/* {isNewArticle && (
-        <DialogueWrapper>
-          <section
-            className={`dark:bg-[#121212] flex flex-col  px-6 py-12 absolute rounded top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2`}
-          >
-            <button
-              className="absolute  right-5 top-5 bg-light p-1 rounded-full"
-              onClick={() => setIsNewArticle(false)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-4 h-4"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18 18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-            <div className="flex flex-col gap-8">
-              <div className="flex flex-col">
-                <label htmlFor="title" className={`dark:text-gray-300`}>
-                  Enter title
-                </label>
-                <input
-                  id="title"
-                  type="text"
-                  value={dataToBeSend.title}
-                  onChange={handleTitleChange}
-                  className={`dark:bg-extraDark border border-gray-600 text-gray-200 "
-                 py-2 px-2 rounded-md`}
-                />
-              </div>
-              <div className="flex flex-col">
-                <label htmlFor="youtubeLink" className={`dark:text-gray-300`}>
-                  Enter a valid Youtube Vide Link
-                </label>
-                <input
-                  id="youtubeLink"
-                  type="url"
-                  value={dataToBeSend.youtubeLink}
-                  onChange={handleYoutubeLinkChange}
-                  className={`dark:bg-extraDark border border-gray-600 text-gray-200 py-2 px-2 rounded-md`}
-                />
-              </div>
-              <div className="flex flex-col">
-                <label htmlFor="tags" className={`dark:text-gray-300`}>
-                  Enter a valid Tags
-                </label>
-                <input
-                  id="tags"
-                  type="url"
-                  value={dataToBeSend.tags}
-                  onChange={handleTagsChange}
-                  className={`dark:bg-extraDark border border-gray-600 text-gray-200"
-                 py-2 px-2 rounded-md`}
-                />
-              </div>
-            </div>
-            <button
-              onClick={handleAddYoutubueVideo}
-              disabled={isSubmitting}
-              className={`dark:bg-light border border-black flex gap-4 justify-center py-2 rounded-full my-6`}
-            >
-              <span>{isSubmitting ? "Uploading..." : "Upload"}</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
-                />
-              </svg>
-            </button>
-          </section>
-        </DialogueWrapper>
-      )} */}
     </section>
   );
 }
