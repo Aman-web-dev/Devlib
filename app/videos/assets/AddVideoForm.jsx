@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { useRef } from "react";
 import { AuthContext } from "@/utils (Context)/authContext";
 import { toast } from "react-toastify";
+import { useVideoStore } from "@/utils (Context)/zustStores";
 
 const initialValues = { title: "", url: "", comment: "", review: "", tags: "" };
 
@@ -11,6 +12,11 @@ const AddVideoForm = () => {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const formRef = useRef();
   const { currentUser } = useContext(AuthContext);
+  // const { getAllVideos, videoStore } = useVideoStore();
+
+  // useEffect(() => {
+  //   getAllVideos();
+  // }, []);
 
   function extractId(url) {
     return new Promise((resolve, reject) => {
@@ -51,6 +57,26 @@ const AddVideoForm = () => {
   //        console.log("error during fetching data: ", error);
   //      }
   //    };
+
+  // const videoData = async () => {
+  //   try {
+  //     const videoResponse = await fetch("http://localhost:4000/get-yt-vid", {
+  //       method: "GET",
+  //     });
+  //     if (videoResponse.ok) {
+  //       const result = await videoResponse.json();
+  //       return result;
+  //     } else {
+  //       return {
+  //         error: "Unable to fulfill your request. Please try again later.",
+  //       };
+  //     }
+  //   } catch (error) {
+  //     console.log("error during fetching data: ", error);
+  //   }
+  // };
+
+  // console.log(videoData());
 
   const handleFormSubmission = async (values, { setSubmitting, resetForm }) => {
     try {
