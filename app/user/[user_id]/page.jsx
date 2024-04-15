@@ -16,7 +16,7 @@ function Page() {
   // async function getUserPostCount() {
   //   try {
   //     const response = await fetch(
-  //       "http://localhost:4000/api/user/post-count",
+  //       `${process.env.NEXT_PUBLIC_SERVER_URL}api/user/post-count",
   //       {
   //         method: "POST",
   //         headers: {

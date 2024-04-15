@@ -14,7 +14,7 @@ function PersonalDetailsUpdate() {
   const getData = () => {
     getDataFromDatabase(
       { user_id: currentUser.uid },
-      "http://localhost:4000/getUserDataFromDatabase",
+      `${process.env.NEXT_PUBLIC_SERVER_URL}getUserDataFromDatabase`,
       (response) => {
         console.log(response.data);
         setUserState(response.data);

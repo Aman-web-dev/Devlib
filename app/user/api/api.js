@@ -17,6 +17,7 @@ export const fetchPostData = async (url, obj) => {
 };
 
 export const getApiData = async (url) => {
+  console.log("heres The URL check ",url)
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -32,7 +33,7 @@ export const getApiData = async (url) => {
 
 export const getUserPostCount = async (userIdObj, callback) => {
   try {
-    const count = await fetchPostData("http://localhost:4000/api/user/post-count", userIdObj);
+    const count = await fetchPostData(`${process.env.NEXT_PUBLIC_SERVER_URL}api/user/post-count`, userIdObj);
     callback(count);
   } catch (error) {
     console.error(error);
@@ -43,7 +44,7 @@ export const getUserPostCount = async (userIdObj, callback) => {
 
 export const followUser = async (followedUserObj, callback) => {
   try {
-    const response = await fetchPostData("http://localhost:4000/api/follow", followedUserObj);
+    const response = await fetchPostData(`${process.env.NEXT_PUBLIC_SERVER_URL}api/user/on_follow`, followedUserObj);
     callback(response);
   } catch (error) {
     console.error(error);
@@ -53,7 +54,7 @@ export const followUser = async (followedUserObj, callback) => {
 
 export const checkUserFollowed = async (user_id) => {
   try {
-    const response = await getApiData(`http://localhost:4000/api/user?user_id=${user_id}`);
+    const response = await getApiData(`${process.env.NEXT_PUBLIC_SERVER_URL}api/user/check_follow/user?user_id=${user_id}`);
     return response;
   } catch (error) {
     console.error(error.message);

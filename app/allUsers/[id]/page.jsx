@@ -9,7 +9,7 @@ function Page() {
 
   async function getUserData(userId) {
     try {
-        const response = await axios.get("http://localhost:4000/get-userDeta",
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}get-userDeta`,
         {params:{
           user_id:userId
         }});

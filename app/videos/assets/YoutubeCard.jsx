@@ -38,7 +38,7 @@ function Card({ data }) {
         setLikesCount(likesCount + 1);
         addVideoIdInLikeStore(data.vid_id);
         const incrementLikeCountPromise = fetch(
-          "http://localhost:4000/api/incrementLikeCount",
+          `${process.env.NEXT_PUBLIC_SERVER_URL}incrementLikeCount`,
           {
             method: "POST",
             headers: {
@@ -47,7 +47,7 @@ function Card({ data }) {
             body: JSON.stringify({ vid_id: data.vid_id }),
           }
         );
-        const addUserLikePromise = fetch("http://localhost:4000/api/addLike", {
+        const addUserLikePromise = fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/addLike`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -67,7 +67,7 @@ function Card({ data }) {
         setLikesCount(likesCount - 1);
         removeVideoIdFromZustandStore(data.vid_id);
         const removeLikeVideoPromise = fetch(
-          "http://localhost:4000/api/removeUserLikedVideo",
+          `${process.env.NEXT_PUBLIC_SERVER_URL}api/removeUserLikedVideo`,
           {
             method: "POST",
             headers: {
@@ -80,7 +80,7 @@ function Card({ data }) {
           }
         );
         const decrementLikeCountPromise = fetch(
-          "http://localhost:4000/api/decrementLikeCount",
+          `${process.env.NEXT_PUBLIC_SERVER_URL}api/decrementLikeCount`,
           {
             method: "POST",
             headers: {
@@ -129,7 +129,7 @@ function Card({ data }) {
   async function getAllSavedVideosData() {
     try {
       const savedVideosResponse = await fetch(
-        "http://localhost:4000/api/getAllSavedVideos",
+        `${process.env.NEXT_PUBLIC_SERVER_URL}api/getAllSavedVideos`,
         {
           method: "POST",
           headers: {
@@ -151,7 +151,7 @@ function Card({ data }) {
     e.stopPropagation();
     try {
       const ifVideoIdExistsResponse = await fetch(
-        "http://localhost:4000/api/checkIfVideoIdExists",
+        `${process.env.NEXT_PUBLIC_SERVER_URL}api/checkIfVideoIdExists`,
         {
           method: "POST",
           headers: {
@@ -168,7 +168,7 @@ function Card({ data }) {
 
       if (response.data < 1) {
         const addVideoInSavedList = await fetch(
-          "http://localhost:4000/api/updateSavedPost",
+          `${process.env.NEXT_PUBLIC_SERVER_URL}api/updateSavedPost`,
           {
             method: "POST",
             headers: {
@@ -185,7 +185,7 @@ function Card({ data }) {
         }
       } else {
         const removeVideoFromSavedList = await fetch(
-          "http://localhost:4000/api/removeVideoFromSavedVideos",
+          `${process.env.NEXT_PUBLIC_SERVER_URL}api/removeVideoFromSavedVideos`,
           {
             method: "POST",
             headers: {
