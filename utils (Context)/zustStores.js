@@ -20,11 +20,10 @@ async function getAllLikedVideoByUser(userId) {
     console.log("error in getting all likes: ", error);
   }
 }
-// http://localhost:4000/get-yt-vid
 const videoData = async () => {
   try {
     const videoResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/get-yt-vid`,
+      `https://dev-lib-server.vercel.app/get-yt-vid`,
       {
         method: "GET",
       }
