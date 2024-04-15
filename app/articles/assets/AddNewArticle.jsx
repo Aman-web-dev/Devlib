@@ -32,22 +32,26 @@ const AddNewArticles = () => {
 
   const handleFormSubmission = async (values, { setSubmitting, resetForm }) => {
     try {
-      console.log("handle form submission");
-      const response = await fetch(serverUrl + "/api/addNewArticle", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: currentUser.uid,
-          title: values.title,
-          url: values.url,
-          comment: values.comment,
-          review: values.review,
-        }),
-      });
-      // console.log(response);
+      console.log("link: ", process.env.NEXT_PUBLIC_SERVER_URL);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}api/addNewArticle`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: currentUser.uid,
+            title: values.title,
+            url: values.url,
+            comment: values.comment,
+            review: values.review,
+          }),
+        }
+      );
+      console.log("response: ", response);
       if (response.ok) {
+        console.log("handle form submission");
         toast.dark("Article is submitted for review.");
         resetForm();
       }

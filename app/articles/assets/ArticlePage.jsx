@@ -15,7 +15,7 @@ export default function ArticlePage() {
   const getAllArticles = async () => {
     try {
       const responseGetAllArticles = await fetch(
-        serverUrl + "/api/getArticles",
+        `${process.env.NEXT_PUBLIC_SERVER_URL}api/getArticles`,
         {
           method: "GET",
         }

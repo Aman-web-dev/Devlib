@@ -23,9 +23,12 @@ async function getAllLikedVideoByUser(userId) {
 // http://localhost:4000/get-yt-vid
 const videoData = async () => {
   try {
-    const videoResponse = await fetch("http://localhost:4000/get-yt-vid", {
-      method: "GET",
-    });
+    const videoResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}get-yt-vid`,
+      {
+        method: "GET",
+      }
+    );
     if (videoResponse.ok) {
       const result = await videoResponse.json();
       return result;

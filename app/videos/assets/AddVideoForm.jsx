@@ -47,37 +47,6 @@ const AddVideoForm = () => {
     // review: Yup.string().required("Please select one"),
   });
 
-  //    const getYoutubeVideoData = async () => {
-  //      try {
-  //        const response = axios.get("http://localhost:4000/get-yt-vid");
-  //        response.then((result) => {
-  //          setArticlesData(result.data);
-  //        });
-  //      } catch (error) {
-  //        console.log("error during fetching data: ", error);
-  //      }
-  //    };
-
-  // const videoData = async () => {
-  //   try {
-  //     const videoResponse = await fetch("http://localhost:4000/get-yt-vid", {
-  //       method: "GET",
-  //     });
-  //     if (videoResponse.ok) {
-  //       const result = await videoResponse.json();
-  //       return result;
-  //     } else {
-  //       return {
-  //         error: "Unable to fulfill your request. Please try again later.",
-  //       };
-  //     }
-  //   } catch (error) {
-  //     console.log("error during fetching data: ", error);
-  //   }
-  // };
-
-  // console.log(videoData());
-
   const handleFormSubmission = async (values, { setSubmitting, resetForm }) => {
     try {
       setIsFormSubmitting(true);
@@ -87,7 +56,7 @@ const AddVideoForm = () => {
         try {
           setTimeout(async () => {
             const addVideoResponse = await fetch(
-              `http://localhost:4000/add-yt-vid`,
+              `${process.env.NEXT_PUBLIC_SERVER_URL}add-yt-vid`,
               {
                 method: "POST",
                 headers: {
