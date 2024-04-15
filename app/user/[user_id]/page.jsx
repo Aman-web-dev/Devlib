@@ -2,31 +2,44 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/utils (Context)/authContext";
+import { getUserPostCount } from "../api/api";
+import FollowButton from "../assets/FollowButton";
+import { useParams } from "next/navigation";
 
 function Page() {
   const { currentUser } = useContext(AuthContext);
   const [userPostCount, setUserPostCount] = useState(0);
+  const params = useParams()
+  console.log("params",params)
 
-  async function getUserPostCount() {
-    try {
-      const response = await fetch(
-        "http://localhost:4000/api/user/post-count",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: currentUser.uid }),
-        }
-      );
-      const jsonResponse = await response.json();
-      // console.log(jsonResponse.data);
-      setUserPostCount(jsonResponse.data);
-    } catch (error) {
-      console.log("error while getting post count: ", error);
-    }
-  }
-  useEffect(() => getUserPostCount, []);
+
+  // async function getUserPostCount() {
+  //   try {
+  //     const response = await fetch(
+  //       "http://localhost:4000/api/user/post-count",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ userId: currentUser.uid }),
+  //       }
+  //     );
+  //     const jsonResponse = await response.json();
+     
+  //     setUserPostCount(jsonResponse.data);
+  //   } catch (error) {
+  //     console.log("error while getting post count: ", error);
+  //   }
+  // }
+
+const PostCount=()=>{
+getUserPostCount({user_id:currentUser.uid},(result)=>setUserPostCount(result))
+}
+
+useEffect(() => PostCount(), []);
+  
+  
   return (
     <div className="flex md:flex-row flex-col py-4">
       <div className="py-4 px-12">
@@ -39,6 +52,8 @@ function Page() {
           <span>{userPostCount} posts</span>
           <span>0 followers</span>
           <span>0 following</span>
+          <FollowButton followed_id={params.user_id}/>
+
         </div>
         <h2 className=" mt-4 ">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam,
