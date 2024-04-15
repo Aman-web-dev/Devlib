@@ -24,7 +24,7 @@ async function getAllLikedVideoByUser(userId) {
 const videoData = async () => {
   try {
     const videoResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}get-yt-vid`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/get-yt-vid`,
       {
         method: "GET",
       }
