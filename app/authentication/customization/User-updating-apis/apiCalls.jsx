@@ -29,7 +29,7 @@ export const getDataFromDatabase = async (object, url, callback) => {
 
 export const updateUserDataToDatabase = async (updatedUserObject,callback) => {
   console.log(updatedUserObject)
-  const result = await fetchPostData("http://localhost:4000/updateuser", {
+  const result = await fetchPostData(`${process.env.NEXT_PUBLIC_SERVER_URL}updateuser`, {
     user: updatedUserObject,
   });
   callback(result)
@@ -48,7 +48,7 @@ export const updateUserProfilePicture = async (user_id,img_link) => {
   }
   console.log("hehehehheehheheehheheheheh")
   console.log(obj)
-  const result = await fetchPostData("http://localhost:4000/update-profile-picture",obj);
+  const result = await fetchPostData(`${process.env.NEXT_PUBLIC_SERVER_URL}update-profile-picture`,obj);
   return result;
 };
 

@@ -18,7 +18,7 @@ const Profile = () => {
         "this is api call:",
         getDataFromDatabase(
           obj,
-          "http://localhost:4000/get-user-profilepicture",
+          `${process.env.NEXT_PUBLIC_SERVER_URL}get-user-profilepicture`,
           (response) => {
             if (response.data.profilepicture) {
               console.log("changing");

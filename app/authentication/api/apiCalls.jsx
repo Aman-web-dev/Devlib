@@ -33,7 +33,7 @@ export const saveUserDataToDatabase = async (userObj) => {
     socialmedialinks: {},
   };
 
-  const result = await fetchPostData("http://localhost:4000/adduser", {
+  const result = await fetchPostData(`${process.env.NEXT_PUBLIC_SERVER_URL}adduser`, {
     user: user,
   });
   return result;
@@ -42,14 +42,14 @@ export const saveUserDataToDatabase = async (userObj) => {
 //now i want to make a user video bucket as soon as he sign up in the devlib
 export const makeNewVideoBucket = async (uid) => {
   const result = await fetchPostData(
-    "http://localhost:4000/addUserVideoBucket",
+    `${process.env.NEXT_PUBLIC_SERVER_URL}addUserVideoBucket`,
     { uid: uid }
   );
   return result;
 };
 
 export const doesUserExistInDatabase = async (uid) => {
-  const result = await fetchPostData("http://localhost:4000/checkUserExist", {
+  const result = await fetchPostData(`${process.env.NEXT_PUBLIC_SERVER_URL}checkUserExist`, {
     user_id: uid,
   });
   return result;
