@@ -34,7 +34,7 @@ const AddNewArticles = () => {
     try {
       console.log("link: ", process.env.NEXT_PUBLIC_SERVER_URL);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}api/addNewArticle`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/addNewArticle`,
         {
           method: "POST",
           headers: {

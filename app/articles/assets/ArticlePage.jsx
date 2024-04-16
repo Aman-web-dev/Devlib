@@ -15,7 +15,7 @@ export default function ArticlePage() {
   const getAllArticles = async () => {
     try {
       const responseGetAllArticles = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}api/getArticles`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getArticles`,
         {
           method: "GET",
         }
@@ -31,7 +31,7 @@ export default function ArticlePage() {
       }
     } catch (error) {
       console.error("Error fetching articles:", error);
-      setErrors({ status: error.status, statusText: error.statusText });
+      setErrors({ status: error?.status, statusText: error?.statusText });
     }
   };
 
