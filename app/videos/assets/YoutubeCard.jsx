@@ -6,16 +6,20 @@ import { TbArrowBigDown } from "react-icons/tb";
 import { TbArrowBigUpFilled } from "react-icons/tb";
 import useLikeStore, { useSavedVideoStore } from "@/utils (Context)/zustStores";
 import FeedbackComponent from "./feedbackComponent";
+import { useRouter } from "next/navigation";
 
 function Card({ data }) {
   const [likesCount, setLikesCount] = useState(data?.likes_count);
-  const [savedVideos, setSavedVideos] = useState([]);
   const { currentUser } = useAuth();
   const { likeStore, toggleVideoId, getUserLikes } = useLikeStore();
-  const { savedVideoStore, getAllSavedVideosOfUser } = useSavedVideoStore();
+  const { savedVideoStore, getAllSavedVideosOfUser, toggleSavedVideos } =
+    useSavedVideoStore();
+  const router = useRouter();
 
   const likeStoreCopy = [...likeStore];
-  console.log("likeStore: ", likeStore);
+  const savedVideoStoreCopy = [...savedVideoStore];
+  // console.log("likeStore: ", likeStore);
+  // console.log("savedVideo: ", savedVideoStore);
   useEffect(() => {
     getUserLikes(currentUser?.uid);
   }, []);
@@ -32,6 +36,14 @@ function Card({ data }) {
     toggleVideoId(vid_id);
   }
 
+  function addVideoIdInSavedVideoStore(vid_id) {
+    toggleSavedVideos(vid_id);
+  }
+
+  function removeSavedVideoFromSavedVideoStore(vid_id) {
+    toggleSavedVideos(vid_id);
+  }
+
   async function handleLikeCount(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -41,11 +53,11 @@ function Card({ data }) {
   async function addLike() {
     try {
       if (!currentUser?.uid) {
-        alert("Login please");
+        router.push("/authentication");
       } else {
-        if (!likeStoreCopy.includes(data.vid_id)) {
+        if (!likeStoreCopy.includes(data?.unique_id)) {
           setLikesCount(likesCount + 1);
-          addVideoIdInLikeStore(data.vid_id);
+          addVideoIdInLikeStore(data?.unique_id);
           const incrementLikeCountPromise = fetch(
             "http://localhost:4000/api/incrementLikeCount",
             {
@@ -53,7 +65,7 @@ function Card({ data }) {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ vid_id: data.vid_id }),
+              body: JSON.stringify({ unique_id: data?.unique_id }),
             }
           );
           const addUserLikePromise = fetch(
@@ -65,7 +77,7 @@ function Card({ data }) {
               },
               body: JSON.stringify({
                 userId: currentUser.uid,
-                vid_id: data.vid_id,
+                vid_id: data?.unique_id,
               }),
             }
           );
@@ -80,7 +92,7 @@ function Card({ data }) {
           }
         } else {
           setLikesCount(likesCount - 1);
-          removeVideoIdFromZustandStore(data.vid_id);
+          removeVideoIdFromZustandStore(data?.unique_id);
           const removeLikeVideoPromise = fetch(
             "http://localhost:4000/api/removeUserLikedVideo",
             {
@@ -90,7 +102,7 @@ function Card({ data }) {
               },
               body: JSON.stringify({
                 userId: currentUser.uid,
-                vid_id: data.vid_id,
+                unique_id: data?.unique_id,
               }),
             }
           );
@@ -101,7 +113,7 @@ function Card({ data }) {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ vid_id: data.vid_id }),
+              body: JSON.stringify({ unique_id: data?.unique_id }),
             }
           );
 
@@ -125,23 +137,8 @@ function Card({ data }) {
     e.preventDefault();
     e.stopPropagation();
     try {
-      const ifVideoIdExistsResponse = await fetch(
-        "http://localhost:4000/api/checkIfVideoIdExists",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: currentUser.uid,
-            vid_id: data.vid_id,
-          }),
-        }
-      );
-      const response = await ifVideoIdExistsResponse.json();
-      // console.log("Check if video exists response:", response);
-
-      if (response.data < 1) {
+      if (!savedVideoStore.includes(data.vid_id)) {
+        addVideoIdInSavedVideoStore(data.vid_id);
         const addVideoInSavedList = await fetch(
           "http://localhost:4000/api/updateSavedPost",
           {
@@ -155,10 +152,11 @@ function Card({ data }) {
             }),
           }
         );
-        if (addVideoInSavedList.ok) {
-          setSavedVideos((prev) => [...prev, data.vid_id]);
+        if (!addVideoInSavedList.ok) {
+          removeSavedVideoFromSavedVideoStore(data.vid_id);
         }
       } else {
+        removeSavedVideoFromSavedVideoStore(data.vid_id);
         const removeVideoFromSavedList = await fetch(
           "http://localhost:4000/api/removeVideoFromSavedVideos",
           {
@@ -172,12 +170,8 @@ function Card({ data }) {
             }),
           }
         );
-        if (removeVideoFromSavedList.ok) {
-          const newSavedVideoList = savedVideos.filter(
-            (id) => id !== data.vid_id
-          );
-          // console.log(newSavedVideoList);
-          setSavedVideos(newSavedVideoList);
+        if (!removeVideoFromSavedList.ok) {
+          addVideoIdInSavedVideoStore(data.vid_id);
         }
       }
     } catch (error) {
@@ -207,7 +201,7 @@ function Card({ data }) {
               </div>
               <div className="flex gap-2 items-center bg-[#121212] w-fit px-1 m-2 border border-white rounded-full py-1 my-2 absolute bottom-0">
                 <span className="flex">
-                  {likeStoreCopy.includes(data.vid_id) ? (
+                  {likeStoreCopy.includes(data?.unique_id) ? (
                     <TbArrowBigUpFilled
                       className="w-6 h-6 cursor-pointer"
                       onClick={(e) => handleLikeCount(e)}
@@ -247,14 +241,14 @@ function Card({ data }) {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill={
-              savedVideos?.some((id) => id === data.vid_id)
+              savedVideoStoreCopy?.some((id) => id === data.vid_id)
                 ? "lightgray"
                 : "none"
             }
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="lightgray"
-            className="w-6 h-6"
+            className="w-6 h-6 cursor-pointer"
             onClick={(e) => addVideosToSavedList(e)}
           >
             <path

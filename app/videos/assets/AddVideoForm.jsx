@@ -46,7 +46,7 @@ const AddVideoForm = () => {
     tags: Yup.string().required("Tags are required"),
     // review: Yup.string().required("Please select one"),
   });
-
+  // ${process.env.NEXT_PUBLIC_SERVER_URL}
   const handleFormSubmission = async (values, { setSubmitting, resetForm }) => {
     try {
       setIsFormSubmitting(true);
@@ -56,7 +56,7 @@ const AddVideoForm = () => {
         try {
           setTimeout(async () => {
             const addVideoResponse = await fetch(
-              `${process.env.NEXT_PUBLIC_SERVER_URL}/add-yt-vid`,
+              `http://localhost:4000/add-yt-vid`,
               {
                 method: "POST",
                 headers: {

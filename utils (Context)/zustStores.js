@@ -8,7 +8,7 @@ async function getAllLikedVideoByUser(userId) {
       return [];
     } else if (userId) {
       const likedVideoResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllLikedVideos`,
+        `http://localhost:4000/api/getAllLikedVideos`,
         {
           method: "POST",
           headers: {
@@ -18,7 +18,7 @@ async function getAllLikedVideoByUser(userId) {
         }
       );
       const response = await likedVideoResponse.json();
-      console.log("all likes response: ", response);
+      // console.log("all likes response: ", response);
       return response?.data?.liked_videos;
     }
   } catch (error) {
@@ -28,14 +28,12 @@ async function getAllLikedVideoByUser(userId) {
 // https://dev-lib-server.vercel.app
 const videoData = async () => {
   try {
-    const videoResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/get-yt-vid`,
-      {
-        method: "GET",
-      }
-    );
+    const videoResponse = await fetch(`http://localhost:4000/get-yt-vid`, {
+      method: "GET",
+    });
     if (videoResponse.ok) {
       const result = await videoResponse.json();
+      // console.log("all videos: ", result);
       return result;
     } else {
       return {
@@ -50,17 +48,23 @@ const videoData = async () => {
 // get all saved videos of a user
 async function getAllSavedVideosData(userId) {
   try {
-    const savedVideosResponse = await fetch(
-      "http://localhost:4000/api/getAllSavedVideos",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: userId }),
-      }
-    );
-    const response = await savedVideosResponse.json();
+    if (!userId) {
+      return [];
+    } else {
+      const savedVideosResponse = await fetch(
+        "http://localhost:4000/api/getAllSavedVideos",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: userId }),
+        }
+      );
+      const response = await savedVideosResponse.json();
+      // console.log("response: ", response);
+      return response?.data;
+    }
   } catch (error) {
     console.error("error while fetching saved videos: ", error);
   }
@@ -100,6 +104,17 @@ export const useSavedVideoStore = create((set) => ({
   getAllSavedVideosOfUser: async (userId) => {
     const response = await getAllSavedVideosData(userId);
     set({ savedVideoStore: response });
+  },
+  toggleSavedVideos: (vid_id) => {
+    set((state) => {
+      if (state.savedVideoStore.includes(vid_id)) {
+        return {
+          savedVideoStore: state.savedVideoStore.filter((id) => id !== vid_id),
+        };
+      } else {
+        return { savedVideoStore: [...state.savedVideoStore, vid_id] };
+      }
+    });
   },
 }));
 
