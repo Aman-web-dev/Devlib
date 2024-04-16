@@ -4,7 +4,7 @@ import { useAuth } from "@/utils (Context)/authContext";
 import { TbArrowBigUp } from "react-icons/tb";
 import { TbArrowBigDown } from "react-icons/tb";
 import { TbArrowBigUpFilled } from "react-icons/tb";
-import useLikeStore from "@/utils (Context)/zustStores";
+import useLikeStore, { useSavedVideoStore } from "@/utils (Context)/zustStores";
 import FeedbackComponent from "./feedbackComponent";
 
 function Card({ data }) {
@@ -12,10 +12,16 @@ function Card({ data }) {
   const [savedVideos, setSavedVideos] = useState([]);
   const { currentUser } = useAuth();
   const { likeStore, toggleVideoId, getUserLikes } = useLikeStore();
-  const likeStoreCopy = likeStore !== undefined ? [...likeStore] : [];
+  const { savedVideoStore, getAllSavedVideosOfUser } = useSavedVideoStore();
+
+  const likeStoreCopy = [...likeStore];
+  console.log("likeStore: ", likeStore);
+  useEffect(() => {
+    getUserLikes(currentUser?.uid);
+  }, []);
 
   useEffect(() => {
-    getUserLikes(currentUser.uid);
+    getAllSavedVideosOfUser(currentUser?.uid);
   }, []);
 
   function removeVideoIdFromZustandStore(vid_id) {
@@ -34,115 +40,84 @@ function Card({ data }) {
 
   async function addLike() {
     try {
-      if (!likeStoreCopy.includes(data.vid_id)) {
-        setLikesCount(likesCount + 1);
-        addVideoIdInLikeStore(data.vid_id);
-        const incrementLikeCountPromise = fetch(
-          "http://localhost:4000/api/incrementLikeCount",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ vid_id: data.vid_id }),
-          }
-        );
-        const addUserLikePromise = fetch("http://localhost:4000/api/addLike", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: currentUser.uid,
-            vid_id: data.vid_id,
-          }),
-        });
-
-        const [incrementLikeCountResponse, addUserLikeResponse] =
-          await Promise.all([incrementLikeCountPromise, addUserLikePromise]);
-        if (!incrementLikeCountResponse.ok || !addUserLikeResponse.ok) {
-          setLikesCount(likesCount - 1);
-        }
+      if (!currentUser?.uid) {
+        alert("Login please");
       } else {
-        setLikesCount(likesCount - 1);
-        removeVideoIdFromZustandStore(data.vid_id);
-        const removeLikeVideoPromise = fetch(
-          "http://localhost:4000/api/removeUserLikedVideo",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userId: currentUser.uid,
-              vid_id: data.vid_id,
-            }),
-          }
-        );
-        const decrementLikeCountPromise = fetch(
-          "http://localhost:4000/api/decrementLikeCount",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ vid_id: data.vid_id }),
-          }
-        );
-
-        const [removeLikeVideoResponse, decrementLikeCountResponse] =
-          await Promise.all([
-            removeLikeVideoPromise,
-            decrementLikeCountPromise,
-          ]);
-        if (!removeLikeVideoResponse.ok || !decrementLikeCountResponse.ok) {
+        if (!likeStoreCopy.includes(data.vid_id)) {
           setLikesCount(likesCount + 1);
+          addVideoIdInLikeStore(data.vid_id);
+          const incrementLikeCountPromise = fetch(
+            "http://localhost:4000/api/incrementLikeCount",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ vid_id: data.vid_id }),
+            }
+          );
+          const addUserLikePromise = fetch(
+            "http://localhost:4000/api/addLike",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userId: currentUser.uid,
+                vid_id: data.vid_id,
+              }),
+            }
+          );
+
+          const [incrementLikeCountResponse, addUserLikeResponse] =
+            await Promise.all([incrementLikeCountPromise, addUserLikePromise]);
+          if (
+            !incrementLikeCountResponse.ok ||
+            (!addUserLikeResponse.ok && likesCount === 0)
+          ) {
+            setLikesCount(likesCount - 1);
+          }
+        } else {
+          setLikesCount(likesCount - 1);
+          removeVideoIdFromZustandStore(data.vid_id);
+          const removeLikeVideoPromise = fetch(
+            "http://localhost:4000/api/removeUserLikedVideo",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userId: currentUser.uid,
+                vid_id: data.vid_id,
+              }),
+            }
+          );
+          const decrementLikeCountPromise = fetch(
+            "http://localhost:4000/api/decrementLikeCount",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ vid_id: data.vid_id }),
+            }
+          );
+
+          const [removeLikeVideoResponse, decrementLikeCountResponse] =
+            await Promise.all([
+              removeLikeVideoPromise,
+              decrementLikeCountPromise,
+            ]);
+          if (!removeLikeVideoResponse.ok || !decrementLikeCountResponse.ok) {
+            setLikesCount(likesCount + 1);
+          }
         }
       }
     } catch (error) {
       console.log("error while checking for likes: ", error);
       throw error;
-    }
-  }
-
-  // async function getAllLikedVideoByUser() {
-  //   try {
-  //     const likedVideoResponse = await fetch(
-  //       "http://localhost:4000/api/getAllLikedVideos",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ userId: currentUser.uid }),
-  //       }
-  //     );
-  //     // console.log(likedVideoResponse);
-  //     const response = await likedVideoResponse.json();
-  //     console.log("response", response);
-  //     setUserLikes(response.data.liked_videos);
-  //   } catch (error) {
-  //     console.log("error in getting all likes: ", error);
-  //   }
-  // }
-
-  async function getAllSavedVideosData() {
-    try {
-      const savedVideosResponse = await fetch(
-        "http://localhost:4000/api/getAllSavedVideos",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: currentUser.uid }),
-        }
-      );
-      const response = await savedVideosResponse.json();
-      // console.log("saved-video data: ", response);
-      setSavedVideos(response.data);
-    } catch (error) {
-      console.log(error);
     }
   }
 

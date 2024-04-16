@@ -4,18 +4,23 @@ import { create } from "zustand";
 // function to get all liked videos by user;
 async function getAllLikedVideoByUser(userId) {
   try {
-    const likedVideoResponse = await fetch(
-      "http://localhost:4000/api/getAllLikedVideos",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: userId }),
-      }
-    );
-    const response = await likedVideoResponse.json();
-    return response?.data?.liked_videos;
+    if (!userId) {
+      return [];
+    } else if (userId) {
+      const likedVideoResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllLikedVideos`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: userId }),
+        }
+      );
+      const response = await likedVideoResponse.json();
+      console.log("all likes response: ", response);
+      return response?.data?.liked_videos;
+    }
   } catch (error) {
     console.log("error in getting all likes: ", error);
   }
@@ -42,7 +47,24 @@ const videoData = async () => {
   }
 };
 
-// console.log(videoData());
+// get all saved videos of a user
+async function getAllSavedVideosData(userId) {
+  try {
+    const savedVideosResponse = await fetch(
+      "http://localhost:4000/api/getAllSavedVideos",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: userId }),
+      }
+    );
+    const response = await savedVideosResponse.json();
+  } catch (error) {
+    console.error("error while fetching saved videos: ", error);
+  }
+}
 
 const useLikeStore = create((set) => ({
   likeStore: [],
@@ -70,6 +92,14 @@ export const useVideoStore = create((set) => ({
   getAllVideos: async () => {
     const response = await videoData();
     set({ videoStore: response });
+  },
+}));
+
+export const useSavedVideoStore = create((set) => ({
+  savedVideoStore: [],
+  getAllSavedVideosOfUser: async (userId) => {
+    const response = await getAllSavedVideosData(userId);
+    set({ savedVideoStore: response });
   },
 }));
 
