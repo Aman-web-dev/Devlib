@@ -23,9 +23,13 @@ async function getAllLikedVideoByUser(userId) {
 // https://dev-lib-server.vercel.app
 const videoData = async () => {
   let baseURl = process.env.NEXT_PUBLIC_SERVER_URL;
-  console.log("baseURl: ", baseURl);
+  let newBaseURL =
+    baseURl.charAt(baseURl.length - 1) === "/"
+      ? baseURl.slice(0, baseURl.length - 1)
+      : baseURl;
+  console.log("baseURl: ", newBaseURL);
   try {
-    const videoResponse = await fetch(`${baseURl}/get-yt-vid`, {
+    const videoResponse = await fetch(`${newBaseURL}/get-yt-vid`, {
       method: "GET",
     });
     if (videoResponse.ok) {
