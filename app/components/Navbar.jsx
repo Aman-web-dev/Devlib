@@ -226,8 +226,11 @@ const ProfileSection = (props) => {
   return (
     <>
       <div>
-        <img
-          src={props.ImgUrl}
+        <Image
+          src={props?.ImgUrl}
+          width={200}
+          height={200}
+          alt={props?.displayName}
           className="size-12 rounded-full cursor-pointer"
           onClick={() => setOptionVisible(!optionsVisible)}
         />

@@ -9,9 +9,8 @@ import { useParams } from "next/navigation";
 function Page() {
   const { currentUser } = useContext(AuthContext);
   const [userPostCount, setUserPostCount] = useState(0);
-  const params = useParams()
-  console.log("params",params)
-
+  const params = useParams();
+  // console.log("params",params)
 
   // async function getUserPostCount() {
   //   try {
@@ -26,20 +25,21 @@ function Page() {
   //       }
   //     );
   //     const jsonResponse = await response.json();
-     
+
   //     setUserPostCount(jsonResponse.data);
   //   } catch (error) {
   //     console.log("error while getting post count: ", error);
   //   }
   // }
 
-const PostCount=()=>{
-getUserPostCount({user_id:currentUser.uid},(result)=>setUserPostCount(result))
-}
+  const postCount = () => {
+    getUserPostCount({ user_id: currentUser.uid }, (result) =>
+      setUserPostCount(result)
+    );
+  };
 
-useEffect(() => PostCount(), []);
-  
-  
+  useEffect(() => postCount(), []);
+
   return (
     <div className="flex md:flex-row flex-col py-4">
       <div className="py-4 px-12">
@@ -52,8 +52,7 @@ useEffect(() => PostCount(), []);
           <span>{userPostCount} posts</span>
           <span>0 followers</span>
           <span>0 following</span>
-          <FollowButton followed_id={params.user_id}/>
-
+          <FollowButton followed_id={params.user_id} />
         </div>
         <h2 className=" mt-4 ">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam,

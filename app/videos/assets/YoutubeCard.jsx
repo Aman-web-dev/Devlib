@@ -11,6 +11,7 @@ import Image from "next/image";
 
 function Card({ data }) {
   const [likesCount, setLikesCount] = useState(data?.likes_count);
+  const [imgSrc, setImgSrc] = useState(null);
   const { currentUser } = useAuth();
   const { likeStore, toggleVideoId, getUserLikes } = useLikeStore();
   const { savedVideoStore, getAllSavedVideosOfUser, toggleSavedVideos } =
@@ -179,10 +180,7 @@ function Card({ data }) {
       console.log("Error while adding/removing video:", error);
     }
   }
-  console.log(
-    "image link: ",
-    youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"
-  );
+
   return (
     <div className="dark:bg-[#1d1e23] px-4 py-4 my-4 rounded-xl">
       <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit justify-between">
@@ -190,11 +188,19 @@ function Card({ data }) {
           <div className="flex-1">
             <div className="relative">
               <Image
-                width={1280}
-                height={720}
+                width={340}
+                height={200}
                 className="rounded-xl flex-1"
-                src={youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"}
-                key={data.youtubeVideoId}
+                src={
+                  imgSrc !== null
+                    ? imgSrc
+                    : youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"
+                }
+                key={data?.youtubeVideoId}
+                alt={data?.title}
+                onError={() => {
+                  setImgSrc(data?.alternative_img_link);
+                }}
               />
               <div className="bg-black w-12 h-12 rounded-full absolute m-2 top-0">
                 Pfp
