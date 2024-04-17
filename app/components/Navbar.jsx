@@ -111,41 +111,25 @@ const Navbar = () => {
               <ul
                 className={`font-medium flex flex-col md:flex-row p-4 md:p-0 md:items-center mt-4 border md:mt-0 md:border-0 gap-8`}
               >
-                {userLoggedIn ? (
+                {userLoggedIn && (
                   <li>
                     <SessionTimer />
                   </li>
-                ) : (
-                  ""
                 )}
 
-                <li
-                  className={`${
-                    pathName === "/"
-                      ? "dark:text-yellow-300 text-blue-500"
-                      : ""
-                  }`}
-                >
+                <li className={`${pathName === "/" && "text-blue-500"}`}>
                   <Link href="/" className="">
                     Home
                   </Link>
                 </li>
 
-                <li
-                  className={`${
-                    pathName === "/videos"
-                      ? "dark:text-yellow-300 text-blue-500"
-                      : ""
-                  }`}
-                >
+                <li className={`${pathName === "/videos" && " text-blue-500"}`}>
                   <Link href="/videos">Videos</Link>
                 </li>
 
                 <li
                   className={`${
-                    pathName === "/documentation"
-                      ? "dark:text-yellow-300 text-blue-500"
-                      : ""
+                    pathName === "/documentation" && " text-blue-500"
                   }`}
                 >
                   <Link href="/documentation" className="">
@@ -154,11 +138,7 @@ const Navbar = () => {
                 </li>
 
                 <li
-                  className={`${
-                    pathName === "/articles"
-                      ? "dark:text-yellow-300 text-blue-500"
-                      : ""
-                  }`}
+                  className={`${pathName === "/articles" && " text-blue-500"}`}
                 >
                   <Link href="/articles" className="">
                     Articles

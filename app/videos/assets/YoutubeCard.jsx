@@ -7,6 +7,7 @@ import { TbArrowBigUpFilled } from "react-icons/tb";
 import useLikeStore, { useSavedVideoStore } from "@/utils (Context)/zustStores";
 import FeedbackComponent from "./feedbackComponent";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 function Card({ data }) {
   const [likesCount, setLikesCount] = useState(data?.likes_count);
@@ -178,21 +179,20 @@ function Card({ data }) {
       console.log("Error while adding/removing video:", error);
     }
   }
+  console.log(
+    "image link: ",
+    youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"
+  );
   return (
     <div className="dark:bg-[#1d1e23] px-4 py-4 my-4 rounded-xl">
       <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit justify-between">
         <div className="flex w-full">
           <div className="flex-1">
             <div className="relative">
-              <img
-                className="rounded-xl flex-1 "
-                style={{
-                  backgroundImage: `url(${
-                    youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"
-                  })`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
+              <Image
+                width={1280}
+                height={720}
+                className="rounded-xl flex-1"
                 src={youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"}
                 key={data.youtubeVideoId}
               />
