@@ -141,7 +141,7 @@ function Card({ data }) {
       if (!savedVideoStore.includes(data.vid_id)) {
         addVideoIdInSavedVideoStore(data.vid_id);
         const addVideoInSavedList = await fetch(
-          "http://localhost:4000/api/updateSavedPost",
+          `${process.env.NEXT_PUBLIC_SERVER_URL}api/updateSavedPost`,
           {
             method: "POST",
             headers: {
@@ -159,7 +159,7 @@ function Card({ data }) {
       } else {
         removeSavedVideoFromSavedVideoStore(data.vid_id);
         const removeVideoFromSavedList = await fetch(
-          "http://localhost:4000/api/removeVideoFromSavedVideos",
+          `${process.env.NEXT_PUBLIC_SERVER_URL}api/removeVideoFromSavedVideos`,
           {
             method: "POST",
             headers: {
