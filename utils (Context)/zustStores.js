@@ -33,8 +33,8 @@ const videoData = async () => {
     });
     if (videoResponse.ok) {
       const result = await videoResponse.json();
-      // console.log("all videos: ", result);
-      return result;
+
+      return result?.data;
     } else {
       return {
         error: "Unable to fulfill your request. Please try again later.",

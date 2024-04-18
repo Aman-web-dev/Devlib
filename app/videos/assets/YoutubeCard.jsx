@@ -70,6 +70,7 @@ function Card({ data }) {
               body: JSON.stringify({ unique_id: data?.unique_id }),
             }
           );
+
           const addUserLikePromise = fetch(
             "http://localhost:4000/api/addLike",
             {

@@ -73,7 +73,8 @@ function Youtube({ link }) {
             </div>
           </div>
         </div>
-        {!allComments ? (
+        <hr className="mb-12" />
+        {allComments === null || allComments?.length === 0 ? (
           <div>No comments</div>
         ) : (
           allComments.map((data) => {

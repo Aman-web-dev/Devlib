@@ -13,7 +13,7 @@ function CommentComponent({ data }) {
         />
       </div>
       <div>
-        <span>{data?.name}</span>
+        <span className="font-bold">{data?.name}</span>
         <p>{data?.comment}</p>
       </div>
     </div>
