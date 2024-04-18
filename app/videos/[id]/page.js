@@ -6,8 +6,8 @@ export default function Page() {
   const { id } = useParams();
   console.log(id);
   return (
-    <div>
+    <section className="video-container min-h-screen">
       <Youtube link={id} />
-    </div>
+    </section>
   );
 }

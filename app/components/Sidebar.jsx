@@ -10,7 +10,7 @@ import Image from "next/image";
 
 function Sidebar(props) {
   const { currentUser } = useAuth();
-  // console.log(currentUser);
+  console.log(currentUser);
 
   const handleSignOut = () => {
     doSignOut();
