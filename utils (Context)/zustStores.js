@@ -34,10 +34,10 @@ const videoData = async () => {
     if (videoResponse.ok) {
       const result = await videoResponse.json();
 
-      return result?.data;
+      return !result?.data ? [] : result?.data;
     } else {
       return {
-        error: "Unable to fulfill your request. Please try again later.",
+        error: "Unable to fetch videos. Please try again later.",
       };
     }
   } catch (error) {
