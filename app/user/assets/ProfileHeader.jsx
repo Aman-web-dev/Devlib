@@ -38,9 +38,7 @@ const ProfileHeader = () => {
 
         <div className="flex gap-4 items-center">
           {/* <span>{userPostCount} posts</span> */}{" "}
-          <span
-            className="cursor-pointer hover:text-yellow-300 font-bold flex flex-col items-center"
-          >
+          <span className="cursor-pointer hover:text-yellow-300 font-bold flex flex-col items-center">
             <p>0</p>
             Posts
           </span>
@@ -74,30 +72,41 @@ const ProfileHeader = () => {
           id="social-media-link-handlers"
           className="my-4 flex flex-col gap-4 mt-20"
         >
-          <section className="flex flex-row items-center gap-2">
-            <FaLinkedin size={25} />
-            <p className="font-bold  text-sm">www.fbasisabajsfbhas.com</p>
-         
-          </section>
+          <a href="https://www.fbasisabajsfbhas.com" target="_blank">
+            <section className="flex flex-row items-center gap-2">
+              <FaLinkedin size={25} />
+              <p className="font-bold  text-sm hover:text-blue-500">
+                www.fbasisabajsfbhas.com
+              </p>
+            </section>
+          </a>
 
-          <section className="flex flex-row items-center gap-2">
-            <FaFacebook size={25} />
-            <p className="font-bold  text-sm">www.fbasisabajsfbhas.com</p>
-          </section>
+          <a href="https://www.fbasisabajsfbhas.com" target="_blank">
+            <section className="flex flex-row items-center gap-2">
+              <FaFacebook size={25} />
+              <p className="font-bold  text-sm hover:text-blue-500">
+                www.fbasisabajsfbhas.com
+              </p>
+            </section>
+          </a>
 
-          <section className="flex flex-row items-center h-10 gap-2">
-            <FaDiscord size={25} />
-            <a href="www.fbasisabajsfbhas.com" className="">
-            <p className="font-bold  text-sm">www.fbasisabajsfbhas.com</p>
+          <a href="https://www.fbasisabajsfbhas.com" className="" target="_blank">
+            <section className="flex flex-row items-center  gap-2">
+              <FaDiscord size={25} />
+              <p className="font-bold  text-sm hover:text-blue-500">
+                www.fbasisabajsfbhas.com
+              </p>
+            </section>
+          </a>
 
-            </a>
-          </section>
-
-          <section className="flex flex-row items-center gap-2">
-            <CgWebsite size={25} />
-            <p className="font-bold  text-sm">www.fbasisabajsfbhas.com</p>
-
-          </section>
+          <a href="https://www.fbasisabajsfbhas.com" target="_blank">
+            <section className="flex flex-row items-center gap-2">
+              <CgWebsite size={25} />
+              <p className="font-bold  text-sm hover:text-blue-500">
+                www.fbasisabajsfbhas.com
+              </p>
+            </section>
+          </a>
         </div>
       </div>
     </div>
