@@ -2,3 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+
+ /* Style the track of the scrollbar */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 50px;
+    background-color: #374151;
+  }
+  
+  /* Style the scrollbar itself */
+  ::-webkit-scrollbar {
+    width: 12px;
+    background-color: #374151;
+  }
+  
+  /* Style the thumb of the scrollbar */
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #121212;
+  }
+  

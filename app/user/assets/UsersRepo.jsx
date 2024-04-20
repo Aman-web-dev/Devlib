@@ -1,5 +1,5 @@
 
-function Repo() {
+function UserRepo() {
   return (
     <div>
          <div
@@ -8,7 +8,7 @@ function Repo() {
       >
         <section className="flex gap-2 my-2">
           {/* <FileIcon Height={20} Width={20} /> */}
-          <h1 className="text-green-400">Repo</h1>
+          <h1 className="text-green-400">UserRepo</h1>
         </section>
         <p className="text-sm">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, sed
@@ -27,4 +27,4 @@ function Repo() {
   )
 }
 
-export default Repo
+export default UserRepo

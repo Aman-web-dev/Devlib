@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import SearchResults from "@/app/components/search/searchResults";
-import DialogueWrapper from "../dialogueWrapper";
+import DialogueWrapper from "../../assets/dialogueWrapper";
 import axios from "axios";
 
 
