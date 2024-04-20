@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import SavedIcon from "../assets/SavedIcon";
 
 import Link from "next/link";
+import Image from "next/image";
 
 function Sidebar(props) {
   const { currentUser } = useAuth();
@@ -16,7 +17,7 @@ function Sidebar(props) {
     redirect("/");
   };
 
-  return(
+  return (
     <div className="bg-blue-400">
       <button
         data-drawer-target="cta-button-sidebar"
@@ -44,7 +45,7 @@ function Sidebar(props) {
         className="fixed  top-0 right-0 left-0 bottom-0 bg-gray-200 bg-opacity-50"
         onClick={() => props.handleScreenClick()}
       />
-    
+
       <aside
         id="cta-button-sidebar"
         className="fixed top-0 right-0 rounded-xl z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
@@ -52,15 +53,17 @@ function Sidebar(props) {
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-[#121212]">
           <ul className="space-y-2 font-medium">
-            <li>
+            <li onClick={(e) => props.handleLinkClick(e)}>
               <Link
                 href={`/user/${currentUser.uid}`}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
-                <img
+                <Image
+                  width={200}
+                  height={200}
                   className="w-9 h-9 rounded-full"
-                  src={currentUser.photoURL}
-                  alt={currentUser.displayName}
+                  src={currentUser?.photoURL}
+                  alt={currentUser?.displayName}
                 />
 
                 <span className="ms-3">{currentUser.displayName}</span>

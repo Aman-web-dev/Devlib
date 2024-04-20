@@ -3,15 +3,14 @@ import React from "react";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Provider from "./provider";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
 });
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
-import { ThemeProvider } from "next-themes";
 export const metadata = {
   title: "Devlib",
   description: "A Library For Developers",

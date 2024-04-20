@@ -7,9 +7,11 @@ import { TbArrowBigUpFilled } from "react-icons/tb";
 import useLikeStore, { useSavedVideoStore } from "@/utils (Context)/zustStores";
 import FeedbackComponent from "./feedbackComponent";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 function Card({ data }) {
   const [likesCount, setLikesCount] = useState(data?.likes_count);
+  const [imgSrc, setImgSrc] = useState(null);
   const { currentUser } = useAuth();
   const { likeStore, toggleVideoId, getUserLikes } = useLikeStore();
   const { savedVideoStore, getAllSavedVideosOfUser, toggleSavedVideos } =
@@ -68,6 +70,7 @@ function Card({ data }) {
               body: JSON.stringify({ unique_id: data?.unique_id }),
             }
           );
+
           const addUserLikePromise = fetch(
             "http://localhost:4000/api/addLike",
             {
@@ -178,23 +181,27 @@ function Card({ data }) {
       console.log("Error while adding/removing video:", error);
     }
   }
+
   return (
     <div className="dark:bg-[#1d1e23] px-4 py-4 my-4 rounded-xl">
       <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit justify-between">
         <div className="flex w-full">
           <div className="flex-1">
             <div className="relative">
-              <img
-                className="rounded-xl flex-1 "
-                style={{
-                  backgroundImage: `url(${
-                    youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"
-                  })`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
+              <Image
+                width={340}
+                height={200}
+                className="rounded-xl flex-1"
+                src={
+                  imgSrc !== null
+                    ? imgSrc
+                    : youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"
+                }
+                key={data?.youtubeVideoId}
+                alt={data?.title}
+                onError={() => {
+                  setImgSrc(data?.alternative_img_link);
                 }}
-                src={youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"}
-                key={data.youtubeVideoId}
               />
               <div className="bg-black w-12 h-12 rounded-full absolute m-2 top-0">
                 Pfp

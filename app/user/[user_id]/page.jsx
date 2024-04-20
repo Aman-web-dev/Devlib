@@ -11,19 +11,37 @@ import Repo from "../assets/Repo";
 function Page() {
   const { currentUser } = useContext(AuthContext);
   const [userPostCount, setUserPostCount] = useState(0);
-  const params = useParams()
-  console.log("params",params)
+  const params = useParams();
+  // console.log("params",params)
 
+  // async function getUserPostCount() {
+  //   try {
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_SERVER_URL}api/user/post-count",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ userId: currentUser.uid }),
+  //       }
+  //     );
+  //     const jsonResponse = await response.json();
 
+  //     setUserPostCount(jsonResponse.data);
+  //   } catch (error) {
+  //     console.log("error while getting post count: ", error);
+  //   }
+  // }
 
+  const postCount = () => {
+    getUserPostCount({ user_id: currentUser.uid }, (result) =>
+      setUserPostCount(result)
+    );
+  };
 
-const PostCount=()=>{
-getUserPostCount({user_id:currentUser.uid},(result)=>setUserPostCount(result))
-}
+  useEffect(() => postCount(), []);
 
-useEffect(() => PostCount(), []);
-  
-  
   return (
     <div className="flex md:flex-row flex-col py-4">
       <div className="py-4 px-12">
@@ -36,8 +54,7 @@ useEffect(() => PostCount(), []);
           <span>{userPostCount} posts</span>
           <span>0 followers</span>
           <span>0 following</span>
-          <FollowButton followed_id={params.user_id}/>
-
+          <FollowButton followed_id={params.user_id} />
         </div>
         <h2 className=" mt-4 ">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam,

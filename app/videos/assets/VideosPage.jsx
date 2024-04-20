@@ -16,7 +16,11 @@ function AddNewArticles() {
       className={` dark:bg-[#121212] w-full px-12 py-12 relative min-h-screen gap-8`}
     >
       {videoStore?.length !== 0 ? (
-        videoStore?.map((data) => <Card data={data} key={data.id} />)
+        videoStore?.map((data) => (
+          <Link href={`videos/${data?.vid_id}`} key={data?.id}>
+            <Card data={data} />
+          </Link>
+        ))
       ) : (
         <ShimmerEffect />
       )}
