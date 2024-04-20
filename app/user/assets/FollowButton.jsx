@@ -41,13 +41,13 @@ function FollowButton({ followed_id }) {
     }
   };
 
-  if (currentUser.uid == followed_id) {
-    return;
-  }
-
   useEffect(() => {
     isUserFollowed();
   }, []);
+
+  if (currentUser.uid == followed_id) {
+    return;
+  }
 
   return (
     <div class="flex flex-wrap justify-center gap-6">
