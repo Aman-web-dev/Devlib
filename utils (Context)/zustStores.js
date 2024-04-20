@@ -19,7 +19,7 @@ async function getAllLikedVideoByUser(userId) {
       );
       const response = await likedVideoResponse.json();
       // console.log("all likes response: ", response);
-      return response?.data?.liked_videos;
+      return !response?.data?.liked_videos ? [] : response?.data?.liked_videos;
     }
   } catch (error) {
     console.log("error in getting all likes: ", error);
@@ -66,7 +66,7 @@ async function getAllSavedVideosData(userId) {
       );
       const response = await savedVideosResponse.json();
       // console.log("response: ", response);
-      return response?.data;
+      return !response?.data ? [] : response?.data;
     }
   } catch (error) {
     console.error("error while fetching saved videos: ", error);
@@ -89,26 +89,7 @@ const getTotalLikesAndDislikes = async () => {
   }
 };
 
-export const useLikeAndDislikeCount = create((set) => ({
-  likeAndDislikeCount: [],
-  getCount: async () => {
-    const response = await getTotalLikesAndDislikes();
-    set({ likeAndDislikeCount: response });
-  },
-  toggleLikeCount: (currentLikeCount, vid_id) => {
-    set((state) => {
-      const newData = state.likeAndDislikeCount.map((data) => {
-        if (data.vid_id === vid_id) {
-          return { ...data, likecount: currentLikeCount === 0 ? 1 : 0 };
-        } else {
-          return data;
-        }
-      });
-      return { likeAndDislikeCount: newData };
-    });
-  },
-}));
-
+// all stores
 const useLikeStore = create((set) => ({
   likeStore: [],
   getUserLikes: async (userId) => {
@@ -126,6 +107,31 @@ const useLikeStore = create((set) => ({
           likeStore: [...state.likeStore, vid_id],
         };
       }
+    });
+  },
+}));
+
+export const useLikeAndDislikeCount = create((set) => ({
+  likeAndDislikeCount: [],
+  getCount: async () => {
+    const response = await getTotalLikesAndDislikes();
+    set({ likeAndDislikeCount: response });
+  },
+  toggleLikeCount: (unique_id) => {
+    set((state) => {
+      // console.log("vid_id from zuststore: ", vid_id);
+      const isLiked = useLikeStore.getState().likeStore.includes(unique_id);
+      console.log("isLiked: ", isLiked);
+      const newData = state.likeAndDislikeCount.map((data) => {
+        if (data.unique_id === unique_id) {
+          return {
+            ...data,
+            likecount: isLiked ? data.likecount - 1 : data.likecount + 1,
+          };
+        }
+        return data;
+      });
+      return { likeAndDislikeCount: newData };
     });
   },
 }));

@@ -66,7 +66,7 @@ function Card({ data }) {
         router.push("/authentication");
       } else {
         if (!likeStoreCopy.includes(data?.unique_id)) {
-          toggleLikeCount(likecount, data?.vid_id);
+          toggleLikeCount(data?.unique_id);
           addVideoIdInLikeStore(data?.unique_id);
           const incrementLikeCountPromise = fetch(
             "http://localhost:4000/api/incrementLikeCount",
@@ -87,23 +87,20 @@ function Card({ data }) {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                userId: currentUser.uid,
+                userId: currentUser?.uid,
                 vid_id: data?.unique_id,
               }),
             }
           );
-
+          console.log("add-user-like-promise: ", addUserLikePromise);
           const [incrementLikeCountResponse, addUserLikeResponse] =
             await Promise.all([incrementLikeCountPromise, addUserLikePromise]);
-          if (
-            !incrementLikeCountResponse.ok ||
-            (!addUserLikeResponse.ok && likecount === 0)
-          ) {
+          if (!incrementLikeCountResponse.ok || !addUserLikeResponse.ok) {
             console.log("making like zero again");
-            toggleLikeCount(1, data?.vid_id);
+            toggleLikeCount(data?.unique_id);
           }
         } else {
-          setLikesCount(likesCount - 1);
+          toggleLikeCount(data?.unique_id);
           removeVideoIdFromZustandStore(data?.unique_id);
           const removeLikeVideoPromise = fetch(
             "http://localhost:4000/api/removeUserLikedVideo",
@@ -135,7 +132,8 @@ function Card({ data }) {
               decrementLikeCountPromise,
             ]);
           if (!removeLikeVideoResponse.ok || !decrementLikeCountResponse.ok) {
-            setLikesCount(likesCount + 1);
+            console.log("making like one again");
+            toggleLikeCount(data?.unique_id);
           }
         }
       }
@@ -189,13 +187,6 @@ function Card({ data }) {
     } catch (error) {
       console.log("Error while adding/removing video:", error);
     }
-  }
-
-  function incrementLikeCountFunction(currentLikeCount, vid_id, e) {
-    e.preventDefault();
-    e.stopPropagation();
-    toggleLikeCount(currentLikeCount, vid_id);
-    console.log("clicked");
   }
 
   return (
