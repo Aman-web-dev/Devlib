@@ -43,11 +43,10 @@ function FollowButton({ followed_id }) {
 
   useEffect(() => {
     isUserFollowed();
-  
   }, []);
-  
-  if(currentUser.uid==followed_id){
-    return 
+
+  if (currentUser.uid == followed_id) {
+    return;
   }
 
   return (

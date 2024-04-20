@@ -4,14 +4,17 @@ import { useEffect } from "react";
 import ShimmerEffect from "@/app/components/ShimmerEffect";
 import Card from "./YoutubeCard";
 import Link from "next/link";
-import { useVideoStore } from "@/utils (Context)/zustStores";
+import {
+  useLikeAndDislikeCount,
+  useVideoStore,
+} from "@/utils (Context)/zustStores";
 
 function AddNewArticles() {
   const { getAllVideos, videoStore } = useVideoStore();
+  // console.log("video-store: ", videoStore);
   useEffect(() => {
     getAllVideos();
   }, []);
-  console.log("videos-store: ", videoStore)
   return (
     <section
       className={` dark:bg-[#121212] w-full px-12 py-12 relative min-h-screen gap-8`}

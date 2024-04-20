@@ -19,7 +19,7 @@ async function getAllLikedVideoByUser(userId) {
       );
       const response = await likedVideoResponse.json();
       // console.log("all likes response: ", response);
-      return response?.data?.liked_videos;
+      return !response?.data?.liked_videos ? [] : response?.data?.liked_videos;
     }
   } catch (error) {
     console.log("error in getting all likes: ", error);
@@ -28,9 +28,12 @@ async function getAllLikedVideoByUser(userId) {
 // https://dev-lib-server.vercel.app
 const videoData = async () => {
   try {
-    const videoResponse = await fetch(`http://localhost:4000/get-yt-vid`, {
-      method: "GET",
-    });
+    const videoResponse = await fetch(
+      `http://localhost:4000/api/fetch/youtubeVideos`,
+      {
+        method: "GET",
+      }
+    );
     if (videoResponse.ok) {
       const result = await videoResponse.json();
 
@@ -63,13 +66,30 @@ async function getAllSavedVideosData(userId) {
       );
       const response = await savedVideosResponse.json();
       // console.log("response: ", response);
-      return response?.data;
+      return !response?.data ? [] : response?.data;
     }
   } catch (error) {
     console.error("error while fetching saved videos: ", error);
   }
 }
 
+// api to get total likes and dislikes
+const getTotalLikesAndDislikes = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:4000/api/fetch/videos/likesAndDislikes",
+      {
+        method: "GET",
+      }
+    );
+    const result = await response.json();
+    return result?.data;
+  } catch (error) {
+    console.error("error while fetching total likes:, error");
+  }
+};
+
+// all stores
 const useLikeStore = create((set) => ({
   likeStore: [],
   getUserLikes: async (userId) => {
@@ -87,6 +107,31 @@ const useLikeStore = create((set) => ({
           likeStore: [...state.likeStore, vid_id],
         };
       }
+    });
+  },
+}));
+
+export const useLikeAndDislikeCount = create((set) => ({
+  likeAndDislikeCount: [],
+  getCount: async () => {
+    const response = await getTotalLikesAndDislikes();
+    set({ likeAndDislikeCount: response });
+  },
+  toggleLikeCount: (unique_id) => {
+    set((state) => {
+      // console.log("vid_id from zuststore: ", vid_id);
+      const isLiked = useLikeStore.getState().likeStore.includes(unique_id);
+      console.log("isLiked: ", isLiked);
+      const newData = state.likeAndDislikeCount.map((data) => {
+        if (data.unique_id === unique_id) {
+          return {
+            ...data,
+            likecount: isLiked ? data.likecount - 1 : data.likecount + 1,
+          };
+        }
+        return data;
+      });
+      return { likeAndDislikeCount: newData };
     });
   },
 }));
