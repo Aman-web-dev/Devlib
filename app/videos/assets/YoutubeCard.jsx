@@ -4,24 +4,27 @@ import { useAuth } from "@/utils (Context)/authContext";
 import { TbArrowBigUp } from "react-icons/tb";
 import { TbArrowBigDown } from "react-icons/tb";
 import { TbArrowBigUpFilled } from "react-icons/tb";
-import useLikeStore, { useSavedVideoStore } from "@/utils (Context)/zustStores";
+import useLikeStore, {
+  useLikeAndDislikeCount,
+  useSavedVideoStore,
+} from "@/utils (Context)/zustStores";
 import FeedbackComponent from "./feedbackComponent";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 function Card({ data }) {
-  const [likesCount, setLikesCount] = useState(data?.likes_count);
   const [imgSrc, setImgSrc] = useState(null);
   const { currentUser } = useAuth();
   const { likeStore, toggleVideoId, getUserLikes } = useLikeStore();
   const { savedVideoStore, getAllSavedVideosOfUser, toggleSavedVideos } =
     useSavedVideoStore();
   const router = useRouter();
-
+  const { likeAndDislikeCount, getCount, toggleLikeCount } =
+    useLikeAndDislikeCount();
+  // console.log("likes and dislike count: ", likeAndDislikeCount);
   const likeStoreCopy = [...likeStore];
   const savedVideoStoreCopy = [...savedVideoStore];
-  // console.log("likeStore: ", likeStore);
-  // console.log("savedVideo: ", savedVideoStore);
+  console.log("likestore-copy: ", likeStoreCopy);
   useEffect(() => {
     getUserLikes(currentUser?.uid);
   }, []);
@@ -29,6 +32,15 @@ function Card({ data }) {
   useEffect(() => {
     getAllSavedVideosOfUser(currentUser?.uid);
   }, []);
+
+  useEffect(() => {
+    getCount();
+  }, []);
+
+  const likesCountsFilter = likeAndDislikeCount.filter(
+    (likes) => likes?.vid_id === data?.vid_id
+  );
+  const { likecount } = likesCountsFilter[0] || {};
 
   function removeVideoIdFromZustandStore(vid_id) {
     toggleVideoId(vid_id);
@@ -49,16 +61,12 @@ function Card({ data }) {
   async function handleLikeCount(e) {
     e.preventDefault();
     e.stopPropagation();
-    addLike();
-  }
-
-  async function addLike() {
     try {
       if (!currentUser?.uid) {
         router.push("/authentication");
       } else {
         if (!likeStoreCopy.includes(data?.unique_id)) {
-          setLikesCount(likesCount + 1);
+          toggleLikeCount(likecount, data?.vid_id);
           addVideoIdInLikeStore(data?.unique_id);
           const incrementLikeCountPromise = fetch(
             "http://localhost:4000/api/incrementLikeCount",
@@ -89,9 +97,10 @@ function Card({ data }) {
             await Promise.all([incrementLikeCountPromise, addUserLikePromise]);
           if (
             !incrementLikeCountResponse.ok ||
-            (!addUserLikeResponse.ok && likesCount === 0)
+            (!addUserLikeResponse.ok && likecount === 0)
           ) {
-            setLikesCount(likesCount - 1);
+            console.log("making like zero again");
+            toggleLikeCount(1, data?.vid_id);
           }
         } else {
           setLikesCount(likesCount - 1);
@@ -182,6 +191,13 @@ function Card({ data }) {
     }
   }
 
+  function incrementLikeCountFunction(currentLikeCount, vid_id, e) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleLikeCount(currentLikeCount, vid_id);
+    console.log("clicked");
+  }
+
   return (
     <div className="dark:bg-[#1d1e23] px-4 py-4 my-4 rounded-xl">
       <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit justify-between">
@@ -195,7 +211,9 @@ function Card({ data }) {
                 src={
                   imgSrc !== null
                     ? imgSrc
-                    : youtubeVideoThumbnail + data.vid_id + "/maxresdefault.jpg"
+                    : youtubeVideoThumbnail +
+                      data?.vid_id +
+                      "/maxresdefault.jpg"
                 }
                 key={data?.youtubeVideoId}
                 alt={data?.title}
@@ -211,7 +229,9 @@ function Card({ data }) {
                   {likeStoreCopy.includes(data?.unique_id) ? (
                     <TbArrowBigUpFilled
                       className="w-6 h-6 cursor-pointer"
-                      onClick={(e) => handleLikeCount(e)}
+                      onClick={(e) => {
+                        handleLikeCount(e);
+                      }}
                     />
                   ) : (
                     <TbArrowBigUp
@@ -219,7 +239,7 @@ function Card({ data }) {
                       onClick={(e) => handleLikeCount(e)}
                     />
                   )}
-                  <span className={`dark:text-gray-300`}>{likesCount}</span>
+                  <span className={`dark:text-gray-300`}>{likecount}</span>
                 </span>
                 <TbArrowBigDown className="w-6 h-6 cursor-pointer" />
               </div>
@@ -248,7 +268,7 @@ function Card({ data }) {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill={
-              savedVideoStoreCopy?.some((id) => id === data.vid_id)
+              savedVideoStoreCopy?.some((id) => id === data?.vid_id)
                 ? "lightgray"
                 : "none"
             }

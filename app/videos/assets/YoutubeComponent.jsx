@@ -1,14 +1,18 @@
 import { youtubeLink } from "@/utils (Context)/constants";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import CommentComponent from "./Comments";
+import { AuthContext } from "@/utils (Context)/authContext";
+import { useRouter } from "next/navigation";
 
 function Youtube({ link }) {
   const [userComment, setUserComment] = useState("");
   const [allComments, setAllComments] = useState(null);
   const [isCommenting, setIsCommenting] = useState(false);
+  const { currentUser } = useContext(AuthContext);
   const { id } = useParams();
-  console.log("all-comments: ", allComments);
+  const router = useRouter();
+
   const getAllComments = async () => {
     try {
       const response = await fetch("http://localhost:4000/api/getAllComments", {
@@ -24,6 +28,36 @@ function Youtube({ link }) {
     } catch (error) {
       console.log("failed to fetch all comments: ", error);
       throw new Error("Failed to fetch all comments");
+    }
+  };
+
+  const postUserComment = async () => {
+    try {
+      if (!currentUser) {
+        router.push("/authentication");
+      } else {
+        setIsCommenting(true);
+        const commentResponse = await fetch(
+          "http://localhost:4000/api/addComment",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: currentUser.uid,
+              vid_id: id,
+              comment: userComment,
+            }),
+          }
+        );
+        console.log("comment-response :", commentResponse);
+      }
+    } catch (error) {
+      console.log("error while adding your comment please try again later");
+      throw Error(error);
+    } finally {
+      setIsCommenting(false);
     }
   };
 
@@ -67,6 +101,7 @@ function Youtube({ link }) {
                 className={`${
                   !userComment && "cursor-not-allowed"
                 } py-1 px-2 rounded-2xl bg-blue-700`}
+                onClick={() => postUserComment()}
               >
                 {!isCommenting ? "Comment" : "Commenting..."}
               </button>

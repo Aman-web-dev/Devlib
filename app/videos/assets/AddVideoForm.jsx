@@ -56,7 +56,7 @@ const AddVideoForm = () => {
         try {
           setTimeout(async () => {
             const addVideoResponse = await fetch(
-              `http://localhost:4000/add-yt-vid`,
+              `http://localhost:4000/addVideo`,
               {
                 method: "POST",
                 headers: {

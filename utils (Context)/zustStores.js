@@ -28,9 +28,12 @@ async function getAllLikedVideoByUser(userId) {
 // https://dev-lib-server.vercel.app
 const videoData = async () => {
   try {
-    const videoResponse = await fetch(`http://localhost:4000/get-yt-vid`, {
-      method: "GET",
-    });
+    const videoResponse = await fetch(
+      `http://localhost:4000/api/fetch/youtubeVideos`,
+      {
+        method: "GET",
+      }
+    );
     if (videoResponse.ok) {
       const result = await videoResponse.json();
 
@@ -69,6 +72,42 @@ async function getAllSavedVideosData(userId) {
     console.error("error while fetching saved videos: ", error);
   }
 }
+
+// api to get total likes and dislikes
+const getTotalLikesAndDislikes = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:4000/api/fetch/videos/likesAndDislikes",
+      {
+        method: "GET",
+      }
+    );
+    const result = await response.json();
+    return result?.data;
+  } catch (error) {
+    console.error("error while fetching total likes:, error");
+  }
+};
+
+export const useLikeAndDislikeCount = create((set) => ({
+  likeAndDislikeCount: [],
+  getCount: async () => {
+    const response = await getTotalLikesAndDislikes();
+    set({ likeAndDislikeCount: response });
+  },
+  toggleLikeCount: (currentLikeCount, vid_id) => {
+    set((state) => {
+      const newData = state.likeAndDislikeCount.map((data) => {
+        if (data.vid_id === vid_id) {
+          return { ...data, likecount: currentLikeCount === 0 ? 1 : 0 };
+        } else {
+          return data;
+        }
+      });
+      return { likeAndDislikeCount: newData };
+    });
+  },
+}));
 
 const useLikeStore = create((set) => ({
   likeStore: [],
