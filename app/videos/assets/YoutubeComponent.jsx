@@ -2,34 +2,26 @@ import { youtubeLink } from "@/utils (Context)/constants";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import CommentComponent from "./Comments";
+import { AuthContext } from "@/utils (Context)/authContext";
+import { useRouter } from "next/navigation";
+import { useCommentStore } from "@/utils (Context)/zustStores";
 
 function Youtube({ link }) {
   const [userComment, setUserComment] = useState("");
   const [allComments, setAllComments] = useState(null);
   const [isCommenting, setIsCommenting] = useState(false);
   const { id } = useParams();
-  console.log("all-comments: ", allComments);
-  const getAllComments = async () => {
-    try {
-      const response = await fetch("http://localhost:4000/api/getAllComments", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ vid_id: id }),
-      });
-      const result = await response.json();
-      setAllComments(result);
-      console.log("result: ", result);
-    } catch (error) {
-      console.log("failed to fetch all comments: ", error);
-      throw new Error("Failed to fetch all comments");
-    }
-  };
+  const router = useRouter();
+  const { commentStore, postComment, getComments, addComment } =
+    useCommentStore();
 
   useEffect(() => {
-    getAllComments();
+    getComments(id, setAllComments);
   }, []);
+
+  useEffect(() => {
+    console.log("comment-store: ", commentStore);
+  }, [commentStore]);
 
   return (
     <div className="px-6 py-6">
@@ -37,7 +29,7 @@ function Youtube({ link }) {
         <iframe
           width="730"
           height="415"
-          src={youtubeLink}
+          src={youtubeLink + link}
           title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
@@ -67,6 +59,17 @@ function Youtube({ link }) {
                 className={`${
                   !userComment && "cursor-not-allowed"
                 } py-1 px-2 rounded-2xl bg-blue-700`}
+                onClick={() =>
+                  addComment(
+                    userComment,
+                    currentUser?.displayName,
+                    currentUser?.photoURL,
+                    currentUser?.uid,
+                    id,
+                    setIsCommenting,
+                    setUserComment
+                  )
+                }
               >
                 {!isCommenting ? "Comment" : "Commenting..."}
               </button>
@@ -74,10 +77,10 @@ function Youtube({ link }) {
           </div>
         </div>
         <hr className="mb-12" />
-        {allComments === null || allComments?.length === 0 ? (
+        {commentStore === null || commentStore?.length === 0 ? (
           <div>No comments</div>
         ) : (
-          allComments.map((data) => {
+          commentStore.map((data) => {
             return <CommentComponent data={data} key={data?.comment} />;
           })
         )}

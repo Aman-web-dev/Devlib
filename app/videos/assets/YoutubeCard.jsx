@@ -20,8 +20,6 @@ function Card({ data }) {
 
   const likeStoreCopy = [...likeStore];
   const savedVideoStoreCopy = [...savedVideoStore];
-  // console.log("likeStore: ", likeStore);
-  // console.log("savedVideo: ", savedVideoStore);
   useEffect(() => {
     getUserLikes(currentUser?.uid);
   }, []);

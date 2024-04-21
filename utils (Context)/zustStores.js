@@ -33,7 +33,6 @@ const videoData = async () => {
     });
     if (videoResponse.ok) {
       const result = await videoResponse.json();
-
       return !result?.data ? [] : result?.data;
     } else {
       return {
@@ -70,6 +69,79 @@ async function getAllSavedVideosData(userId) {
   }
 }
 
+// api to get total likes and dislikes
+const getTotalLikesAndDislikes = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:4000/api/fetch/videos/likesAndDislikes",
+      {
+        method: "GET",
+      }
+    );
+    const result = await response.json();
+    return result?.data;
+  } catch (error) {
+    console.error("error while fetching total likes:, error");
+  }
+};
+
+// all stores
+const postUserComment = async (
+  currentUser,
+  id,
+  userComment,
+  setIsCommenting,
+  setUserComment
+) => {
+  try {
+    if (!currentUser) {
+      router.push("/authentication");
+    } else {
+      setIsCommenting(true);
+      console.log("currentUser: ", currentUser);
+      const commentResponse = await fetch(
+        "http://localhost:4000/api/addComment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: currentUser,
+            vid_id: id,
+            comment: userComment,
+          }),
+        }
+      );
+      setUserComment("");
+      return commentResponse;
+    }
+  } catch (error) {
+    console.log("error while adding your comment please try again later");
+    throw Error(error);
+  } finally {
+    setIsCommenting(false);
+  }
+};
+
+const getAllComments = async (id) => {
+  try {
+    const response = await fetch("http://localhost:4000/api/getAllComments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ vid_id: id }),
+    });
+    const result = await response.json();
+    return !result ? [] : result;
+    // console.log("result: ", result);
+  } catch (error) {
+    console.error("failed to fetch all comments: ", error);
+    throw new Error("Failed to fetch all comments");
+  }
+};
+
 const useLikeStore = create((set) => ({
   likeStore: [],
   getUserLikes: async (userId) => {
@@ -87,6 +159,31 @@ const useLikeStore = create((set) => ({
           likeStore: [...state.likeStore, vid_id],
         };
       }
+    });
+  },
+}));
+
+export const useLikeAndDislikeCount = create((set) => ({
+  likeAndDislikeCount: [],
+  getCount: async () => {
+    const response = await getTotalLikesAndDislikes();
+    set({ likeAndDislikeCount: response });
+  },
+  toggleLikeCount: (unique_id) => {
+    set((state) => {
+      // console.log("vid_id from zuststore: ", vid_id);
+      const isLiked = useLikeStore.getState().likeStore.includes(unique_id);
+      console.log("isLiked: ", isLiked);
+      const newData = state.likeAndDislikeCount.map((data) => {
+        if (data.unique_id === unique_id) {
+          return {
+            ...data,
+            likecount: isLiked ? data.likecount - 1 : data.likecount + 1,
+          };
+        }
+        return data;
+      });
+      return { likeAndDislikeCount: newData };
     });
   },
 }));
