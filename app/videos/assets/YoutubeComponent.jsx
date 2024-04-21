@@ -1,19 +1,49 @@
 import { youtubeLink } from "@/utils (Context)/constants";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import CommentComponent from "./Comments";
 import { AuthContext } from "@/utils (Context)/authContext";
 import { useRouter } from "next/navigation";
-import { useCommentStore } from "@/utils (Context)/zustStores";
 
 function Youtube({ link }) {
   const [userComment, setUserComment] = useState("");
   const [allComments, setAllComments] = useState(null);
   const [isCommenting, setIsCommenting] = useState(false);
+  const { currentUser } = useContext(AuthContext);
   const { id } = useParams();
   const router = useRouter();
   const { commentStore, postComment, getComments, addComment } =
     useCommentStore();
+
+  const postUserComment = async () => {
+    try {
+      if (!currentUser) {
+        router.push("/authentication");
+      } else {
+        setIsCommenting(true);
+        const commentResponse = await fetch(
+          "http://localhost:4000/api/addComment",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: currentUser.uid,
+              vid_id: id,
+              comment: userComment,
+            }),
+          }
+        );
+        console.log("comment-response :", commentResponse);
+      }
+    } catch (error) {
+      console.log("error while adding your comment please try again later");
+      throw Error(error);
+    } finally {
+      setIsCommenting(false);
+    }
+  };
 
   useEffect(() => {
     getComments(id, setAllComments);

@@ -19,7 +19,7 @@ async function getAllLikedVideoByUser(userId) {
       );
       const response = await likedVideoResponse.json();
       // console.log("all likes response: ", response);
-      return response?.data?.liked_videos;
+      return !response?.data?.liked_videos ? [] : response?.data?.liked_videos;
     }
   } catch (error) {
     console.log("error in getting all likes: ", error);
@@ -28,9 +28,12 @@ async function getAllLikedVideoByUser(userId) {
 // https://dev-lib-server.vercel.app
 const videoData = async () => {
   try {
-    const videoResponse = await fetch(`http://localhost:4000/get-yt-vid`, {
-      method: "GET",
-    });
+    const videoResponse = await fetch(
+      `http://localhost:4000/api/fetch/youtubeVideos`,
+      {
+        method: "GET",
+      }
+    );
     if (videoResponse.ok) {
       const result = await videoResponse.json();
       return !result?.data ? [] : result?.data;
@@ -62,7 +65,7 @@ async function getAllSavedVideosData(userId) {
       );
       const response = await savedVideosResponse.json();
       // console.log("response: ", response);
-      return response?.data;
+      return !response?.data ? [] : response?.data;
     }
   } catch (error) {
     console.error("error while fetching saved videos: ", error);

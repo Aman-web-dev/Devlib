@@ -34,7 +34,7 @@ export const getApiData = async (url) => {
 export const getUserPostCount = async (userIdObj, callback) => {
   try {
     const count = await fetchPostData(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}api/user/post-count`,
+      `http://localhost:4000/api/user/post-count`,
       userIdObj
     );
     callback(count);
@@ -44,10 +44,11 @@ export const getUserPostCount = async (userIdObj, callback) => {
 };
 
 export const followUser = async (followedUserObj, callback) => {
- 
   try {
     const response = await getApiData(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}api/user/on_follow?${ new URLSearchParams(followedUserObj).toString()}`,
+      `${
+        process.env.NEXT_PUBLIC_SERVER_URL
+      }/api/user/on_follow?${new URLSearchParams(followedUserObj).toString()}`
     );
     callback(response);
   } catch (error) {
@@ -55,20 +56,17 @@ export const followUser = async (followedUserObj, callback) => {
   }
 };
 
-
-
-
 export const checkUserFollowed = async (userObj) => {
   const params = {
     follow_user: userObj.follower_id,
     followed_user: userObj.followed_id,
   };
-console.log("checking User followed ", params)
+  console.log("checking User followed ", params);
   try {
     const response = await getApiData(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}api/before_follow?${
-        new URLSearchParams(params).toString()
-      }`
+      `${
+        process.env.NEXT_PUBLIC_SERVER_URL
+      }/api/before_follow?${new URLSearchParams(params).toString()}`
     );
 
     return response;
@@ -78,22 +76,20 @@ console.log("checking User followed ", params)
   }
 };
 
-
-
-export const userUnfollow=async(followedUserObj, callback)=>{
-
-console.log("unfollowing User", followedUserObj)
+export const userUnfollow = async (followedUserObj, callback) => {
+  console.log("unfollowing User", followedUserObj);
   try {
     const response = await getApiData(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}api/user/on_un_follow?${
-        new URLSearchParams(followedUserObj).toString()
-      }`
+      `${
+        process.env.NEXT_PUBLIC_SERVER_URL
+      }/api/user/on_un_follow?${new URLSearchParams(
+        followedUserObj
+      ).toString()}`
     );
 
-    callback(response)
+    callback(response);
   } catch (error) {
     console.error(error.message);
     throw error;
   }
-
-}
+};
