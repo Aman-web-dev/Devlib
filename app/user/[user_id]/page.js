@@ -15,7 +15,7 @@ import Modal from "../assets/Modal";
 function Page() {
   const { currentUser } = useContext(AuthContext);
   const [userPostCount, setUserPostCount] = useState(0);
-
+const params=useParams()
 
 
   const postCount = () => {
@@ -24,7 +24,7 @@ function Page() {
     );
   };
 
-  useEffect(() => postCount() , []);
+  // useEffect(() => postCount() , []);
 
   return (
     <div className="flex md:flex-row flex-col py-4">

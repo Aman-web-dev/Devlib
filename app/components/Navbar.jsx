@@ -145,6 +145,13 @@ const Navbar = () => {
                   </Link>
                 </li>
 
+                <li
+                  className={`${pathName === "/blogs" && " text-blue-500"}`}
+                >
+                  <Link href="/blogs" className="">
+                   Blogs
+                  </Link>
+                </li>
                 <li>
                   <div>
                     <div className="flex flex-col md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">

@@ -42,12 +42,6 @@ function Modal(props) {
 export default Modal
 
 
-
-
-
-
-
-
 const UserCard=()=>{
   return(
     <div className='dark:bg-[#121212] bg-white font-bold border-b flex flex-row items-center justify-between px-4 pr-4 py-2'>

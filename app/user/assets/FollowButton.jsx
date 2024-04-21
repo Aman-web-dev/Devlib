@@ -37,7 +37,7 @@ function FollowButton({ followed_id }) {
         setFollowed(false);
       }
     } catch (error) {
-      alert(error.message);
+     console.log(error)
     }
   };
 
