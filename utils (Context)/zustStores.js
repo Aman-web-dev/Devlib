@@ -145,6 +145,104 @@ const getAllComments = async (id) => {
   }
 };
 
+const deleteCommentApi = async (id) => {
+  try {
+    const deleteCommentResponse = await fetch(
+      "http://localhost:4000/api/comment/delete",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: id }),
+      }
+    );
+  } catch (error) {
+    console.log("unable to delete comment due to : ", error);
+  }
+};
+
+const updateUserComment = async (id, comment) => {
+  try {
+    const response = await fetch("http://localhost:4000/api/comment/update", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ comment: comment, id: id }),
+    });
+  } catch (error) {
+    console.log("error while updating comment: ", error);
+  }
+};
+
+export const useCommentStore = create((set) => ({
+  commentStore: [],
+  addComment: (
+    userComment,
+    displayName,
+    photoURL,
+    currentUser,
+    id,
+    setIsCommenting,
+    setUserComment
+  ) => {
+    set(async (state) => {
+      try {
+        const response = await postUserComment(
+          currentUser,
+          id,
+          userComment,
+          setIsCommenting,
+          setUserComment
+        );
+        set((state) => ({
+          commentStore: [
+            ...state.commentStore,
+            {
+              comment: userComment,
+              name: displayName,
+              profilepicture: photoURL,
+              user_id: currentUser,
+              vid_id: id,
+            },
+          ],
+        }));
+      } catch (error) {
+        console.error("error while posting comment", error);
+      }
+    });
+  },
+  getComments: async (id) => {
+    const response = await getAllComments(id);
+    set({ commentStore: response });
+  },
+  deleteComment: async (id) => {
+    const response = await deleteCommentApi(id);
+    set((state) => {
+      const filteredComment = state.commentStore.filter(
+        (comment) => comment.id !== id
+      );
+
+      return {
+        commentStore: filteredComment,
+      };
+    });
+  },
+  updateComment: async (id, newComment) => {
+    const response = await updateUserComment(id, newComment);
+    set((state) => {
+      const newCommentStore = state.commentStore.map((comment) => {
+        if (comment.id === id) {
+          return { ...comment, comment: newComment };
+        }
+        return comment;
+      });
+      return { commentStore: newCommentStore };
+    });
+  },
+}));
+
 const useLikeStore = create((set) => ({
   likeStore: [],
   getUserLikes: async (userId) => {

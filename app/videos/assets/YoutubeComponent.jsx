@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import CommentComponent from "./Comments";
 import { AuthContext } from "@/utils (Context)/authContext";
 import { useRouter } from "next/navigation";
+import { useCommentStore } from "@/utils (Context)/zustStores";
 
 function Youtube({ link }) {
   const [userComment, setUserComment] = useState("");
@@ -15,43 +16,9 @@ function Youtube({ link }) {
   const { commentStore, postComment, getComments, addComment } =
     useCommentStore();
 
-  const postUserComment = async () => {
-    try {
-      if (!currentUser) {
-        router.push("/authentication");
-      } else {
-        setIsCommenting(true);
-        const commentResponse = await fetch(
-          "http://localhost:4000/api/addComment",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userId: currentUser.uid,
-              vid_id: id,
-              comment: userComment,
-            }),
-          }
-        );
-        console.log("comment-response :", commentResponse);
-      }
-    } catch (error) {
-      console.log("error while adding your comment please try again later");
-      throw Error(error);
-    } finally {
-      setIsCommenting(false);
-    }
-  };
-
   useEffect(() => {
-    getComments(id, setAllComments);
+    getComments(id);
   }, []);
-
-  useEffect(() => {
-    console.log("comment-store: ", commentStore);
-  }, [commentStore]);
 
   return (
     <div className="px-6 py-6">
@@ -85,7 +52,7 @@ function Youtube({ link }) {
                 Cancel
               </button>
               <button
-                disabled={!userComment}
+                disabled={!userComment || isCommenting}
                 className={`${
                   !userComment && "cursor-not-allowed"
                 } py-1 px-2 rounded-2xl bg-blue-700`}
@@ -110,7 +77,7 @@ function Youtube({ link }) {
         {commentStore === null || commentStore?.length === 0 ? (
           <div>No comments</div>
         ) : (
-          commentStore.map((data) => {
+          commentStore?.map((data) => {
             return <CommentComponent data={data} key={data?.comment} />;
           })
         )}
