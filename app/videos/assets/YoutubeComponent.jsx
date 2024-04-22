@@ -20,6 +20,21 @@ function Youtube({ link }) {
     getComments(id);
   }, []);
 
+  const handleCommentClick = () => {
+    if (!currentUser) {
+      router.push("/authentication");
+    }
+    addComment(
+      userComment,
+      currentUser?.displayName,
+      currentUser?.photoURL,
+      currentUser?.uid,
+      id,
+      setIsCommenting,
+      setUserComment
+    );
+  };
+
   return (
     <div className="px-6 py-6">
       <div className="py-6 px-6 w-fit ">
@@ -56,17 +71,7 @@ function Youtube({ link }) {
                 className={`${
                   !userComment && "cursor-not-allowed"
                 } py-1 px-2 rounded-2xl bg-blue-700`}
-                onClick={() =>
-                  addComment(
-                    userComment,
-                    currentUser?.displayName,
-                    currentUser?.photoURL,
-                    currentUser?.uid,
-                    id,
-                    setIsCommenting,
-                    setUserComment
-                  )
-                }
+                onClick={handleCommentClick}
               >
                 {!isCommenting ? "Comment" : "Commenting..."}
               </button>
