@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { doSignOut } from "@/app/firebase/auth";
@@ -8,7 +8,7 @@ import Image from "next/image";
 import Sidebar from "./Sidebar";
 import SessionTimer from "./sessionTimer";
 import { usePathname } from "next/navigation";
-
+import { FaUserAstronaut } from "react-icons/fa";
 import NavSearchButton from "./search/navSearchButton";
 import { useTheme } from "next-themes";
 
@@ -159,9 +159,10 @@ const Navbar = () => {
                         <Link href="/authentication">
                           <button
                             type="button"
-                            className=" bg-[#ec4899] hover: focus:outline-none rounded-lg text-lg py-1 px-3 text-center hover:bg-[#f8c419] transition-opacity duration-2000 ease-in-out opacity-100"
+                            className="border rounded-3xl border-[#ec4899] hover: focus:outline-none  text-lg py-1 px-3 text-center hover:bg-[#ec4899] transition-opacity duration-2000 ease-in-out opacity-100 flex items-center gap-2 text-[#ec4899] text-normal hover:text-white"
                           >
-                            Login
+                            <FaUserAstronaut className="" />{" "}
+                            <span>Sign in</span>
                           </button>
                         </Link>
                       )}
