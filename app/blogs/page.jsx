@@ -1,11 +1,11 @@
 import React from 'react'
 
-function page() {
+function Page() {
   return (
     <div className='min-h-[100vh]'>
-    
+    hii
     </div>
   )
 }
 
-export default page
+export default Page

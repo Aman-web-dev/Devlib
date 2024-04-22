@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 function page() {
-  const [elements,setElements]=useState([<p>hello</p>])
+  const [elements,setElements]=useState([])
 
 
 
