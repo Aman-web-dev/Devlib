@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-function page() {
+function Page() {
   const [elements,setElements]=useState([])
 
 
@@ -26,4 +26,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
