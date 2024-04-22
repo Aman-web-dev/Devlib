@@ -8,7 +8,7 @@ async function getAllLikedVideoByUser(userId) {
       return [];
     } else if (userId) {
       const likedVideoResponse = await fetch(
-        `http://localhost:4000/api/getAllLikedVideos`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllLikedVideos`,
         {
           method: "POST",
           headers: {
@@ -54,7 +54,7 @@ async function getAllSavedVideosData(userId) {
       return [];
     } else {
       const savedVideosResponse = await fetch(
-        "http://localhost:4000/api/getAllSavedVideos",
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllSavedVideos`,
         {
           method: "POST",
           headers: {
@@ -76,7 +76,7 @@ async function getAllSavedVideosData(userId) {
 const getTotalLikesAndDislikes = async () => {
   try {
     const response = await fetch(
-      "http://localhost:4000/api/fetch/videos/likesAndDislikes",
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/videos/likesAndDislikes`,
       {
         method: "GET",
       }
@@ -103,7 +103,7 @@ const postUserComment = async (
       setIsCommenting(true);
       console.log("currentUser: ", currentUser);
       const commentResponse = await fetch(
-        "http://localhost:4000/api/addComment",
+        `http://localhost:4000/api/addComment`,
         {
           method: "POST",
           headers: {
