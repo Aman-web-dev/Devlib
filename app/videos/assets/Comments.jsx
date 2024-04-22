@@ -86,7 +86,7 @@ function CommentComponent({ data }) {
           )}
         </div>
       </div>
-      {currentUser.uid === data?.user_id && !editComment && (
+      {currentUser?.uid === data?.user_id && !editComment && (
         <div className="items-start flex relative" ref={optionsRef}>
           <BsThreeDotsVertical
             className="cursor-pointer"
