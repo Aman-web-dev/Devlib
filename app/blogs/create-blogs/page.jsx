@@ -18,7 +18,7 @@ function page() {
         </ul>
       </section>
       <div className="w-[80%] mx-auto">
-        <section class="flex flex-row mb-6 my-8 gap-4 items-center text-black bg-white h-screen">
+        <section className="flex flex-row mb-6 my-8 gap-4 items-center text-black bg-white h-screen">
           {elements}
         </section>
       </div>

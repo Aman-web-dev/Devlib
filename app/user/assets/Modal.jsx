@@ -30,8 +30,8 @@ function Modal(props) {
   <UserCard/>
 
 
-  <div class="scrollbar" id="style-2">
-				<div class="force-overflow"></div>
+  <div className="scrollbar" id="style-2">
+				<div className="force-overflow"></div>
 			</div>
       </div>
     </div>

@@ -14,7 +14,7 @@ import {
 export const getDataFromDatabase = async (object, url, callback) => {
   try {
     console.log(object);
-    const response = await axios.get(url, { params: object });
+    const response = await axios.get(url, { params: object ,cache:"force-cache"});
     console.log("response:", response);
     callback(response);
     return response;

@@ -1,39 +1,44 @@
-"use client";
 import FollowButton from "./FollowButton";
-
-import { useRef, useState } from "react";
-import { useAuth } from "@/utils (Context)/authContext";
-import { useParams } from "next/navigation";
-import Modal from "./Modal";
-import useclickOutisdeHook from "@/hooks/useclickOutisdeHook";
-import { FaDiscord, FaLinkedin, FaFacebook } from "react-icons/fa";
+import { FaDiscord, FaLinkedin, FaFacebook, FaGithub } from "react-icons/fa";
 import { CgWebsite } from "react-icons/cg";
+import { getDataFromDatabase } from "@/app/authentication/customization/User-updating-apis/apiCalls";
+import { followerCount,followingCount } from "../api/api";
+import Modal from "./Modal";
 
-const ProfileHeader = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const params = useParams();
-  const { currentUser } = useAuth();
-  const modalRef = useRef(null);
+const ProfileHeader = async ({ user_id }) => {
+  const getData = async () => {
+    let data = await getDataFromDatabase(
+      { user_id: user_id },
+      `${process.env.NEXT_PUBLIC_SERVER_URL}getUserDataFromDatabase`,
+      (response) => {}
+    );
+    return data.data;
+  };
 
-  useclickOutisdeHook(
-    modalRef,
-    () => {
-      setModalVisible(false);
-    },
-    modalVisible
-  );
+let followers=await followerCount({user_id:user_id})
+// let following=await followingCount()
+
+console.log("followers Count",followers)
+
+
+  let userDetails = await getData();
+  console.log("userDetails", userDetails);
 
   return (
-    <div>
+    <div className="min-w-[40vw]">
       <div className="px-4 my-4 ">
         <img
-          src={currentUser?.photoURL}
+          src={
+            userDetails?.profilepiure == null || undefined
+              ? "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?t=st=1713730659~exp=1713734259~hmac=a1572fadc90407b193321ae798ff3bba2dcbd1755eb6a04fad70065818de27dd&w=996"
+              : userDetails?.profilepicture
+          }
           className=" w-40 rounded-full border p-1 dark:border-gray-400 border-black"
         />
 
         <div className=" flex flex-row items-center my-4">
-          <h2 className="text-3xl  py-2 ">{currentUser?.displayName} </h2>
-          <FollowButton followed_id={params.user_id} />
+          <h2 className="text-3xl  py-2 ">{userDetails?.name} </h2>
+          <FollowButton followed_id={userDetails?.user_id} />
         </div>
 
         <div className="flex gap-4 items-center">
@@ -44,23 +49,20 @@ const ProfileHeader = () => {
           </span>
           <span
             className="cursor-pointer hover:text-yellow-300 font-bold flex flex-col items-center"
-            onClick={() => {
-              setModalVisible(!modalVisible);
-            }}
+        
           >
-            <p>0</p>
+            <p>{followers}</p>
             Followers
           </span>
           <span
             className="cursor-pointer hover:text-yellow-300 font-bold flex flex-col items-center"
-            onClick={() => {
-              setModalVisible(!modalVisible);
-            }}
+    
           >
             <p>0</p>
             Following
           </span>
-          {modalVisible ? <Modal reference={modalRef} /> : ""}
+          
+  
         </div>
         <h2 className=" mt-4 font-bold">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam,
@@ -68,49 +70,34 @@ const ProfileHeader = () => {
           fugit!
         </h2>
 
-        <div
-          id="social-media-link-handlers"
-          className="my-4 flex flex-col gap-4 mt-20"
-        >
-          <a href="https://www.fbasisabajsfbhas.com" target="_blank">
-            <section className="flex flex-row items-center gap-2">
-              <FaLinkedin size={25} />
-              <p className="font-bold  text-sm hover:text-blue-500">
-                www.fbasisabajsfbhas.com
-              </p>
-            </section>
-          </a>
-
-          <a href="https://www.fbasisabajsfbhas.com" target="_blank">
-            <section className="flex flex-row items-center gap-2">
-              <FaFacebook size={25} />
-              <p className="font-bold  text-sm hover:text-blue-500">
-                www.fbasisabajsfbhas.com
-              </p>
-            </section>
-          </a>
-
-          <a href="https://www.fbasisabajsfbhas.com" className="" target="_blank">
-            <section className="flex flex-row items-center  gap-2">
-              <FaDiscord size={25} />
-              <p className="font-bold  text-sm hover:text-blue-500">
-                www.fbasisabajsfbhas.com
-              </p>
-            </section>
-          </a>
-
-          <a href="https://www.fbasisabajsfbhas.com" target="_blank">
-            <section className="flex flex-row items-center gap-2">
-              <CgWebsite size={25} />
-              <p className="font-bold  text-sm hover:text-blue-500">
-                www.fbasisabajsfbhas.com
-              </p>
-            </section>
-          </a>
-        </div>
+        <SocialMediaLinks socialMediaLinks={userDetails?.socialmedialinks} />
       </div>
     </div>
   );
 };
 
 export default ProfileHeader;
+
+const SocialMediaLinks = ({ socialMediaLinks }) => {
+  const linksArray = Object.entries(socialMediaLinks);
+
+  return (
+    <div
+      id="social-media-link-handlers"
+      className="my-4 flex flex-col gap-4 mt-20"
+    >
+      {linksArray.map(([key, value]) => (
+        <a key={key} href={value} target="_blank" rel="noopener noreferrer">
+          <section className="flex flex-row items-center gap-2">
+            {key == "github" && <FaGithub size={25} />}
+            {key == "linkedin" && <FaLinkedin size={25} />}
+            {key == "discord" && <FaDiscord size={25} />}
+            {key === "website" && <CgWebsite size={25} />}
+
+            <p className="font-bold text-sm hover:text-blue-500">{value}</p>
+          </section>
+        </a>
+      ))}
+    </div>
+  );
+};

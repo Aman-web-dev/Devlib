@@ -12,29 +12,6 @@ const MainSearchComponent = (props) => {
   const [searchdRepoData, setSearchedRepoData] = useState([]);
 
 
-  // const fetchRes = async (value) => {
-  //   await fetch("https://jsonplaceholder.typicode.com/users")
-  //     .then((response) => response.json())
-  //     .then((json) => {
-  //       const result = json.filter((user) => {
-  //         return user && user.name && user.name.toLowerCase().includes(value);
-  //       });
-  //       setSearchResultData(result);
-  //       console.log(result);  
-  //     });
-
-  //   await fetch("https://jsonplaceholder.typicode.com/posts")
-  //     .then((res) => res.json())
-  //     .then((val) => {
-  //       const result = val.filter((elem) => {
-  //         return elem && elem.title && elem.title.toLowerCase().includes(value);
-  //       });
-
-  //       setSearchedRepoData(result);
-  //     });
-  // };
-
-
   const fetchRes = async (value) => {
     // setSearch(value);
     console.log(value.length)
@@ -47,7 +24,7 @@ const MainSearchComponent = (props) => {
     try {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}searchUsers`, {
         params: {
-          searchedWords: value,
+          searchedWords: value.toLowerCase(),
         },
       });
      const endResult=response.data.map((user)=>{

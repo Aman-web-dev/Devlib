@@ -1,42 +1,38 @@
 "use client";
 import ProfileHeader from "../assets/ProfileHeader";
-
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "@/utils (Context)/authContext";
-import { getUserPostCount } from "../api/api";
-import FollowButton from "../assets/FollowButton";
 import { useParams } from "next/navigation";
-import Post from "../assets/UsersPost";
-import Repo from "../assets/UsersRepo";
 import UsersResources from "../assets/ContentFeed";
-import Modal from "../assets/Modal";
+import { getDataFromDatabase } from "@/app/authentication/customization/User-updating-apis/apiCalls";
+import { Suspense } from "react";
+import UserLoading from "./loading";
+import { PostLoading } from "./loading";
+
+
 
 
 function Page() {
-  const { currentUser } = useContext(AuthContext);
-  const [userPostCount, setUserPostCount] = useState(0);
-const params=useParams()
+  const params = useParams();
+  console.log("the main Page Loaded")
 
 
-  const postCount = () => {
-    getUserPostCount({ user_id: currentUser.uid }, (result) =>
-      setUserPostCount(result)
-    );
-  };
 
-  // useEffect(() => postCount() , []);
-
+ 
   return (
     <div className="flex md:flex-row flex-col py-4">
-   <ProfileHeader/>
-   <UsersResources/>
 
 
+      <Suspense fallback={<UserLoading/>}>
+      <ProfileHeader user_id={params.user_id}/>
+      </Suspense>
+  
+   
+
+  <Suspense fallback={<PostLoading/>}>
+      <UsersResources />
+      </Suspense>
     </div>
   );
 }
 
 export default Page;
-
-
-

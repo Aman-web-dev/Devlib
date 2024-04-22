@@ -5,6 +5,8 @@ import UserPost from './UsersPost'
 
 
 const ContentFeed = () => {
+
+
   return (
     <div>
         <div id="otherDetails" className=" md:w-full p-4">
