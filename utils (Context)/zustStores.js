@@ -29,7 +29,7 @@ async function getAllLikedVideoByUser(userId) {
 const videoData = async () => {
   try {
     const videoResponse = await fetch(
-      `http://localhost:4000/api/fetch/youtubeVideos`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/youtubeVideos`,
       {
         method: "GET",
       }
