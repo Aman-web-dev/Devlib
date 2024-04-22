@@ -1,5 +1,5 @@
 
-const Post = () => {
+const UerPost = () => {
     return (
       <div className="border py-4 px-4  ">
         <section className="flex items-center gap-4 my-2">
@@ -21,4 +21,4 @@ const Post = () => {
   };
 
 
-  export default Post
+  export default UerPost

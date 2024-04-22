@@ -1,3 +1,5 @@
+import { cache } from "react";
+
 export const fetchPostData = async (url, obj) => {
   try {
     const response = await fetch(url, {
@@ -48,7 +50,7 @@ export const followUser = async (followedUserObj, callback) => {
     const response = await getApiData(
       `${
         process.env.NEXT_PUBLIC_SERVER_URL
-      }/api/user/on_follow?${new URLSearchParams(followedUserObj).toString()}`
+      }api/user/on_follow?${new URLSearchParams(followedUserObj).toString()}`
     );
     callback(response);
   } catch (error) {
@@ -66,7 +68,7 @@ export const checkUserFollowed = async (userObj) => {
     const response = await getApiData(
       `${
         process.env.NEXT_PUBLIC_SERVER_URL
-      }/api/before_follow?${new URLSearchParams(params).toString()}`
+      }api/before_follow?${new URLSearchParams(params).toString()}`
     );
 
     return response;
@@ -82,7 +84,7 @@ export const userUnfollow = async (followedUserObj, callback) => {
     const response = await getApiData(
       `${
         process.env.NEXT_PUBLIC_SERVER_URL
-      }/api/user/on_un_follow?${new URLSearchParams(
+      }api/user/on_un_follow?${new URLSearchParams(
         followedUserObj
       ).toString()}`
     );
@@ -93,3 +95,40 @@ export const userUnfollow = async (followedUserObj, callback) => {
     throw error;
   }
 };
+
+
+
+
+
+
+export const followingCount=async(user_id,callback)=>{
+
+  try{
+    const response= await getApiData(  `${
+      process.env.NEXT_PUBLIC_SERVER_URL
+    }api/user/getfollowingCount?${new URLSearchParams(
+      user_id
+    ).toString()}`)
+    callback(response.data)
+    return response.data
+  }catch(error){
+    console.log(error)
+  }
+
+}
+
+export const followerCount=async(user_id)=>{
+
+  try{
+    const response= await getApiData(  `${
+      process.env.NEXT_PUBLIC_SERVER_URL
+    }api/user/get_follower_count?${new URLSearchParams(
+      user_id
+    ).toString()}` ,{cache:'force-cache'})
+    console.log("count data",response)
+    return response.count
+  }catch(error){
+    console.log(error)
+  }
+
+}
