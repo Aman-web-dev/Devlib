@@ -1,27 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+
+import React, { useState } from 'react';
+
+import 'react-quill/dist/quill.snow.css';
+import Editor from './Assets/Editor';
+import Preview from './Assets/Preview';
+
 
 function Page() {
-  const [elements,setElements]=useState([])
+  const [data,setData]=useState()
 
-
+ const  handleEditData=(val)=>{
+  setData(val)
+  }
 
   return (
-    <div className="min-h-screen">
-      <section id="toolbar" className="w-full bg-black ">
-        <ul className="flex gap-8">
-          <li>Heading</li>
-          <li>Paragraph</li>
-          <li>Image</li>
-          <li>Small Heading</li>
-        </ul>
-      </section>
-      <div className="w-[80%] mx-auto">
-        <section className="flex flex-row mb-6 my-8 gap-4 items-center text-black bg-white h-screen">
-          {elements}
-        </section>
-      </div>
+    <div className="min-h-screen max-w-[100vw] flex flex-row">
+      <Editor handleData={handleEditData}/>
+      <Preview text={data}/>
     </div>
   );
 }
