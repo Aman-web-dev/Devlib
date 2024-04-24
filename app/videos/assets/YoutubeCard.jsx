@@ -11,6 +11,7 @@ import useLikeStore, {
 import FeedbackComponent from "./feedbackComponent";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { alternative_img_link } from "@/utils (Context)/constants";
 
 function Card({ data }) {
   const [imgSrc, setImgSrc] = useState(null);
@@ -22,20 +23,20 @@ function Card({ data }) {
   const { likeAndDislikeCount, getCount, toggleLikeCount } =
     useLikeAndDislikeCount();
   // console.log("likes and dislike count: ", likeAndDislikeCount);
-  const likeStoreCopy = [...likeStore];
-  const savedVideoStoreCopy = [...savedVideoStore];
-  console.log("likestore-copy: ", likeStoreCopy);
-  useEffect(() => {
-    getUserLikes(currentUser?.uid);
-  }, []);
+  const likeStoreCopy = [...likeStore] || [];
+  const savedVideoStoreCopy = [...savedVideoStore] || [];
+  // console.log("likestore-copy: ", likeStoreCopy);
+  // useEffect(() => {
+  //   getUserLikes(currentUser?.uid);
+  // }, []);
 
-  useEffect(() => {
-    getAllSavedVideosOfUser(currentUser?.uid);
-  }, []);
+  // useEffect(() => {
+  //   getAllSavedVideosOfUser(currentUser?.uid);
+  // }, []);
 
-  useEffect(() => {
-    getCount();
-  }, []);
+  // useEffect(() => {
+  //   getCount();
+  // }, []);
 
   const likesCountsFilter = likeAndDislikeCount.filter(
     (likes) => likes?.vid_id === data?.vid_id
@@ -209,7 +210,7 @@ function Card({ data }) {
                 key={data?.youtubeVideoId}
                 alt={data?.title}
                 onError={() => {
-                  setImgSrc(data?.alternative_img_link);
+                  setImgSrc(alternative_img_link);
                 }}
               />
               <div className="bg-black w-12 h-12 rounded-full absolute m-2 top-0">

@@ -1,6 +1,5 @@
 "use client";
 import { create } from "zustand";
-
 // function to get all liked videos by user;
 async function getAllLikedVideoByUser(userId) {
   try {
@@ -25,28 +24,6 @@ async function getAllLikedVideoByUser(userId) {
     console.log("error in getting all likes: ", error);
   }
 }
-// https://dev-lib-server.vercel.app
-const videoData = async () => {
-  try {
-    const videoResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/youtubeVideos`,
-      {
-        method: "GET",
-      }
-    );
-    if (videoResponse.ok) {
-      const result = await videoResponse.json();
-      return !result?.data ? [] : result?.data;
-    } else {
-      return {
-        error: "Unable to fetch videos. Please try again later.",
-      };
-    }
-  } catch (error) {
-    console.log("error during fetching data: ", error);
-  }
-};
-
 // get all saved videos of a user
 async function getAllSavedVideosData(userId) {
   try {
@@ -286,14 +263,6 @@ export const useLikeAndDislikeCount = create((set) => ({
       });
       return { likeAndDislikeCount: newData };
     });
-  },
-}));
-
-export const useVideoStore = create((set) => ({
-  videoStore: [],
-  getAllVideos: async () => {
-    const response = await videoData();
-    set({ videoStore: response });
   },
 }));
 
