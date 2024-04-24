@@ -6,20 +6,31 @@ import Card from "./YoutubeCard";
 import Link from "next/link";
 import { AuthContext } from "@/utils (Context)/authContext";
 import InfiniteScroll from "react-infinite-scroll-component";
+import SearchComponent from "@/app/components/SearchComponent";
 
 function AddNewArticles() {
   const { currentUser } = useContext(AuthContext);
+  const [query, setQuery] = useState("");
   const [videoStore, setVideoStore] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const getVideos = (page) => {
+  console.log("videos: ", videoStore);
+
+  const getVideos = (page, query) => {
     try {
       setTimeout(async () => {
+        let url;
+        console.log("videos-store inside getVideos: ", videoStore);
         setPage(page + 1);
         console.log("page values after prev(): ", page);
-        const response = await fetch(
-          `http://localhost:4000/api/fetch/youtubeVideos?page=${page}`
-        );
+        if (query !== "") {
+          url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}&search=${query}`;
+          console.log("using query");
+        } else {
+          url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}`;
+          console.log("not using query");
+        }
+        const response = await fetch(url);
         const data = await response.json();
         if (data?.data?.length === 0) {
           console.log("length is 0");
@@ -34,19 +45,29 @@ function AddNewArticles() {
     }
   };
 
+  const ifQuery = () => {
+    setVideoStore((prev) => []);
+    console.log("video-store inside ifQuery: ", videoStore);
+    getVideos(1, query);
+  };
+
   useEffect(() => {
-    getVideos(page);
+    getVideos(page, query);
   }, []);
   return (
     <section
       className={`dark:bg-[#121212] w-full px-12 py-12 relative min-h-screen gap-8`}
     >
+      <SearchComponent
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onClick={() => ifQuery()}
+      />
       {videoStore?.length !== 0 ? (
         <InfiniteScroll
           endMessage={
             <p style={{ textAlign: "center" }}>
-                           <b>Yay! You have seen it all</b>
-                          
+              <b>Yay! You have seen it all</b>
             </p>
           }
           loader={
@@ -65,13 +86,6 @@ function AddNewArticles() {
       ) : (
         <ShimmerEffect />
       )}
-      {/* <div ref={loadMoreRef}>
-        {loading && (
-          <div className="flex justify-center items-center">
-            <Loader size="md" speed="normal" content="Loading..." />
-          </div>
-        )}
-      </div> */}
       <Link
         className={`dark:bg-[#149eca] fixed right-10 bottom-10 p-4 rounded-full`}
         href={!currentUser ? "/authentication" : "/videos/addNewVideo"}

@@ -7,7 +7,7 @@ async function getAllLikedVideoByUser(userId) {
       return [];
     } else if (userId) {
       const likedVideoResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllLikedVideos`,
+        `http://localhost:4000/api/getAllLikedVideos`,
         {
           method: "POST",
           headers: {
@@ -17,11 +17,11 @@ async function getAllLikedVideoByUser(userId) {
         }
       );
       const response = await likedVideoResponse.json();
-      // console.log("all likes response: ", response);
       return !response?.data?.liked_videos ? [] : response?.data?.liked_videos;
     }
   } catch (error) {
     console.log("error in getting all likes: ", error);
+    return [];
   }
 }
 // get all saved videos of a user
@@ -31,7 +31,7 @@ async function getAllSavedVideosData(userId) {
       return [];
     } else {
       const savedVideosResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllSavedVideos`,
+        `http://localhost:4000/api/getAllSavedVideos`,
         {
           method: "POST",
           headers: {
@@ -46,14 +46,15 @@ async function getAllSavedVideosData(userId) {
     }
   } catch (error) {
     console.error("error while fetching saved videos: ", error);
+    return [];
   }
 }
 
 // api to get total likes and dislikes
-const getTotalLikesAndDislikes = async () => {
+const getTotalLikesAndDislikes = async (page) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/videos/likesAndDislikes`,
+      `http://localhost:4000/api/fetch/videos/likesAndDislikes`,
       {
         method: "GET",
       }
@@ -249,9 +250,7 @@ export const useLikeAndDislikeCount = create((set) => ({
   },
   toggleLikeCount: (unique_id) => {
     set((state) => {
-      // console.log("vid_id from zuststore: ", vid_id);
       const isLiked = useLikeStore.getState().likeStore.includes(unique_id);
-      console.log("isLiked: ", isLiked);
       const newData = state.likeAndDislikeCount.map((data) => {
         if (data.unique_id === unique_id) {
           return {

@@ -23,25 +23,26 @@ function Card({ data }) {
   const { likeAndDislikeCount, getCount, toggleLikeCount } =
     useLikeAndDislikeCount();
   // console.log("likes and dislike count: ", likeAndDislikeCount);
-  const likeStoreCopy = [...likeStore] || [];
-  const savedVideoStoreCopy = [...savedVideoStore] || [];
+  const likeStoreCopy = [...likeStore];
+  const savedVideoStoreCopy = [...savedVideoStore];
   // console.log("likestore-copy: ", likeStoreCopy);
-  // useEffect(() => {
-  //   getUserLikes(currentUser?.uid);
-  // }, []);
 
-  // useEffect(() => {
-  //   getAllSavedVideosOfUser(currentUser?.uid);
-  // }, []);
+  useEffect(() => {
+    getUserLikes(currentUser?.uid);
+  }, []);
+
+  useEffect(() => {
+    getAllSavedVideosOfUser(currentUser?.uid);
+  }, []);
 
   // useEffect(() => {
   //   getCount();
   // }, []);
 
-  const likesCountsFilter = likeAndDislikeCount.filter(
-    (likes) => likes?.vid_id === data?.vid_id
-  );
-  const { likecount } = likesCountsFilter[0] || {};
+  // const likesCountsFilter = likeAndDislikeCount?.filter(
+  //   (likes) => likes?.vid_id === data?.vid_id
+  // );
+  // const { likecount } = likesCountsFilter[0] || {};
 
   function removeVideoIdFromZustandStore(vid_id) {
     toggleVideoId(vid_id);
@@ -213,9 +214,10 @@ function Card({ data }) {
                   setImgSrc(alternative_img_link);
                 }}
               />
-              <div className="bg-black w-12 h-12 rounded-full absolute m-2 top-0">
+              {/* <div className="bg-black w-12 h-12 rounded-full absolute m-2 top-0">
                 Pfp
-              </div>
+              </div> */}
+
               <div className="flex gap-2 items-center bg-[#121212] w-fit px-1 m-2 border border-white rounded-full py-1 my-2 absolute bottom-0">
                 <span className="flex">
                   {likeStoreCopy.includes(data?.unique_id) ? (
@@ -231,7 +233,9 @@ function Card({ data }) {
                       onClick={(e) => handleLikeCount(e)}
                     />
                   )}
-                  <span className={`dark:text-gray-300`}>{likecount}</span>
+                  <span className={`dark:text-gray-300`}>
+                    {data?.likecount}
+                  </span>
                 </span>
                 <TbArrowBigDown className="w-6 h-6 cursor-pointer" />
               </div>
