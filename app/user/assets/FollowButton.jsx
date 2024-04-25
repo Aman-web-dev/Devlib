@@ -37,7 +37,7 @@ function FollowButton({ followed_id }) {
         setFollowed(false);
       }
     } catch (error) {
-      alert(error.message);
+     console.log(error)
     }
   };
 
@@ -50,35 +50,36 @@ function FollowButton({ followed_id }) {
   }
 
   return (
-    <div class="flex flex-wrap justify-center gap-6">
-      {followed ? (
-        <button
-          href="#"
-          class="relative"
-          onClick={() => {
-            handleUserUnfollow();
-          }}
-        >
-          <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-gray-700"></span>
-          <span class="fold-bold relative inline-block h-full w-full rounded border-2 border-black bg-black px-3 py-1 text-base font-bold text-white transition duration-100 hover:bg-gray-900 hover:text-yellow-500">
-            Following
-          </span>
-        </button>
-      ) : (
-        <button
-          class="relative"
-          href="#"
-          onClick={() => {
-            handleUserFollow();
-          }}
-        >
-          <span class="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-black"></span>
-          <span class="fold-bold relative inline-block h-full w-full rounded border-2 border-black bg-white px-3 py-1 text-base font-bold text-black transition duration-100 hover:bg-yellow-400 hover:text-gray-900">
-            Follow
-          </span>
-        </button>
-      )}
-    </div>
+    
+      <div className="flex flex-wrap justify-center gap-6 z-0  rounded-lg mx-2">
+        {followed ? (
+          <button
+            href="#"
+            className=""
+            onClick={() => {
+              handleUserUnfollow();
+            }}
+          >
+            <span className=" top-0 left-0 mt-1 ml-1 h-full w-full  rounded bg-gray-700"></span>
+            <span className="fold-bold relative inline-block h-full  w-full rounded border-2 border-white bg-black px-3 py-1 text-base font-bold text-white transition duration-100 hover:bg-gray-900 hover:text-yellow-500">
+              Following
+            </span>
+          </button>
+        ) : (
+          <button
+            className="relative"
+            href="#"
+            onClick={() => {
+              handleUserFollow();
+            }}
+          >
+            <span className="top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-blue-400"></span>
+            <span className="fold-bold  inline-block h-full w-full rounded border-2 border-blue-600 bg-blue-400  px-3 py-1 text-base font-bold text-white transition duration-100 hover:bg-blue-900 hover:text-gray-200 hover:border-gray-300">
+              Follow
+            </span>
+          </button>
+        )}
+      </div>
   );
 }
 

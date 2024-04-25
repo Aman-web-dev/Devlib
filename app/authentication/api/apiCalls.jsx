@@ -8,6 +8,7 @@ export const fetchPostData = async (url, obj) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(obj),
+    cache:"force-cache"
   }).then(async (response) => {
     const final = await response.text();
     console.log("responseOf: ", url, final);
