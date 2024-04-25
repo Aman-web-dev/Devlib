@@ -1,9 +1,6 @@
 "use client";
 
-
 import React, { useState } from 'react';
-
-import 'react-quill/dist/quill.snow.css';
 import Editor from './Assets/Editor';
 import Preview from './Assets/Preview';
 
