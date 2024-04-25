@@ -10,6 +10,7 @@ import ShimmerEffect from "@/app/components/ShimmerEffect";
 export default function ArticlePage() {
   const [articleData, setArticleData] = useState(null);
   const [errors, setErrors] = useState(null);
+  const [isMounted, setIsMounted] = useState(null);
   const likeStoreCopy = [];
   const savedVideos = [];
   const getAllArticles = async () => {
@@ -36,11 +37,15 @@ export default function ArticlePage() {
   };
 
   useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
+  useEffect(() => {
     getAllArticles();
   }, []);
 
-  console.log("article-data: ", articleData);
-  console.log("errors: ", errors);
+  console.log(isMounted);
   return (
     <>
       {!errors ? (

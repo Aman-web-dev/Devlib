@@ -1,6 +1,6 @@
 "use client";
+import { useCallback } from "react";
 import { create } from "zustand";
-
 // function to get all liked videos by user;
 async function getAllLikedVideoByUser(userId) {
   try {
@@ -8,7 +8,7 @@ async function getAllLikedVideoByUser(userId) {
       return [];
     } else if (userId) {
       const likedVideoResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllLikedVideos`,
+        `http://localhost:4000/api/getAllLikedVideos`,
         {
           method: "POST",
           headers: {
@@ -18,35 +18,13 @@ async function getAllLikedVideoByUser(userId) {
         }
       );
       const response = await likedVideoResponse.json();
-      // console.log("all likes response: ", response);
       return !response?.data?.liked_videos ? [] : response?.data?.liked_videos;
     }
   } catch (error) {
     console.log("error in getting all likes: ", error);
+    return [];
   }
 }
-// https://dev-lib-server.vercel.app
-const videoData = async () => {
-  try {
-    const videoResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/youtubeVideos`,
-      {
-        method: "GET",
-      }
-    );
-    if (videoResponse.ok) {
-      const result = await videoResponse.json();
-      return !result?.data ? [] : result?.data;
-    } else {
-      return {
-        error: "Unable to fetch videos. Please try again later.",
-      };
-    }
-  } catch (error) {
-    console.log("error during fetching data: ", error);
-  }
-};
-
 // get all saved videos of a user
 async function getAllSavedVideosData(userId) {
   try {
@@ -54,7 +32,7 @@ async function getAllSavedVideosData(userId) {
       return [];
     } else {
       const savedVideosResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllSavedVideos`,
+        `http://localhost:4000/api/getAllSavedVideos`,
         {
           method: "POST",
           headers: {
@@ -69,14 +47,15 @@ async function getAllSavedVideosData(userId) {
     }
   } catch (error) {
     console.error("error while fetching saved videos: ", error);
+    return [];
   }
 }
 
 // api to get total likes and dislikes
-const getTotalLikesAndDislikes = async () => {
+const getTotalLikesAndDislikes = async (page) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/videos/likesAndDislikes`,
+      `http://localhost:4000/api/fetch/videos/likesAndDislikes`,
       {
         method: "GET",
       }
@@ -176,6 +155,33 @@ const updateUserComment = async (id, comment) => {
   }
 };
 
+const fetchAllVideos = async (query, page, { setPage, setHasMore }) => {
+  try {
+    let url;
+    setPage(page + 1);
+    console.log("page: ", page);
+    if (query !== "") {
+      url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}&q=${query}`;
+      console.log("using query");
+    } else {
+      url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}`;
+      console.log("not using query");
+    }
+    console.log("urls: ", url);
+    const response = await fetch(url, {
+      method: "GET",
+    });
+    const data = await response.json();
+    if (data?.data.length === 0) {
+      setHasMore(false);
+    }
+    return data.data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+};
+
 export const useCommentStore = create((set) => ({
   commentStore: [],
   addComment: (
@@ -272,9 +278,7 @@ export const useLikeAndDislikeCount = create((set) => ({
   },
   toggleLikeCount: (unique_id) => {
     set((state) => {
-      // console.log("vid_id from zuststore: ", vid_id);
       const isLiked = useLikeStore.getState().likeStore.includes(unique_id);
-      console.log("isLiked: ", isLiked);
       const newData = state.likeAndDislikeCount.map((data) => {
         if (data.unique_id === unique_id) {
           return {
@@ -286,14 +290,6 @@ export const useLikeAndDislikeCount = create((set) => ({
       });
       return { likeAndDislikeCount: newData };
     });
-  },
-}));
-
-export const useVideoStore = create((set) => ({
-  videoStore: [],
-  getAllVideos: async () => {
-    const response = await videoData();
-    set({ videoStore: response });
   },
 }));
 
@@ -313,6 +309,20 @@ export const useSavedVideoStore = create((set) => ({
         return { savedVideoStore: [...state.savedVideoStore, vid_id] };
       }
     });
+  },
+}));
+
+export const useVideoStore = create((set) => ({
+  videoStore: [],
+  getVideos: async (query, page, { setPage, setHasMore }) => {
+    const response = await fetchAllVideos(query, page, { setPage, setHasMore });
+
+    set((state) => {
+      return { videoStore: [...state.videoStore, ...response] };
+    });
+  },
+  emptyVideoStore: () => {
+    set({ videoStore: [] });
   },
 }));
 

@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from "react";
 import { useRef } from "react";
 import { AuthContext } from "@/utils (Context)/authContext";
 import { toast } from "react-toastify";
-import { useVideoStore } from "@/utils (Context)/zustStores";
 
 const initialValues = { title: "", url: "", comment: "", review: "", tags: "" };
 
@@ -12,11 +11,6 @@ const AddVideoForm = () => {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const formRef = useRef();
   const { currentUser } = useContext(AuthContext);
-  // const { getAllVideos, videoStore } = useVideoStore();
-
-  // useEffect(() => {
-  //   getAllVideos();
-  // }, []);
 
   function extractId(url) {
     return new Promise((resolve, reject) => {
@@ -46,10 +40,11 @@ const AddVideoForm = () => {
     tags: Yup.string().required("Tags are required"),
     // review: Yup.string().required("Please select one"),
   });
-  // ${process.env.NEXT_PUBLIC_SERVER_URL}
+
   const handleFormSubmission = async (values, { setSubmitting, resetForm }) => {
     try {
       setIsFormSubmitting(true);
+
       const id = await extractId(values.url);
       if (id !== null || id !== undefined) {
         const tags = [values.tags];
