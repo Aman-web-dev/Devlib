@@ -1,4 +1,5 @@
 "use client";
+import { useCallback } from "react";
 import { create } from "zustand";
 // function to get all liked videos by user;
 async function getAllLikedVideoByUser(userId) {
@@ -154,6 +155,33 @@ const updateUserComment = async (id, comment) => {
   }
 };
 
+const fetchAllVideos = async (query, page, { setPage, setHasMore }) => {
+  try {
+    let url;
+    setPage(page + 1);
+    console.log("page: ", page);
+    if (query !== "") {
+      url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}&q=${query}`;
+      console.log("using query");
+    } else {
+      url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}`;
+      console.log("not using query");
+    }
+    console.log("urls: ", url);
+    const response = await fetch(url, {
+      method: "GET",
+    });
+    const data = await response.json();
+    if (data?.data.length === 0) {
+      setHasMore(false);
+    }
+    return data.data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+};
+
 export const useCommentStore = create((set) => ({
   commentStore: [],
   addComment: (
@@ -281,6 +309,20 @@ export const useSavedVideoStore = create((set) => ({
         return { savedVideoStore: [...state.savedVideoStore, vid_id] };
       }
     });
+  },
+}));
+
+export const useVideoStore = create((set) => ({
+  videoStore: [],
+  getVideos: async (query, page, { setPage, setHasMore }) => {
+    const response = await fetchAllVideos(query, page, { setPage, setHasMore });
+
+    set((state) => {
+      return { videoStore: [...state.videoStore, ...response] };
+    });
+  },
+  emptyVideoStore: () => {
+    set({ videoStore: [] });
   },
 }));
 

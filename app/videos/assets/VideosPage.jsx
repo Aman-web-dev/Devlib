@@ -7,62 +7,38 @@ import Link from "next/link";
 import { AuthContext } from "@/utils (Context)/authContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SearchComponent from "@/app/components/SearchComponent";
+import { useVideoStore } from "@/utils (Context)/zustStores";
 
 function AddNewArticles() {
   const { currentUser } = useContext(AuthContext);
   const [query, setQuery] = useState("");
-  const [videoStore, setVideoStore] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  console.log("videos: ", videoStore);
-
-  const getVideos = (page, query) => {
-    try {
-      setTimeout(async () => {
-        let url;
-        console.log("videos-store inside getVideos: ", videoStore);
-        setPage(page + 1);
-        console.log("page values after prev(): ", page);
-        if (query !== "") {
-          url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}&search=${query}`;
-          console.log("using query");
-        } else {
-          url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}`;
-          console.log("not using query");
-        }
-        const response = await fetch(url);
-        const data = await response.json();
-        if (data?.data?.length === 0) {
-          console.log("length is 0");
-          setHasMore(false);
-        }
-        setVideoStore([...videoStore, ...data.data]);
-      }, 500);
-
-      //  setLoading(false);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const ifQuery = () => {
-    setVideoStore((prev) => []);
-    console.log("video-store inside ifQuery: ", videoStore);
-    getVideos(1, query);
-  };
+  const { getVideos, videoStore, emptyVideoStore } = useVideoStore();
 
   useEffect(() => {
-    getVideos(page, query);
+    const delay = setTimeout(() => {
+      getVideos(query, page, { setPage, setHasMore });
+    }, 1000);
+
+    return () => clearTimeout(delay);
   }, []);
+
+  // const ifQuery = () => {
+  //   emptyVideoStore();
+  //   getVideos(query, 1, { setPage, setHasMore });
+  // };
+
   return (
     <section
       className={`dark:bg-[#121212] w-full px-12 py-12 relative min-h-screen gap-8`}
     >
-      <SearchComponent
+      {/* <SearchComponent
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onClick={() => ifQuery()}
-      />
+      /> */}
+
       {videoStore?.length !== 0 ? (
         <InfiniteScroll
           endMessage={
@@ -75,7 +51,9 @@ function AddNewArticles() {
           }
           dataLength={videoStore.length}
           hasMore={hasMore}
-          next={() => getVideos(page)}
+          next={() => {
+            getVideos(query, page, { setPage, setHasMore });
+          }}
         >
           {videoStore?.map((data) => (
             <Link href={`videos/${data?.vid_id}`} key={data?.id}>
@@ -86,6 +64,7 @@ function AddNewArticles() {
       ) : (
         <ShimmerEffect />
       )}
+
       <Link
         className={`dark:bg-[#149eca] fixed right-10 bottom-10 p-4 rounded-full`}
         href={!currentUser ? "/authentication" : "/videos/addNewVideo"}
@@ -110,3 +89,50 @@ function AddNewArticles() {
 }
 
 export default AddNewArticles;
+
+// const getVideos = (page, query) => {
+//   try {
+//     setTimeout(async () => {
+//       let url;
+//       console.log("videos-store inside getVideos: ", videoStore);
+//       setPage(page + 1);
+//       // console.log("page values after prev(): ", page);
+//       if (query !== "") {
+//         url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}&search=${query}`;
+//         console.log("using query");
+//       } else {
+//         url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}`;
+//         console.log("not using query");
+//       }
+//       const response = await fetch(url);
+//       const data = await response.json();
+//       if (data?.data?.length === 0) {
+//         // console.log("length is 0");
+//         setHasMore(false);
+//       }
+//       setVideoStore([...videoStore, ...data.data]);
+//     }, 500);
+
+//     //  setLoading(false);
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
+
+// const ifQuery = () => {
+//   setTimeout(() => {
+//     setVideoStore([]);
+//   }, 0);
+//   console.log("increment value: ", incrementStore);
+//   getVideos(1, query);
+//   console.log("increment value after getVideos function: ", incrementStore); // Empty the videoStore state
+// };
+
+// useEffect(() => {
+//   getVideos(page, query);
+// }, []);
+// console.log("video-store after useEffect ifQuery: ", videoStore);
+// useEffect(() => {
+//   setIsMounted(true);
+//   return () => setIsMounted(false);
+// }, []);
