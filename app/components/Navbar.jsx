@@ -73,11 +73,9 @@ const Navbar = () => {
               width={50}
               height={50}
               alt="Dev lib"
-              className=""
+              priority={true}
             />
           </Link>
-
-          <NavSearchButton />
 
           <button
             onClick={() => {
@@ -111,16 +109,19 @@ const Navbar = () => {
               <ul
                 className={`font-medium flex flex-col md:flex-row p-4 md:p-0 md:items-center mt-4 border md:mt-0 md:border-0 gap-8`}
               >
-                {userLoggedIn && (
+                {/* {userLoggedIn && (
                   <li>
                     <SessionTimer />
                   </li>
-                )}
+                )} */}
 
-                <li className={`${pathName === "/" && "text-blue-500"}`}>
+                {/* <li className={`${pathName === "/" && "text-blue-500"}`}>
                   <Link href="/" className="">
                     Home
                   </Link>
+                </li> */}
+                <li>
+                  <NavSearchButton />
                 </li>
 
                 <li className={`${pathName === "/videos" && " text-blue-500"}`}>
@@ -199,7 +200,7 @@ const Navbar = () => {
                       fill="none"
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
-                      stroke={theme === "light" && "black"}
+                      stroke={theme === "light" ? "black" : "white"}
                       className="w-6 h-6 cursor-pointer"
                       onClick={() => toggleTheme()}
                     >
