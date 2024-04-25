@@ -1,35 +1,52 @@
-"use client";
+'use client'
+
+import React from 'react';
+import { Editor } from '@tinymce/tinymce-react';
+import { useTheme } from 'next-themes';
+
+export default function EditorPain() {
+    const {theme}=useTheme()
 
 
-import React, { useEffect, useState } from 'react';
-import Trix from "trix"
-
-
-function Editor(props) {
-
-    const [value,setValue]=useState()
-
-    document.addEventListener("trix-before-initialize", () => {
-      // Change Trix.config if you need
-    })
-
-    useEffect(()=>{
-        props.handleData(value)
-    },[value])
   return (
-    <div className='w-1/2 h-full text-wrap' >
-      <trix-toolbar></trix-toolbar>
-     <trix-editor id='one' className="synap-trix-content" placeholder="Enter note here">
+    <Editor
+      apiKey='s6hca8dikwmog7ba2xepao0c1irtcudm2pk745vxfriakp1u'
+      init={{
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate  tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        height: '100vh',
+        tinycomments_author: 'Author name',
+        mergetags_list: [
+          { value: 'First.Name', title: 'First Name' },
+          { value: 'Email', title: 'Email' },
+        ],
+        content_style: `
+        body {
+            background: ${theme=="dark"?"#000000":"#78282"};
+        }
 
+        @media (min-width: 840px) {
+            html {
+                background: #3C8693;
+                min-height: 100%;
+                padding: 0 .5rem
+            }
 
-  
-     </trix-editor>
-     <form>
-  <input id="x" type="hidden" name="content"/>
-  <trix-editor input="x"></trix-editor>
-</form>
-    </div>
-  )
+            body {
+                background-color:#fff;
+                box-shadow: 0 0 4px rgba(0, 0, 0, .15);
+                box-sizing: border-box;
+                margin: 1rem auto 0;
+                max-width: 1000px;
+                min-height: calc(100vh - 1rem);
+                padding:4rem 6rem 6rem 6rem
+            }
+        }
+    `,
+        
+      }}
+      initialValue="Get Started With Your Devlib Blog"
+    />
+  );
 }
-
-export default Editor

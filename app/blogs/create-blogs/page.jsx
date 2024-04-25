@@ -1,23 +1,12 @@
-"use client";
+import React from 'react'
+import EditorPain from './Assets/Editor'
 
-import React, { useState } from 'react';
-import Editor from './Assets/Editor';
-import Preview from './Assets/Preview';
-
-
-function Page() {
-  const [data,setData]=useState()
-
- const  handleEditData=(val)=>{
-  setData(val)
-  }
-
+function page() {
   return (
-    <div className="min-h-screen max-w-[100vw] flex flex-row">
-      <Editor handleData={handleEditData}/>
-      <Preview text={data}/>
+    <div className='h-screen'>
+      <EditorPain/>
     </div>
-  );
+  )
 }
 
-export default Page;
+export default page
