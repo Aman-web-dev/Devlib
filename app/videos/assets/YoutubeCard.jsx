@@ -20,10 +20,10 @@ function Card({ data }) {
   const { savedVideoStore, getAllSavedVideosOfUser, toggleSavedVideos } =
     useSavedVideoStore();
   const router = useRouter();
-  const { likeAndDislikeCount, getCount, toggleLikeCount } =
-    useLikeAndDislikeCount();
+  const { getCount, toggleLikeCount } = useLikeAndDislikeCount();
   // console.log("likes and dislike count: ", likeAndDislikeCount);
   const likeStoreCopy = [...likeStore];
+  console.log("likeStore: ", likeStoreCopy);
   const savedVideoStoreCopy = [...savedVideoStore];
   // console.log("likestore-copy: ", likeStoreCopy);
 
@@ -34,15 +34,6 @@ function Card({ data }) {
   useEffect(() => {
     getAllSavedVideosOfUser(currentUser?.uid);
   }, []);
-
-  // useEffect(() => {
-  //   getCount();
-  // }, []);
-
-  // const likesCountsFilter = likeAndDislikeCount?.filter(
-  //   (likes) => likes?.vid_id === data?.vid_id
-  // );
-  // const { likecount } = likesCountsFilter[0] || {};
 
   function removeVideoIdFromZustandStore(vid_id) {
     toggleVideoId(vid_id);
@@ -67,9 +58,9 @@ function Card({ data }) {
       if (!currentUser?.uid) {
         router.push("/authentication");
       } else {
-        if (!likeStoreCopy.includes(data?.unique_id)) {
-          toggleLikeCount(data?.unique_id);
-          addVideoIdInLikeStore(data?.unique_id);
+        if (!likeStoreCopy.includes(data?.id.toString())) {
+          toggleLikeCount(data?.id);
+          addVideoIdInLikeStore(data?.id);
           const incrementLikeCountPromise = fetch(
             "http://localhost:4000/api/incrementLikeCount",
             {
@@ -77,7 +68,7 @@ function Card({ data }) {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ unique_id: data?.unique_id }),
+              body: JSON.stringify({ unique_id: data?.id }),
             }
           );
 
@@ -90,7 +81,7 @@ function Card({ data }) {
               },
               body: JSON.stringify({
                 userId: currentUser?.uid,
-                vid_id: data?.unique_id,
+                vid_id: data?.id.toString(),
               }),
             }
           );
@@ -99,11 +90,11 @@ function Card({ data }) {
             await Promise.all([incrementLikeCountPromise, addUserLikePromise]);
           if (!incrementLikeCountResponse.ok || !addUserLikeResponse.ok) {
             console.log("making like zero again");
-            toggleLikeCount(data?.unique_id);
+            toggleLikeCount(data?.id);
           }
         } else {
-          toggleLikeCount(data?.unique_id);
-          removeVideoIdFromZustandStore(data?.unique_id);
+          toggleLikeCount(data?.id);
+          removeVideoIdFromZustandStore(data?.id);
           const removeLikeVideoPromise = fetch(
             "http://localhost:4000/api/removeUserLikedVideo",
             {
@@ -113,7 +104,7 @@ function Card({ data }) {
               },
               body: JSON.stringify({
                 userId: currentUser.uid,
-                unique_id: data?.unique_id,
+                unique_id: data?.id,
               }),
             }
           );
@@ -124,7 +115,7 @@ function Card({ data }) {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ unique_id: data?.unique_id }),
+              body: JSON.stringify({ unique_id: data?.id }),
             }
           );
 
@@ -135,7 +126,7 @@ function Card({ data }) {
             ]);
           if (!removeLikeVideoResponse.ok || !decrementLikeCountResponse.ok) {
             console.log("making like one again");
-            toggleLikeCount(data?.unique_id);
+            toggleLikeCount(data?.id);
           }
         }
       }
@@ -220,7 +211,7 @@ function Card({ data }) {
 
               <div className="flex gap-2 items-center bg-[#121212] w-fit px-1 m-2 border border-white rounded-full py-1 my-2 absolute bottom-0">
                 <span className="flex">
-                  {likeStoreCopy.includes(data?.unique_id) ? (
+                  {likeStoreCopy.includes((data?.id).toString()) ? (
                     <TbArrowBigUpFilled
                       className="w-6 h-6 cursor-pointer"
                       onClick={(e) => {

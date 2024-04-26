@@ -1,5 +1,4 @@
 "use client";
-import { useCallback } from "react";
 import { create } from "zustand";
 // function to get all liked videos by user;
 async function getAllLikedVideoByUser(userId) {
@@ -255,15 +254,18 @@ const useLikeStore = create((set) => ({
     const response = await getAllLikedVideoByUser(userId);
     set({ likeStore: response });
   },
-  toggleVideoId: (vid_id) => {
+  toggleVideoId: (id) => {
     set((state) => {
-      if (state.likeStore.includes(vid_id)) {
+      if (state.likeStore.includes(id.toString())) {
+        console.log("likeStore includes the id");
         return {
-          likeStore: state.likeStore.filter((id) => id !== vid_id),
+          likeStore: state.likeStore.filter(
+            (primary_id) => primary_id !== id.toString()
+          ),
         };
       } else {
         return {
-          likeStore: [...state.likeStore, vid_id],
+          likeStore: [...state.likeStore, id.toString()],
         };
       }
     });

@@ -158,14 +158,14 @@ const AddVideoForm = () => {
                 value={values.comment}
               />
             </div>
-            <div className="gap-2" id="review">
-              <label htmlFor="review">Satisfaction level?*</label>
+            {/* <div className="gap-2" id="review"> */}
+            {/* <label htmlFor="review">Satisfaction level?*</label>
               <ErrorMessage
                 component={"span"}
                 name="review"
                 className="text-red-600 text-sm"
               />
-            </div>
+            </div> */}
 
             {/* tags */}
             <div className="w-full">

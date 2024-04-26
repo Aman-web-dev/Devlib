@@ -17,6 +17,7 @@ function AddNewArticles() {
   const { getVideos, videoStore, emptyVideoStore } = useVideoStore();
 
   useEffect(() => {
+    emptyVideoStore();
     const delay = setTimeout(() => {
       getVideos(query, page, { setPage, setHasMore });
     }, 1000);
@@ -24,20 +25,20 @@ function AddNewArticles() {
     return () => clearTimeout(delay);
   }, []);
 
-  // const ifQuery = () => {
-  //   emptyVideoStore();
-  //   getVideos(query, 1, { setPage, setHasMore });
-  // };
+  const ifQuery = () => {
+    emptyVideoStore();
+    getVideos(query, 1, { setPage, setHasMore });
+  };
 
   return (
     <section
       className={`dark:bg-[#121212] w-full px-12 py-12 relative min-h-screen gap-8`}
     >
-      {/* <SearchComponent
+      <SearchComponent
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onClick={() => ifQuery()}
-      /> */}
+      />
 
       {videoStore?.length !== 0 ? (
         <InfiniteScroll
