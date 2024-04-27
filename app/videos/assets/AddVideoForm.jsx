@@ -51,7 +51,7 @@ const AddVideoForm = () => {
         try {
           setTimeout(async () => {
             const addVideoResponse = await fetch(
-              `http://localhost:4000/addVideo`,
+              `${process.env.NEXT_PUBLIC_SERVER_URL}/addVideo`,
               {
                 method: "POST",
                 headers: {
@@ -158,14 +158,14 @@ const AddVideoForm = () => {
                 value={values.comment}
               />
             </div>
-            <div className="gap-2" id="review">
-              <label htmlFor="review">Satisfaction level?*</label>
+            {/* <div className="gap-2" id="review"> */}
+            {/* <label htmlFor="review">Satisfaction level?*</label>
               <ErrorMessage
                 component={"span"}
                 name="review"
                 className="text-red-600 text-sm"
               />
-            </div>
+            </div> */}
 
             {/* tags */}
             <div className="w-full">

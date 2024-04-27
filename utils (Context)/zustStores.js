@@ -1,5 +1,4 @@
 "use client";
-import { useCallback } from "react";
 import { create } from "zustand";
 // function to get all liked videos by user;
 async function getAllLikedVideoByUser(userId) {
@@ -8,7 +7,7 @@ async function getAllLikedVideoByUser(userId) {
       return [];
     } else if (userId) {
       const likedVideoResponse = await fetch(
-        `http://localhost:4000/api/getAllLikedVideos`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllLikedVideos`,
         {
           method: "POST",
           headers: {
@@ -55,7 +54,7 @@ async function getAllSavedVideosData(userId) {
 const getTotalLikesAndDislikes = async (page) => {
   try {
     const response = await fetch(
-      `http://localhost:4000/api/fetch/videos/likesAndDislikes`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/videos/likesAndDislikes`,
       {
         method: "GET",
       }
@@ -82,7 +81,7 @@ const postUserComment = async (
       setIsCommenting(true);
       console.log("currentUser: ", currentUser);
       const commentResponse = await fetch(
-        `http://localhost:4000/api/addComment`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/addComment`,
         {
           method: "POST",
           headers: {
@@ -108,13 +107,16 @@ const postUserComment = async (
 
 const getAllComments = async (id) => {
   try {
-    const response = await fetch("http://localhost:4000/api/getAllComments", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ vid_id: id }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllComments`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ vid_id: id }),
+      }
+    );
     const result = await response.json();
     return !result ? [] : result;
     // console.log("result: ", result);
@@ -127,7 +129,7 @@ const getAllComments = async (id) => {
 const deleteCommentApi = async (id) => {
   try {
     const deleteCommentResponse = await fetch(
-      "http://localhost:4000/api/comment/delete",
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/comment/delete`,
       {
         method: "POST",
         headers: {
@@ -143,13 +145,16 @@ const deleteCommentApi = async (id) => {
 
 const updateUserComment = async (id, comment) => {
   try {
-    const response = await fetch("http://localhost:4000/api/comment/update", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ comment: comment, id: id }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/comment/update`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ comment: comment, id: id }),
+      }
+    );
   } catch (error) {
     console.log("error while updating comment: ", error);
   }
@@ -161,10 +166,10 @@ const fetchAllVideos = async (query, page, { setPage, setHasMore }) => {
     setPage(page + 1);
     console.log("page: ", page);
     if (query !== "") {
-      url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}&q=${query}`;
+      url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/youtubeVideos?page=${page}&q=${query}`;
       console.log("using query");
     } else {
-      url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}`;
+      url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/youtubeVideos?page=${page}`;
       console.log("not using query");
     }
     console.log("urls: ", url);
@@ -255,15 +260,18 @@ const useLikeStore = create((set) => ({
     const response = await getAllLikedVideoByUser(userId);
     set({ likeStore: response });
   },
-  toggleVideoId: (vid_id) => {
+  toggleVideoId: (id) => {
     set((state) => {
-      if (state.likeStore.includes(vid_id)) {
+      if (state.likeStore.includes(id.toString())) {
+        console.log("likeStore includes the id");
         return {
-          likeStore: state.likeStore.filter((id) => id !== vid_id),
+          likeStore: state.likeStore.filter(
+            (primary_id) => primary_id !== id.toString()
+          ),
         };
       } else {
         return {
-          likeStore: [...state.likeStore, vid_id],
+          likeStore: [...state.likeStore, id.toString()],
         };
       }
     });
@@ -277,13 +285,18 @@ export const useLikeAndDislikeCount = create((set) => ({
     set({ likeAndDislikeCount: response });
   },
   toggleLikeCount: (unique_id) => {
+    // console.log(typeof unique_id);
     set((state) => {
       const isLiked = useLikeStore.getState().likeStore.includes(unique_id);
+      isLiked
+        ? console.log("yes id founded")
+        : console.log("no id not founded");
       const newData = state.likeAndDislikeCount.map((data) => {
-        if (data.unique_id === unique_id) {
+        if (data?.id.toString() === unique_id) {
+          console.log("found");
           return {
             ...data,
-            likecount: isLiked ? data.likecount - 1 : data.likecount + 1,
+            like_count: isLiked ? data.like_count - 1 : data.like_count + 1,
           };
         }
         return data;

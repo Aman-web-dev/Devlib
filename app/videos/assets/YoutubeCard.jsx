@@ -20,29 +20,25 @@ function Card({ data }) {
   const { savedVideoStore, getAllSavedVideosOfUser, toggleSavedVideos } =
     useSavedVideoStore();
   const router = useRouter();
-  const { likeAndDislikeCount, getCount, toggleLikeCount } =
+  const { getCount, toggleLikeCount, likeAndDislikeCount } =
     useLikeAndDislikeCount();
   // console.log("likes and dislike count: ", likeAndDislikeCount);
   const likeStoreCopy = [...likeStore];
+  // console.log("likeStore: ", likeStoreCopy);
   const savedVideoStoreCopy = [...savedVideoStore];
   // console.log("likestore-copy: ", likeStoreCopy);
-
+  // console.log(likeAndDislikeCount);
   useEffect(() => {
     getUserLikes(currentUser?.uid);
   }, []);
 
   useEffect(() => {
-    getAllSavedVideosOfUser(currentUser?.uid);
+    getCount();
   }, []);
 
-  // useEffect(() => {
-  //   getCount();
-  // }, []);
-
-  // const likesCountsFilter = likeAndDislikeCount?.filter(
-  //   (likes) => likes?.vid_id === data?.vid_id
-  // );
-  // const { likecount } = likesCountsFilter[0] || {};
+  useEffect(() => {
+    getAllSavedVideosOfUser(currentUser?.uid);
+  }, []);
 
   function removeVideoIdFromZustandStore(vid_id) {
     toggleVideoId(vid_id);
@@ -67,9 +63,9 @@ function Card({ data }) {
       if (!currentUser?.uid) {
         router.push("/authentication");
       } else {
-        if (!likeStoreCopy.includes(data?.unique_id)) {
-          toggleLikeCount(data?.unique_id);
-          addVideoIdInLikeStore(data?.unique_id);
+        if (!likeStoreCopy.includes(data?.id.toString())) {
+          toggleLikeCount(data?.id.toString());
+          addVideoIdInLikeStore(data?.id);
           const incrementLikeCountPromise = fetch(
             "http://localhost:4000/api/incrementLikeCount",
             {
@@ -77,7 +73,7 @@ function Card({ data }) {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ unique_id: data?.unique_id }),
+              body: JSON.stringify({ primary_id: data?.id }),
             }
           );
 
@@ -90,20 +86,20 @@ function Card({ data }) {
               },
               body: JSON.stringify({
                 userId: currentUser?.uid,
-                vid_id: data?.unique_id,
+                vid_id: data?.id.toString(),
               }),
             }
           );
-          console.log("add-user-like-promise: ", addUserLikePromise);
+          // console.log("add-user-like-promise: ", addUserLikePromise);
           const [incrementLikeCountResponse, addUserLikeResponse] =
             await Promise.all([incrementLikeCountPromise, addUserLikePromise]);
           if (!incrementLikeCountResponse.ok || !addUserLikeResponse.ok) {
             console.log("making like zero again");
-            toggleLikeCount(data?.unique_id);
+            toggleLikeCount(data?.id.toString());
           }
         } else {
-          toggleLikeCount(data?.unique_id);
-          removeVideoIdFromZustandStore(data?.unique_id);
+          toggleLikeCount(data?.id.toString());
+          removeVideoIdFromZustandStore(data?.id);
           const removeLikeVideoPromise = fetch(
             "http://localhost:4000/api/removeUserLikedVideo",
             {
@@ -113,7 +109,7 @@ function Card({ data }) {
               },
               body: JSON.stringify({
                 userId: currentUser.uid,
-                unique_id: data?.unique_id,
+                unique_id: data?.id,
               }),
             }
           );
@@ -124,7 +120,7 @@ function Card({ data }) {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ unique_id: data?.unique_id }),
+              body: JSON.stringify({ primary_id: data?.id }),
             }
           );
 
@@ -135,7 +131,7 @@ function Card({ data }) {
             ]);
           if (!removeLikeVideoResponse.ok || !decrementLikeCountResponse.ok) {
             console.log("making like one again");
-            toggleLikeCount(data?.unique_id);
+            toggleLikeCount(data?.id.toString());
           }
         }
       }
@@ -214,13 +210,14 @@ function Card({ data }) {
                   setImgSrc(alternative_img_link);
                 }}
               />
+
               {/* <div className="bg-black w-12 h-12 rounded-full absolute m-2 top-0">
                 Pfp
               </div> */}
 
               <div className="flex gap-2 items-center bg-[#121212] w-fit px-1 m-2 border border-white rounded-full py-1 my-2 absolute bottom-0">
                 <span className="flex">
-                  {likeStoreCopy.includes(data?.unique_id) ? (
+                  {likeStoreCopy.includes((data?.id).toString()) ? (
                     <TbArrowBigUpFilled
                       className="w-6 h-6 cursor-pointer"
                       onClick={(e) => {
@@ -234,7 +231,11 @@ function Card({ data }) {
                     />
                   )}
                   <span className={`dark:text-gray-300`}>
-                    {data?.likecount}
+                    {
+                      likeAndDislikeCount.find(
+                        (count) => count?.id === data?.id
+                      )?.like_count
+                    }
                   </span>
                 </span>
                 <TbArrowBigDown className="w-6 h-6 cursor-pointer" />
@@ -260,7 +261,7 @@ function Card({ data }) {
             </div>
           </div>
         </div>
-        <div className="px-4 py-2">
+        {/* <div className="px-4 py-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill={
@@ -280,7 +281,7 @@ function Card({ data }) {
               d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
             />
           </svg>
-        </div>
+        </div> */}
       </div>
     </div>
   );
