@@ -51,7 +51,7 @@ const AddVideoForm = () => {
         try {
           setTimeout(async () => {
             const addVideoResponse = await fetch(
-              `http://localhost:4000/addVideo`,
+              `${process.env.NEXT_PUBLIC_SERVER_URL}/addVideo`,
               {
                 method: "POST",
                 headers: {

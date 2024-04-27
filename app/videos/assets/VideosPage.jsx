@@ -34,11 +34,11 @@ function AddNewArticles() {
     <section
       className={`dark:bg-[#121212] w-full px-12 py-12 relative min-h-screen gap-8`}
     >
-      <SearchComponent
+      {/* <SearchComponent
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onClick={() => ifQuery()}
-      />
+      /> */}
 
       {videoStore?.length !== 0 ? (
         <InfiniteScroll
