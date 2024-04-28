@@ -160,18 +160,28 @@ const updateUserComment = async (id, comment) => {
   }
 };
 
-const fetchAllVideos = async (query, page, { setPage, setHasMore }) => {
+const fetchAllVideos = async (
+  query,
+  page,
+  { setPage, setHasMore },
+  isPopular
+) => {
   try {
     let url;
+    console.log("isPopular: ", isPopular);
     setPage(page + 1);
-    console.log("page: ", page);
-    if (query !== "") {
-      url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/youtubeVideos?page=${page}&q=${query}`;
+
+    if (query !== "" && !isPopular) {
+      url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}&q=${query}`;
       console.log("using query");
-    } else {
+    } else if (!query && !isPopular) {
       url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/youtubeVideos?page=${page}`;
       console.log("not using query");
+    } else if (isPopular) {
+      console.log("using popular url");
+      url = `http://localhost:4000/api/fetch/popularVideos?page=${page}`;
     }
+
     console.log("urls: ", url);
     const response = await fetch(url, {
       method: "GET",
@@ -327,8 +337,13 @@ export const useSavedVideoStore = create((set) => ({
 
 export const useVideoStore = create((set) => ({
   videoStore: [],
-  getVideos: async (query, page, { setPage, setHasMore }) => {
-    const response = await fetchAllVideos(query, page, { setPage, setHasMore });
+  getVideos: async (query, page, { setPage, setHasMore }, isPopular) => {
+    const response = await fetchAllVideos(
+      query,
+      page,
+      { setPage, setHasMore },
+      isPopular
+    );
 
     set((state) => {
       return { videoStore: [...state.videoStore, ...response] };
