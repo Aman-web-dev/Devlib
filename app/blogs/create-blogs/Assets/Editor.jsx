@@ -28,7 +28,7 @@ export default function EditorPain() {
 
         @media (min-width: 840px) {
             html {
-                background: #3C8693;
+                background: ${theme=="dark"?"#121212":"#d1d5db"};
                 min-height: 100%;
                 padding: 0 .5rem
             }
