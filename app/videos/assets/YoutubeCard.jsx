@@ -215,7 +215,7 @@ function Card({ data }) {
                 Pfp
               </div> */}
 
-              <div className="flex gap-2 items-center bg-[#121212] w-fit px-1 m-2 border border-white rounded-full py-1 my-2 absolute bottom-0">
+              <div className="flex gap-2 items-center bg-[#121212] w-fit px-3 m-2 border border-white rounded-full py-1 my-2 absolute bottom-0">
                 <span className="flex">
                   {likeStoreCopy.includes((data?.id).toString()) ? (
                     <TbArrowBigUpFilled
@@ -238,7 +238,7 @@ function Card({ data }) {
                     }
                   </span>
                 </span>
-                <TbArrowBigDown className="w-6 h-6 cursor-pointer" />
+                {/* <TbArrowBigDown className="w-6 h-6 cursor-pointer" /> */}
               </div>
             </div>
           </div>

@@ -15,31 +15,45 @@ function AddNewArticles() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const { getVideos, videoStore, emptyVideoStore } = useVideoStore();
+  const [isPopular, setIsPopular] = useState(false);
 
   useEffect(() => {
+    let delay;
     emptyVideoStore();
-    const delay = setTimeout(() => {
-      getVideos(query, page, { setPage, setHasMore });
-    }, 1000);
+    if (isPopular) {
+      delay = setTimeout(() => {
+        console.log("running with isPopular true");
+        getVideos("", 1, { setPage, setHasMore }, true);
+      }, 1000);
+    } else {
+      console.log("running with isPopular false");
+      delay = setTimeout(() => {
+        getVideos("", 1, { setPage, setHasMore }, false);
+      }, 1000);
+    }
 
     return () => clearTimeout(delay);
-  }, []);
+  }, [isPopular]);
 
   const ifQuery = () => {
     emptyVideoStore();
-    getVideos(query, 1, { setPage, setHasMore });
+    getVideos(query, 1, { setPage, setHasMore }, isPopular);
   };
 
   return (
     <section
       className={`dark:bg-[#121212] w-full px-12 py-12 relative min-h-screen gap-8`}
     >
-      {/* <SearchComponent
+      <SearchComponent
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onClick={() => ifQuery()}
-      /> */}
-
+        setHasMore={setHasMore}
+        setPage={setPage}
+        setQuery={setQuery}
+        setIsPopular={setIsPopular}
+        isPopular={isPopular}
+      />
       {videoStore?.length !== 0 ? (
         <InfiniteScroll
           endMessage={
@@ -53,7 +67,7 @@ function AddNewArticles() {
           dataLength={videoStore.length}
           hasMore={hasMore}
           next={() => {
-            getVideos(query, page, { setPage, setHasMore });
+            getVideos(query, page, { setPage, setHasMore }, isPopular);
           }}
         >
           {videoStore?.map((data) => (
