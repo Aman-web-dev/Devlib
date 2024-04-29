@@ -172,12 +172,15 @@ const fetchAllVideos = async (
     setPage(page + 1);
 
     if (query !== "" && !isPopular) {
+      setHasMore(true);
       url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}&q=${query}`;
       console.log("using query");
     } else if (!query && !isPopular) {
+      setHasMore(true);
       url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/youtubeVideos?page=${page}`;
       console.log("not using query");
     } else if (isPopular) {
+      setHasMore(true);
       console.log("using popular url");
       url = `http://localhost:4000/api/fetch/popularVideos?page=${page}`;
     }

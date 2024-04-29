@@ -1,6 +1,7 @@
 import React from "react";
 import { CiSearch } from "react-icons/ci";
 import Options from "./Options";
+
 const SearchComponent = ({
   value,
   onChange,
@@ -12,7 +13,7 @@ const SearchComponent = ({
   isPopular,
 }) => {
   return (
-    <div className="flex items-center w-full">
+    <div className=" top-20 z-50 flex items-center w-full">
       <div className="flex items-center w-1/2 gap-2 border rounded-3xl dark:bg-[#1d1e23]">
         <input
           value={value}
