@@ -1,13 +1,15 @@
+//videosPage
 "use client";
 
 import { useContext, useEffect, useState } from "react";
-import ShimmerEffect from "@/app/components/ShimmerEffect";
+import ShimmerEffect from "../../components/ShimmerEffect";
 import Card from "./YoutubeCard";
 import Link from "next/link";
-import { AuthContext } from "@/utils (Context)/authContext";
+import { AuthContext } from "../../../utils (Context)/authContext";
 import InfiniteScroll from "react-infinite-scroll-component";
-import SearchComponent from "@/app/components/SearchComponent";
-import { useVideoStore } from "@/utils (Context)/zustStores";
+import { useVideoStore } from "../../../utils (Context)/zustStores";
+import { FaRocket } from "react-icons/fa6";
+import SearchComponent from "../../components/SearchComponent";
 
 function AddNewArticles() {
   const { currentUser } = useContext(AuthContext);
@@ -16,138 +18,154 @@ function AddNewArticles() {
   const [hasMore, setHasMore] = useState(true);
   const { getVideos, videoStore, emptyVideoStore } = useVideoStore();
   const [isPopular, setIsPopular] = useState(false);
+  const [dataMessage, setDataMessage] = useState(null);
+  const [isEmpty, setIsEmpty] = useState(null);
+  const [fetchHomeVideos, setFetchHomeVideos] = useState(false);
+
+  const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
     let delay;
-    emptyVideoStore();
+    if (dataMessage === 0 && isEmpty) {
+      delay = setTimeout(() => {
+        setShowMessage(true);
+      }, 2000);
+    } else {
+      setShowMessage(false);
+    }
+    return () => clearInterval(delay);
+  }, [isEmpty]);
+
+  useEffect(() => {
+    let delay;
+    emptyVideoStore({ setIsEmpty, setHasMore });
     if (isPopular) {
       delay = setTimeout(() => {
-        console.log("running with isPopular true");
-        getVideos("", 1, { setPage, setHasMore }, true);
+        getVideos(
+          "",
+          1,
+          { setIsEmpty, setPage, setHasMore, setDataMessage },
+          true
+        );
       }, 1000);
     } else {
-      console.log("running with isPopular false");
+      emptyVideoStore({ setIsEmpty, setHasMore });
+      console.log("running this");
       delay = setTimeout(() => {
-        getVideos("", 1, { setPage, setHasMore }, false);
+        getVideos(
+          "",
+          1,
+          { setIsEmpty, setPage, setHasMore, setDataMessage },
+          false
+        );
       }, 1000);
     }
 
     return () => clearTimeout(delay);
-  }, [isPopular]);
+  }, [isPopular, fetchHomeVideos]);
 
   const ifQuery = () => {
-    emptyVideoStore();
-    getVideos(query, 1, { setPage, setHasMore }, isPopular);
+    emptyVideoStore({ setIsEmpty, setHasMore });
+    getVideos(
+      query,
+      1,
+      { setIsEmpty, setPage, setHasMore, setDataMessage },
+      isPopular
+    );
+  };
+
+  const fetchVideosWhenNoData = () => {
+    emptyVideoStore({ setIsEmpty, setHasMore });
+    setFetchHomeVideos((prev) => !prev);
+    setIsPopular(false);
+    setQuery("");
   };
 
   return (
-    <section
-      className={`dark:bg-[#121212] w-full px-12 py-12 relative min-h-screen gap-8`}
-    >
+    <section className={`dark:bg-[#121212] w-full flex`}>
       <SearchComponent
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onClick={() => ifQuery()}
-        setHasMore={setHasMore}
         setPage={setPage}
         setQuery={setQuery}
-        setIsPopular={setIsPopular}
         isPopular={isPopular}
+        setFetchHomeVideos={setFetchHomeVideos}
+        setIsPopular={setIsPopular}
       />
-      {videoStore?.length !== 0 ? (
-        <InfiniteScroll
-          endMessage={
-            <p style={{ textAlign: "center" }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
-          loader={
-            <div className="flex justify-center items-center">Loading...</div>
-          }
-          dataLength={videoStore.length}
-          hasMore={hasMore}
-          next={() => {
-            getVideos(query, page, { setPage, setHasMore }, isPopular);
-          }}
-        >
-          {videoStore?.map((data) => (
-            <Link href={`videos/${data?.vid_id}`} key={data?.id}>
-              <Card data={data} />
-            </Link>
-          ))}
-        </InfiniteScroll>
-      ) : (
-        <ShimmerEffect />
-      )}
+      <div className="w-full px-12 py-12 min-h-screen gap-8">
+        {videoStore?.length !== 0 || dataMessage == 1 ? (
+          <InfiniteScroll
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+            loader={
+              <div className="flex justify-center items-center">Loading...</div>
+            }
+            dataLength={videoStore.length}
+            hasMore={hasMore}
+            next={() => {
+              getVideos(
+                query,
+                page,
+                { setIsEmpty, setPage, setHasMore, setDataMessage },
+                isPopular
+              );
+            }}
+          >
+            {videoStore?.map((data) => (
+              <Link href={`videos/${data?.vid_id}`} key={data?.id}>
+                <Card data={data} />
+              </Link>
+            ))}
+          </InfiniteScroll>
+        ) : dataMessage === 0 ? (
+          showMessage ? (
+            <div className="flex flex-col justify-center items-center min-h-[80vh] ">
+              <div className="flex items-center text-4xl font-bold gap-2 mb-4">
+                <span>No Data Found</span>
+                <span className="text-cyan">
+                  <FaRocket />
+                </span>
+              </div>
+              <button
+                onClick={fetchVideosWhenNoData}
+                className="bg-cyan rounded-3xl px-3 py-2"
+              >
+                Go back to Home page
+              </button>
+            </div>
+          ) : (
+            <ShimmerEffect />
+          )
+        ) : (
+          <ShimmerEffect />
+        )}
 
-      <Link
-        className={`dark:bg-[#149eca] fixed right-10 bottom-10 p-4 rounded-full`}
-        href={!currentUser ? "/authentication" : "/videos/addNewVideo"}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6"
+        <Link
+          className={`dark:bg-[#149eca] fixed right-10 bottom-10 p-4 rounded-full`}
+          href={!currentUser ? "/authentication" : "/videos/addNewVideo"}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-          />
-        </svg>
-      </Link>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+            />
+          </svg>
+        </Link>
+      </div>
     </section>
   );
 }
 
 export default AddNewArticles;
-
-// const getVideos = (page, query) => {
-//   try {
-//     setTimeout(async () => {
-//       let url;
-//       console.log("videos-store inside getVideos: ", videoStore);
-//       setPage(page + 1);
-//       // console.log("page values after prev(): ", page);
-//       if (query !== "") {
-//         url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}&search=${query}`;
-//         console.log("using query");
-//       } else {
-//         url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}`;
-//         console.log("not using query");
-//       }
-//       const response = await fetch(url);
-//       const data = await response.json();
-//       if (data?.data?.length === 0) {
-//         // console.log("length is 0");
-//         setHasMore(false);
-//       }
-//       setVideoStore([...videoStore, ...data.data]);
-//     }, 500);
-
-//     //  setLoading(false);
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
-
-// const ifQuery = () => {
-//   setTimeout(() => {
-//     setVideoStore([]);
-//   }, 0);
-//   console.log("increment value: ", incrementStore);
-//   getVideos(1, query);
-//   console.log("increment value after getVideos function: ", incrementStore); // Empty the videoStore state
-// };
-
-// useEffect(() => {
-//   getVideos(page, query);
-// }, []);
-// console.log("video-store after useEffect ifQuery: ", videoStore);
-// useEffect(() => {
-//   setIsMounted(true);
-//   return () => setIsMounted(false);
-// }, []);

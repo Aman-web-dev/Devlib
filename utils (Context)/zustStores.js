@@ -7,7 +7,7 @@ async function getAllLikedVideoByUser(userId) {
       return [];
     } else if (userId) {
       const likedVideoResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllLikedVideos`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}api/getAllLikedVideos`,
         {
           method: "POST",
           headers: {
@@ -54,7 +54,7 @@ async function getAllSavedVideosData(userId) {
 const getTotalLikesAndDislikes = async (page) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/videos/likesAndDislikes`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}api/fetch/videos/likesAndDislikes`,
       {
         method: "GET",
       }
@@ -163,24 +163,21 @@ const updateUserComment = async (id, comment) => {
 const fetchAllVideos = async (
   query,
   page,
-  { setPage, setHasMore },
+  { setIsEmpty, setPage, setHasMore, setDataMessage },
   isPopular
 ) => {
   try {
     let url;
-    console.log("isPopular: ", isPopular);
     setPage(page + 1);
 
     if (query !== "" && !isPopular) {
-      setHasMore(true);
-      url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/youtubeVideos?page=${page}&q=${query}`;
+      url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}&q=${query}`;
     } else if (!query && !isPopular) {
-      setHasMore(true);
-      url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/youtubeVideos?page=${page}`;
-    } else if (isPopular) {
-      setHasMore(true);
-
-      url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/popularVideos?page=${page}`;
+      url = `http://localhost:4000/api/fetch/youtubeVideos?page=${page}`;
+    } else if (!query && isPopular) {
+      url = `http://localhost:4000/api/fetch/popularVideos?page=${page}`;
+    } else if (query !== "" && isPopular) {
+      url = `http://localhost:4000/api/fetch/popularVideoWithQuery?page=${page}&q=${query}`;
     }
 
     console.log("urls: ", url);
@@ -188,10 +185,13 @@ const fetchAllVideos = async (
       method: "GET",
     });
     const data = await response.json();
-    if (data?.data.length === 0) {
+    if (data?.data.length === 0 && data?.message === 0) {
       setHasMore(false);
+      setDataMessage(data?.message);
+      setIsEmpty(true);
     }
-    return data.data;
+    console.log("data got: ", data);
+    return data?.data;
   } catch (err) {
     console.error(err);
     return [];
@@ -291,9 +291,11 @@ const useLikeStore = create((set) => ({
 
 export const useLikeAndDislikeCount = create((set) => ({
   likeAndDislikeCount: [],
+  isLikes: false,
   getCount: async () => {
     const response = await getTotalLikesAndDislikes();
     set({ likeAndDislikeCount: response });
+    set({ isLikes: true });
   },
   toggleLikeCount: (unique_id) => {
     // console.log(typeof unique_id);
@@ -338,21 +340,33 @@ export const useSavedVideoStore = create((set) => ({
 
 export const useVideoStore = create((set) => ({
   videoStore: [],
-  getVideos: async (query, page, { setPage, setHasMore }, isPopular) => {
+  getVideos: async (
+    query,
+    page,
+    { setIsEmpty, setPage, setHasMore, setDataMessage },
+    isPopular
+  ) => {
     const response = await fetchAllVideos(
       query,
       page,
-      { setPage, setHasMore },
+      { setIsEmpty, setPage, setHasMore, setDataMessage },
       isPopular
     );
-
+    useLikeAndDislikeCount.setState(() => ({ isLikes: false }));
     set((state) => {
       return { videoStore: [...state.videoStore, ...response] };
     });
   },
-  emptyVideoStore: () => {
+  emptyVideoStore: ({ setIsEmpty, setHasMore }) => {
+    setIsEmpty(false);
+    setHasMore(true);
     set({ videoStore: [] });
   },
+}));
+
+export const useVideoSidebar = create((set) => ({
+  videoSideBar: false,
+  setVideoSideBar: (value) => set({ videoSideBar: value }),
 }));
 
 export default useLikeStore;

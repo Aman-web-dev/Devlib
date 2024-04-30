@@ -5,6 +5,8 @@ import Navbar from "./components/Navbar";
 import Provider from "./provider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// import Footer from "./components/Footer";
+// import DummySideBar from "./components/DummySideBar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,6 +27,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           {children}
           <div id="portal"></div>
+          {/* <Footer /> */}
         </Provider>
       </body>
     </html>

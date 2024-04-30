@@ -1,41 +1,79 @@
 import React from "react";
 import { CiSearch } from "react-icons/ci";
 import Options from "./Options";
+import { useVideoSidebar } from "@/utils (Context)/zustStores";
+import { VscMenu } from "react-icons/vsc";
 
 const SearchComponent = ({
   value,
   onChange,
   onClick,
-  setHasMore,
   setPage,
   setQuery,
-  setIsPopular,
   isPopular,
+  setFetchHomeVideos,
+  setIsPopular,
 }) => {
+  const { videoSideBar, setVideoSideBar } = useVideoSidebar();
   return (
-    <div className=" top-20 z-50 flex items-center w-full">
-      <div className="flex items-center w-1/2 gap-2 border rounded-3xl dark:bg-[#1d1e23]">
-        <input
+    <>
+      {/* <div className={`sticky top-16 left-0 bottom-0 z-[30] h-lvh py-24 px-4`}>
+        <Options
+          value={value}
+          onClick={onClick}
+          setQuery={setQuery}
+          isPopular={isPopular}
+          setFetchHomeVideos={setFetchHomeVideos}
+          setIsPopular={setIsPopular}
+        />
+      </div>
+      {videoSideBar && (
+        <div className="fixed top-0 min-w-32 z-[100] bg-green-400 h-lvh">
+          <button onClick={() => setVideoSideBar(false)}>
+            <VscMenu />
+          </button>
+          <Options
+            value={value}
+            onClick={onClick}
+            setQuery={setQuery}
+            isPopular={isPopular}
+            setFetchHomeVideos={setFetchHomeVideos}
+            setIsPopular={setIsPopular}
+          />
+        </div>
+      )} */}
+    </>
+  );
+};
+
+export default SearchComponent;
+
+{
+  /* <div className=" items-center  gap-2 border rounded-3xl dark:bg-[#1d1e23]">
+        
+      </div> */
+}
+{
+  /* <button
+        onClick={onClick}
+        disabled={value === ""}
+        className="p-2 dark:bg-[#1d1e23]"
+      >
+        <CiSearch className="w-7 h-7" />
+      </button> */
+}
+// w-1/2 input div
+{
+  /* <input
           value={value}
           onChange={onChange}
           type="text"
           className="dark:bg-[#1d1e23] outline-none w-full py-3 px-4 rounded-3xl  shadow-2xl"
           placeholder="Enter text"
-        />
-        <button onClick={onClick} disabled={value === ""} className="md:p-2 ">
+        /> */
+}
+{
+  /* <button onClick={onClick} disabled={value === ""} className="md:p-2 ">
           <CiSearch className="w-7 h-7" />
-        </button>
-      </div>
-
-      <Options
-        setIsPopular={setIsPopular}
-        setHasMore={setHasMore}
-        setPage={setPage}
-        setQuery={setQuery}
-        isPopular={isPopular}
-      />
-    </div>
-  );
-};
-
-export default SearchComponent;
+        </button> */
+}

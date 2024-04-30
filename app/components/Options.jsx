@@ -1,22 +1,26 @@
-import { useVideoStore } from "@/utils (Context)/zustStores";
+//options
+import { useVideoStore } from "../../utils (Context)/zustStores";
 import React from "react";
 import { MdVideoLibrary } from "react-icons/md";
 import { FaTrophy } from "react-icons/fa";
+import { CiSearch } from "react-icons/ci";
+import { FaGithub } from "react-icons/fa";
 
 const Options = ({
-  setPage,
-  setHasMore,
+  value,
+  onClick,
   setQuery,
-  setIsPopular,
   isPopular,
+  setFetchHomeVideos,
+  setIsPopular,
 }) => {
   const { getVideos, emptyVideoStore } = useVideoStore();
 
   const fetchHomeVideos = () => {
+    setFetchHomeVideos((prev) => !prev);
     setIsPopular(false);
     setQuery("");
-    emptyVideoStore();
-    getVideos("", 1, { setPage, setHasMore }, false);
+    console.log("running all video");
   };
 
   const fetchPopularVideos = () => {
@@ -24,23 +28,53 @@ const Options = ({
   };
 
   return (
-    <div className="flex gap-4 items-center mx-6">
-      <button
-        className="flex items-center gap-2 dark:bg-[#1d1e23] bg-opacity-5 px-2 py-1 rounded-lg border border-white hover:dark:border-[#1497c1]"
-        onClick={fetchHomeVideos}
-      >
-        <MdVideoLibrary />
-        <span className="text-opacity-50">Videos</span>
-      </button>
-      <button
-        className={`${
-          isPopular ? "bg-white text-black" : "dark:bg-[#1d1e23]"
-        } flex items-center gap-2  px-2 py-1 rounded-lg border border-white hover:dark:border-[#1497c1]`}
-        onClick={fetchPopularVideos}
-      >
-        <FaTrophy />
-        <span>Popular</span>
-      </button>
+    <div className="flex flex-col min-h-full bg-red-500">
+      <div className="space-y-5 flex-1 bg-yellow-400">
+        <div className="grid place-items-center">
+          <button
+            onClick={onClick}
+            disabled={value === ""}
+            className="dark:bg-[#1d1e23] rounded-full p-1"
+          >
+            <CiSearch className="w-6 h-6" />
+          </button>
+          <span className="text-xs">Search</span>
+        </div>
+        <div className="grid place-items-center">
+          <button
+            className="dark:bg-[#1d1e23] p-1 rounded-full hover:dark:-[#1497c1]"
+            onClick={fetchHomeVideos}
+          >
+            <MdVideoLibrary className="w-6 h-6" />
+          </button>
+          <span className="text-xs">All</span>
+        </div>
+        <div className="grid place-items-center">
+          <button
+            className={`${
+              isPopular ? "bg-white text-black" : "dark:bg-[#1d1e23]"
+            }   hover:dark:-[#1497c1] p-1 rounded-full`}
+            onClick={fetchPopularVideos}
+          >
+            <FaTrophy className="w-6 h-6" />
+          </button>
+          <span className="text-xs">Popular</span>
+        </div>
+      </div>
+      <hr />
+      <div>
+        <div className="grid place-items-center">
+          <button
+            className={`${
+              isPopular ? "bg-white text-black" : "dark:bg-[#1d1e23]"
+            }   hover:dark:-[#1497c1] p-1 rounded-full`}
+            onClick={fetchPopularVideos}
+          >
+            <FaGithub className="w-6 h-6" />
+          </button>
+          <span className="text-xs">Popular</span>
+        </div>
+      </div>
     </div>
   );
 };
