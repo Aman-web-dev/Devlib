@@ -4,7 +4,6 @@ import Options from "./Options";
 import { useVideoSidebar } from "@/utils (Context)/zustStores";
 import { VscMenu } from "react-icons/vsc";
 import DummySideBar from "./DummySideBar";
-import VideoSideBar from "./VideoSideBar";
 
 const SearchComponent = ({
   value,
