@@ -43,7 +43,7 @@ const SearchComponent = ({
           />
         </div>
       )} */}
-      {videoSideBar && <VideoSideBar />}
+      {/* {videoSideBar && <VideoSideBar />} */}
       <DummySideBar
         Options={
           <Options
