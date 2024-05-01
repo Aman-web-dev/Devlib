@@ -1,6 +1,6 @@
 //options
 import { useVideoStore } from "../../utils (Context)/zustStores";
-import React from "react";
+import React, { useState } from "react";
 import { MdVideoLibrary } from "react-icons/md";
 import { FaTrophy } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
@@ -15,7 +15,7 @@ const Options = ({
   setIsPopular,
 }) => {
   const { getVideos, emptyVideoStore } = useVideoStore();
-
+  const [openSearchBox, setOpenSearchBox] = useState(false);
   const fetchHomeVideos = () => {
     setFetchHomeVideos((prev) => !prev);
     setIsPopular(false);
@@ -28,11 +28,11 @@ const Options = ({
   };
 
   return (
-    <div className="flex flex-col min-h-full bg-red-500">
-      <div className="space-y-5 flex-1 bg-yellow-400">
+    <div className="flex flex-col min-h-full">
+      <div className="space-y-5 flex-1">
         <div className="grid place-items-center">
           <button
-            onClick={onClick}
+            onClick={() => alert("Under construction!!")}
             disabled={value === ""}
             className="dark:bg-[#1d1e23] rounded-full p-1"
           >
@@ -62,7 +62,7 @@ const Options = ({
         </div>
       </div>
       <hr />
-      <div>
+      {/* <div>
         <div className="grid place-items-center">
           <button
             className={`${
@@ -74,7 +74,12 @@ const Options = ({
           </button>
           <span className="text-xs">Popular</span>
         </div>
-      </div>
+      </div> */}
+      {openSearchBox && (
+        <div className="fixed top-20 right-0 min-w-24 bg-red-400 bottom-3  z-[4000]">
+          hello
+        </div>
+      )}
     </div>
   );
 };

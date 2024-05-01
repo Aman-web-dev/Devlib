@@ -3,6 +3,8 @@ import { CiSearch } from "react-icons/ci";
 import Options from "./Options";
 import { useVideoSidebar } from "@/utils (Context)/zustStores";
 import { VscMenu } from "react-icons/vsc";
+import DummySideBar from "./DummySideBar";
+import VideoSideBar from "./VideoSideBar";
 
 const SearchComponent = ({
   value,
@@ -42,6 +44,19 @@ const SearchComponent = ({
           />
         </div>
       )} */}
+      {videoSideBar && <VideoSideBar />}
+      <DummySideBar
+        Options={
+          <Options
+            value={value}
+            onClick={onClick}
+            setQuery={setPage}
+            isPopular={isPopular}
+            setFetchHomeVideos={setFetchHomeVideos}
+            setIsPopular={setIsPopular}
+          />
+        }
+      />
     </>
   );
 };
