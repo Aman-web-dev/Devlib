@@ -6,7 +6,6 @@ import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { doSignOut } from "@/app/firebase/auth";
 import Image from "next/image";
 import Sidebar from "./Sidebar";
-import SessionTimer from "./sessionTimer";
 import { usePathname } from "next/navigation";
 import { FaUserAstronaut } from "react-icons/fa";
 import NavSearchButton from "./search/navSearchButton";
@@ -110,11 +109,7 @@ const Navbar = () => {
             <ul
               className={`font-medium flex flex-col md:flex-row p-4 md:p-0 md:items-center mt-4 border md:mt-0 md:border-0 gap-8`}
             >
-              {userLoggedIn && (
-                <li>
-                  <SessionTimer />
-                </li>
-              )}
+          
 
               <li className={`${pathName === "/" && "text-blue-500"}`}>
                 <Link href="/" className="">
