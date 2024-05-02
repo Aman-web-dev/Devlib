@@ -7,7 +7,10 @@ import Card from "./YoutubeCard";
 import Link from "next/link";
 import { AuthContext } from "../../../utils (Context)/authContext";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useVideoStore } from "../../../utils (Context)/zustStores";
+import {
+  useVideoSidebar,
+  useVideoStore,
+} from "../../../utils (Context)/zustStores";
 import { FaRocket } from "react-icons/fa6";
 import SearchComponent from "../../components/SearchComponent";
 
@@ -21,8 +24,8 @@ function AddNewArticles() {
   const [dataMessage, setDataMessage] = useState(null);
   const [isEmpty, setIsEmpty] = useState(null);
   const [fetchHomeVideos, setFetchHomeVideos] = useState(false);
-
   const [showMessage, setShowMessage] = useState(false);
+  const { videoSideBar, setVideoSideBar } = useVideoSidebar();
 
   useEffect(() => {
     let delay;
@@ -80,9 +83,9 @@ function AddNewArticles() {
     setIsPopular(false);
     setQuery("");
   };
-
+  // dark:bg-[#121212]
   return (
-    <section className={`dark:bg-[#121212] w-full flex`}>
+    <section className={`w-full flex `}>
       <SearchComponent
         value={query}
         onChange={(e) => setQuery(e.target.value)}
@@ -92,8 +95,17 @@ function AddNewArticles() {
         isPopular={isPopular}
         setFetchHomeVideos={setFetchHomeVideos}
         setIsPopular={setIsPopular}
+        setIsEmpty={setIsEmpty}
+        setHasMore={setHasMore}
+        setDataMessage={setDataMessage}
       />
-      <div className="w-full px-12 py-12 min-h-screen gap-8">
+      {videoSideBar && (
+        <div
+          onClick={() => setVideoSideBar(false)}
+          className="fixed top-0 left-0 bottom-0 right-0 bg-gray-500 bg-opacity-50 z-10"
+        />
+      )}
+      <div className="py-12 px-12 gap-8 w-full">
         {videoStore?.length !== 0 || dataMessage == 1 ? (
           <InfiniteScroll
             endMessage={

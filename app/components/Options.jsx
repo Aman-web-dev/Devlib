@@ -13,9 +13,10 @@ const Options = ({
   isPopular,
   setFetchHomeVideos,
   setIsPopular,
+  setOpenSearchBox,
 }) => {
   const { getVideos, emptyVideoStore } = useVideoStore();
-  const [openSearchBox, setOpenSearchBox] = useState(false);
+
   const fetchHomeVideos = () => {
     setFetchHomeVideos((prev) => !prev);
     setIsPopular(false);
@@ -29,11 +30,10 @@ const Options = ({
 
   return (
     <div className="flex flex-col min-h-full">
-      <div className="space-y-5 flex-1">
+      <div className="space-y-5 fixed px-2 py-12">
         <div className="grid place-items-center">
           <button
-            onClick={() => alert("Under construction!!")}
-            disabled={value === ""}
+            onClick={setOpenSearchBox}
             className="dark:bg-[#1d1e23] rounded-full p-1"
           >
             <CiSearch className="w-6 h-6" />
@@ -61,25 +61,6 @@ const Options = ({
           <span className="text-xs">Popular</span>
         </div>
       </div>
-      <hr />
-      {/* <div>
-        <div className="grid place-items-center">
-          <button
-            className={`${
-              isPopular ? "bg-white text-black" : "dark:bg-[#1d1e23]"
-            }   hover:dark:-[#1497c1] p-1 rounded-full`}
-            onClick={fetchPopularVideos}
-          >
-            <FaGithub className="w-6 h-6" />
-          </button>
-          <span className="text-xs">Popular</span>
-        </div>
-      </div> */}
-      {openSearchBox && (
-        <div className="fixed top-20 right-0 min-w-24 bg-red-400 bottom-3  z-[4000]">
-          hello
-        </div>
-      )}
     </div>
   );
 };

@@ -4,6 +4,10 @@ import Options from "./Options";
 import { useVideoSidebar } from "@/utils (Context)/zustStores";
 import { VscMenu } from "react-icons/vsc";
 import DummySideBar from "./DummySideBar";
+import { useState } from "react";
+import VideoSideBar from "./VideoSideBar";
+import { FaGithub } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
 
 const SearchComponent = ({
   value,
@@ -14,48 +18,95 @@ const SearchComponent = ({
   isPopular,
   setFetchHomeVideos,
   setIsPopular,
+  setIsEmpty,
+  setHasMore,
+  setDataMessage,
 }) => {
   const { videoSideBar, setVideoSideBar } = useVideoSidebar();
+  const [openSearchBox, setOpenSearchBox] = useState(false);
+
+  const handleSearch = () => {
+    onClick;
+    setOpenSearchBox(false);
+  };
+
   return (
     <>
-      {/* <div className={`sticky top-16 left-0 bottom-0 z-[30] h-lvh py-24 px-4`}>
-        <Options
-          value={value}
-          onClick={onClick}
-          setQuery={setQuery}
-          isPopular={isPopular}
-          setFetchHomeVideos={setFetchHomeVideos}
-          setIsPopular={setIsPopular}
+      <div>
+        <DummySideBar
+          Options={
+            <Options
+              value={value}
+              onClick={onClick}
+              setQuery={setPage}
+              isPopular={isPopular}
+              setFetchHomeVideos={setFetchHomeVideos}
+              setIsPopular={setIsPopular}
+              setOpenSearchBox={() => setOpenSearchBox(!openSearchBox)}
+            />
+          }
         />
+        {videoSideBar && (
+          <VideoSideBar
+            openSearchBox={openSearchBox}
+            setOpenSearchBox={setOpenSearchBox}
+            setIsEmpty={setIsEmpty}
+            setHasMore={setHasMore}
+            setDataMessage={setDataMessage}
+            setPage={setPage}
+            isPopular={isPopular}
+            setIsPopular={setIsPopular}
+          />
+        )}
       </div>
-      {videoSideBar && (
-        <div className="fixed top-0 min-w-32 z-[100] bg-green-400 h-lvh">
-          <button onClick={() => setVideoSideBar(false)}>
-            <VscMenu />
+      {openSearchBox && (
+        <div
+          className={`z-[3000] backdrop-blur-3xl fixed top-52 left-1/2 transform -translate-x-1/2 -translate-y-1/2 min-w-96 w-1/2  py-4 px-6 rounded-lg dark:bg-major dark:bg-opacity-50 `}
+        >
+          <button onClick={() => setOpenSearchBox(false)} className="mb-4">
+            <IoMdClose />
           </button>
-          <Options
-            value={value}
-            onClick={onClick}
-            setQuery={setQuery}
-            isPopular={isPopular}
-            setFetchHomeVideos={setFetchHomeVideos}
-            setIsPopular={setIsPopular}
-          />
+          <div className="flex gap-2 items-center">
+            <input
+              value={value}
+              onChange={onChange}
+              type="text"
+              placeholder="Search..."
+              className="w-full outline-none py-3 px-4 rounded-3xl dark:bg-mainColor drop-shadow-xl"
+            />
+
+            <button
+              disabled={value === ""}
+              onClick={() => {
+                onClick();
+                setOpenSearchBox(false);
+              }}
+            >
+              <CiSearch className="w-6 h-6" />
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={() =>
+                window.open("https://github.com/Aman-web-dev", "_blank")
+              }
+              className="hover:bg-mainColor hover:bg-opacity-50 px-2 py-2 rounded-2xl mt-4 flex gap-2"
+            >
+              <FaGithub className="w-6 h-6" />
+              <span>Aman</span>
+            </button>
+            <button
+              onClick={() =>
+                window.open("https://github.com/rajnikantwebdev", "_blank")
+              }
+              className="hover:bg-mainColor hover:bg-opacity-50 px-2 py-2 rounded-2xl mt-2 flex gap-2"
+            >
+              <FaGithub className="w-6 h-6" />
+              <span>Rajni Kant</span>
+            </button>
+          </div>
         </div>
-      )} */}
-      {/* {videoSideBar && <VideoSideBar />} */}
-      <DummySideBar
-        Options={
-          <Options
-            value={value}
-            onClick={onClick}
-            setQuery={setPage}
-            isPopular={isPopular}
-            setFetchHomeVideos={setFetchHomeVideos}
-            setIsPopular={setIsPopular}
-          />
-        }
-      />
+      )}
     </>
   );
 };

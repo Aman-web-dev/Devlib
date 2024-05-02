@@ -42,7 +42,7 @@ function Sidebar(props) {
         </svg>
       </button>
       <div
-        className="fixed top-0 right-0 left-0 bottom-0 bg-gray-200 bg-opacity-50 "
+        className="fixed top-0 right-0 left-0 bottom-0 bg-gray-500 bg-opacity-50 "
         onClick={() => props.handleScreenClick()}
       />
 
