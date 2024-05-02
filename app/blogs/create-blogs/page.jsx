@@ -3,7 +3,7 @@ import EditorPain from './Assets/Editor'
 
 function page() {
   return (
-    <div className='h-screen'>
+    <div className=''>
       <EditorPain/>
     </div>
   )

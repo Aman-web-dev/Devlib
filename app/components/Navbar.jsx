@@ -6,7 +6,6 @@ import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { doSignOut } from "@/app/firebase/auth";
 import Image from "next/image";
 import Sidebar from "./Sidebar";
-import SessionTimer from "./sessionTimer";
 import { usePathname } from "next/navigation";
 import { FaUserAstronaut } from "react-icons/fa";
 import NavSearchButton from "./search/navSearchButton";
