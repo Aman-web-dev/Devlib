@@ -7,7 +7,7 @@ async function getAllLikedVideoByUser(userId) {
       return [];
     } else if (userId) {
       const likedVideoResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}api/getAllLikedVideos`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllLikedVideos`,
         {
           method: "POST",
           headers: {
@@ -31,7 +31,7 @@ async function getAllSavedVideosData(userId) {
       return [];
     } else {
       const savedVideosResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}api/getAllSavedVideos`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllSavedVideos`,
         {
           method: "POST",
           headers: {
@@ -54,7 +54,7 @@ async function getAllSavedVideosData(userId) {
 const getTotalLikesAndDislikes = async (page) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}api/fetch/videos/likesAndDislikes`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/videos/likesAndDislikes`,
       {
         method: "GET",
       }
@@ -108,7 +108,7 @@ const postUserComment = async (
 const getAllComments = async (id) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}api/getAllComments`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/getAllComments`,
       {
         method: "POST",
         headers: {
@@ -129,7 +129,7 @@ const getAllComments = async (id) => {
 const deleteCommentApi = async (id) => {
   try {
     const deleteCommentResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}api/comment/delete`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/comment/delete`,
       {
         method: "POST",
         headers: {
@@ -146,7 +146,7 @@ const deleteCommentApi = async (id) => {
 const updateUserComment = async (id, comment) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}api/comment/update`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/comment/update`,
       {
         method: "POST",
         headers: {
@@ -171,13 +171,13 @@ const fetchAllVideos = async (
     setPage(page + 1);
 
     if (query !== "" && !isPopular) {
-      url = `${process.env.NEXT_PUBLIC_SERVER_URL}api/fetch/youtubeVideos?page=${page}&q=${query}`;
+      url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/youtubeVideos?page=${page}&q=${query}`;
     } else if (!query && !isPopular) {
-      url = `${process.env.NEXT_PUBLIC_SERVER_URL}api/fetch/youtubeVideos?page=${page}`;
+      url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/youtubeVideos?page=${page}`;
     } else if (!query && isPopular) {
-      url = `${process.env.NEXT_PUBLIC_SERVER_URL}api/fetch/popularVideos?page=${page}`;
+      url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/popularVideos?page=${page}`;
     } else if (query !== "" && isPopular) {
-      url = `${process.env.NEXT_PUBLIC_SERVER_URL}api/fetch/popularVideoWithQuery?page=${page}&q=${query}`;
+      url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/fetch/popularVideoWithQuery?page=${page}&q=${query}`;
     }
 
     console.log("urls: ", url);

@@ -69,7 +69,7 @@ function Card({ data }) {
           toggleLikeCount(data?.id.toString());
           addVideoIdInLikeStore(data?.id);
           const incrementLikeCountPromise = fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}api/incrementLikeCount`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/incrementLikeCount`,
             {
               method: "POST",
               headers: {
@@ -80,7 +80,7 @@ function Card({ data }) {
           );
 
           const addUserLikePromise = fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}api/addLike`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/addLike`,
             {
               method: "POST",
               headers: {
@@ -103,7 +103,7 @@ function Card({ data }) {
           toggleLikeCount(data?.id.toString());
           removeVideoIdFromZustandStore(data?.id);
           const removeLikeVideoPromise = fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}api/removeUserLikedVideo`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/removeUserLikedVideo`,
             {
               method: "POST",
               headers: {
@@ -116,7 +116,7 @@ function Card({ data }) {
             }
           );
           const decrementLikeCountPromise = fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}api/decrementLikeCount`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/decrementLikeCount`,
             {
               method: "POST",
               headers: {
@@ -150,7 +150,7 @@ function Card({ data }) {
       if (!savedVideoStore.includes(data.vid_id)) {
         addVideoIdInSavedVideoStore(data.vid_id);
         const addVideoInSavedList = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}api/updateSavedPost`,
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/updateSavedPost`,
           {
             method: "POST",
             headers: {
@@ -168,7 +168,7 @@ function Card({ data }) {
       } else {
         removeSavedVideoFromSavedVideoStore(data.vid_id);
         const removeVideoFromSavedList = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}api/removeVideoFromSavedVideos`,
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/removeVideoFromSavedVideos`,
           {
             method: "POST",
             headers: {
