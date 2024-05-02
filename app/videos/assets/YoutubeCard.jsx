@@ -69,7 +69,7 @@ function Card({ data }) {
           toggleLikeCount(data?.id.toString());
           addVideoIdInLikeStore(data?.id);
           const incrementLikeCountPromise = fetch(
-            "http://localhost:4000/api/incrementLikeCount",
+            `${process.env.NEXT_PUBLIC_SERVER_URL}api/incrementLikeCount`,
             {
               method: "POST",
               headers: {
@@ -80,7 +80,7 @@ function Card({ data }) {
           );
 
           const addUserLikePromise = fetch(
-            "http://localhost:4000/api/addLike",
+            `${process.env.NEXT_PUBLIC_SERVER_URL}api/addLike`,
             {
               method: "POST",
               headers: {
@@ -103,7 +103,7 @@ function Card({ data }) {
           toggleLikeCount(data?.id.toString());
           removeVideoIdFromZustandStore(data?.id);
           const removeLikeVideoPromise = fetch(
-            "http://localhost:4000/api/removeUserLikedVideo",
+            `${process.env.NEXT_PUBLIC_SERVER_URL}api/removeUserLikedVideo`,
             {
               method: "POST",
               headers: {
@@ -116,7 +116,7 @@ function Card({ data }) {
             }
           );
           const decrementLikeCountPromise = fetch(
-            "http://localhost:4000/api/decrementLikeCount",
+            `${process.env.NEXT_PUBLIC_SERVER_URL}api/decrementLikeCount`,
             {
               method: "POST",
               headers: {
