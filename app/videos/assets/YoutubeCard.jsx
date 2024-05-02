@@ -1,17 +1,19 @@
+//youtubecard
 import { useState, useEffect } from "react";
-import { youtubeVideoThumbnail } from "@/utils (Context)/constants";
-import { useAuth } from "@/utils (Context)/authContext";
+import { useAuth } from "../../../utils (Context)/authContext";
 import { TbArrowBigUp } from "react-icons/tb";
 import { TbArrowBigDown } from "react-icons/tb";
 import { TbArrowBigUpFilled } from "react-icons/tb";
 import useLikeStore, {
   useLikeAndDislikeCount,
   useSavedVideoStore,
-} from "@/utils (Context)/zustStores";
+} from "../../../utils (Context)/zustStores";
 import FeedbackComponent from "./feedbackComponent";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { alternative_img_link } from "@/utils (Context)/constants";
+import { alternative_img_link } from "../../../utils (Context)/constants";
+import { youtubeVideoThumbnail } from "../../../utils (Context)/constants";
+console.log("thumbnail: ", youtubeVideoThumbnail);
 
 function Card({ data }) {
   const [imgSrc, setImgSrc] = useState(null);
@@ -20,7 +22,7 @@ function Card({ data }) {
   const { savedVideoStore, getAllSavedVideosOfUser, toggleSavedVideos } =
     useSavedVideoStore();
   const router = useRouter();
-  const { getCount, toggleLikeCount, likeAndDislikeCount } =
+  const { getCount, toggleLikeCount, likeAndDislikeCount, isLikes } =
     useLikeAndDislikeCount();
   // console.log("likes and dislike count: ", likeAndDislikeCount);
   const likeStoreCopy = [...likeStore];
@@ -188,8 +190,8 @@ function Card({ data }) {
   }
 
   return (
-    <div className="dark:bg-[#1d1e23] px-4 py-4 my-4 rounded-xl">
-      <div className="w-full dark:bg-[#1d1e23] bg-[#d4d4d4] flex h-fit justify-between">
+    <div className="dark:bg-mainColor px-4 py-4 mb-4 rounded-xl">
+      <div className="w-full flex h-fit justify-between">
         <div className="flex w-full">
           <div className="flex-1">
             <div className="relative">
@@ -215,31 +217,35 @@ function Card({ data }) {
                 Pfp
               </div> */}
 
-              <div className="flex gap-2 items-center bg-[#121212] w-fit px-3 m-2 border border-white rounded-full py-1 my-2 absolute bottom-0">
-                <span className="flex">
-                  {likeStoreCopy.includes((data?.id).toString()) ? (
-                    <TbArrowBigUpFilled
-                      className="w-6 h-6 cursor-pointer"
-                      onClick={(e) => {
-                        handleLikeCount(e);
-                      }}
-                    />
-                  ) : (
-                    <TbArrowBigUp
-                      className="w-6 h-6 cursor-pointer"
-                      onClick={(e) => handleLikeCount(e)}
-                    />
-                  )}
-                  <span className={`dark:text-gray-300`}>
-                    {
-                      likeAndDislikeCount.find(
-                        (count) => count?.id === data?.id
-                      )?.like_count
-                    }
+              {isLikes ? (
+                <div className="flex gap-2 items-center bg-[#121212] w-fit px-3 m-2 border border-white rounded-full py-1 my-2 absolute bottom-0">
+                  <span className="flex">
+                    {likeStoreCopy.includes((data?.id).toString()) ? (
+                      <TbArrowBigUpFilled
+                        className="w-6 h-6 cursor-pointer"
+                        onClick={(e) => {
+                          handleLikeCount(e);
+                        }}
+                      />
+                    ) : (
+                      <TbArrowBigUp
+                        className="w-6 h-6 cursor-pointer"
+                        onClick={(e) => handleLikeCount(e)}
+                      />
+                    )}
+                    <span className={`dark:text-gray-300`}>
+                      {
+                        likeAndDislikeCount.find(
+                          (count) => count?.id === data?.id
+                        )?.like_count
+                      }
+                    </span>
                   </span>
-                </span>
-                {/* <TbArrowBigDown className="w-6 h-6 cursor-pointer" /> */}
-              </div>
+                  {/* <TbArrowBigDown className="w-6 h-6 cursor-pointer" /> */}
+                </div>
+              ) : (
+                <div className="flex gap-2 items-center bg-gray-600 w-2/12 px-3 m-2 rounded-full py-1 my-2 absolute bottom-0 animate-pulse h-1/6"></div>
+              )}
             </div>
           </div>
           <div className="w-2/3 ">
