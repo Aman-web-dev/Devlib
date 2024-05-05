@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Provider from "./provider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "./components/Footer";
 // import Footer from "./components/Footer";
 // import DummySideBar from "./components/DummySideBar";
 
@@ -27,7 +28,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           {children}
           <div id="portal"></div>
-          {/* <Footer /> */}
+          <Footer />
         </Provider>
       </body>
     </html>

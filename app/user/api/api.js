@@ -1,4 +1,6 @@
 import { cache } from "react";
+import { getBlogData } from "@/app/blogs/apiCalls/apiCalls";
+
 
 export const fetchPostData = async (url, obj) => {
   try {

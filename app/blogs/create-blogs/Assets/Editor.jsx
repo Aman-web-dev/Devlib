@@ -4,12 +4,18 @@ import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import Preview from "./Preview";
 import { useTheme } from "next-themes";
+import BlogPublisher from "./BlogPublisher";
+import useclickOutisdeHook from "@/hooks/useclickOutisdeHook";
+
+
 
 export default function EditorPain() {
   const { theme } = useTheme();
   const [previewBlog, setPreviewBlog] = useState(false);
+  const [Publish,setPublish]=useState(false)
   const [previewData, setPreviewData] = useState();
   const editorRef = useRef(null);
+  const publisherRef=useRef(null)
 
   const getDataFromEditor = () => {
     if (editorRef.current) {
@@ -20,6 +26,12 @@ export default function EditorPain() {
     }
   };
 
+  
+  useclickOutisdeHook(publisherRef,()=>{
+    setPublish(false)
+  },Publish)
+  
+
   const setDatainEditor = () => {
     if (editorRef.current) {
       editorRef.current.setContent(previewData)
@@ -27,11 +39,19 @@ export default function EditorPain() {
     }
   };
 
+  const handleBlogPublish=()=>{
+    if(editorRef.current){
+      const data = editorRef.current.getContent();
+      console.log(data);
+      setPublish(true)
+    }
+  }
+
   return (
     <>
       <div className="flex flex-col align-center items-center md:w-[80vw] mx-auto ">
         <Heading />
-        <SaveBtn onPreviewBtnClick={getDataFromEditor} show={previewBlog} onEditClick={setDatainEditor}/>
+        <SaveBtn onPreviewBtnClick={getDataFromEditor} show={previewBlog} onEditClick={setDatainEditor} onPublishClick={handleBlogPublish}/>
         {previewBlog ? (
           <Preview data={previewData} />
         ) : (
@@ -55,6 +75,7 @@ export default function EditorPain() {
               content_style: `
         body {
             background:#fff;
+            text-wrap-wrap;
         }
 
         @media (min-width: 840px) {
@@ -79,6 +100,7 @@ export default function EditorPain() {
             initialValue={previewData}
           />
         )}
+        {Publish?<BlogPublisher reference={publisherRef} />:""}
       </div>
     </>
   );
@@ -120,6 +142,7 @@ const SaveBtn = (props) => {
           title="Get Preview Now"
           className="relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-black font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
           role="button"
+          onClick={props.onPublishClick}
         >
           Publish Blog
         </a>

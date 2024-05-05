@@ -70,7 +70,7 @@ const Form = ({ userState, setUserState,saveData }) => {
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-first-name"
+              htmlFor="grid-first-name"
             >
               Display Name
             </label>
@@ -89,7 +89,7 @@ const Form = ({ userState, setUserState,saveData }) => {
           <div className="w-full md:w-1/2 px-3">
             <label
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-last-name"
+              htmlFor="grid-last-name"
             >
               User Name
             </label>
@@ -108,7 +108,7 @@ const Form = ({ userState, setUserState,saveData }) => {
           <div className="flex flex-row items-center w-full px-3">
             <label
               className="block w-3/12 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-password"
+              htmlFor="grid-password"
             >
               Email
             </label>
@@ -125,7 +125,7 @@ const Form = ({ userState, setUserState,saveData }) => {
           <div className="flex flex-row items-center w-full px-3">
             <label
               className="block w-3/12 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-password"
+              htmlFor="grid-password"
             >
               Github
             </label>
@@ -148,7 +148,7 @@ const Form = ({ userState, setUserState,saveData }) => {
           <div className="flex flex-row items-center w-full px-3">
             <label
               className="block w-3/12 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-password"
+              htmlFor="grid-password"
             >
               Linkedin
             </label>
@@ -171,7 +171,7 @@ const Form = ({ userState, setUserState,saveData }) => {
           <div className="flex flex-rowr items-center w-full px-3">
             <label
               className="block w-3/12 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-password"
+              htmlFor="grid-password"
             >
               Discord
             </label>
@@ -194,7 +194,7 @@ const Form = ({ userState, setUserState,saveData }) => {
           <div className="flex flex-row items-center w-full px-3">
             <label
               className="block w-3/12 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-password"
+              htmlFor="grid-password"
             >
               Portfolio
             </label>

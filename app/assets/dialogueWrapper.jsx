@@ -5,7 +5,7 @@ function DialogueWrapper({children}) {
     console.log(e.target.className)
      }
   return (
-    <div className="w-[100vw] h-full  fixed left-0 bottom-0 bg-gray-400 bg-opacity-50 overflow-hidden z-10" onScroll={(e)=>{handleScroll()}}>
+    <div className="w-[100vw] h-full flex flex-col items-center justify-center fixed left-0 bottom-0 bg-gray-400 bg-opacity-50 overflow-hidden z-10" onScroll={(e)=>{handleScroll()}}>
       {children}
     </div>
   )
