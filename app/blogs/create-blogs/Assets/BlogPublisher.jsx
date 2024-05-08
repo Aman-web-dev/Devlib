@@ -1,6 +1,7 @@
 import React from "react";
 import DialogueWrapper from "@/app/assets/dialogueWrapper";
 import TagInput from "@/app/assets/TagInput";
+import { postBlog } from "../../apiCalls/apiCalls";
 
 function BlogPublisher(props) {
   console.log("blog Publisher Re render")
@@ -55,9 +56,15 @@ export default BlogPublisher;
 
 
 function UploadButton() {
+
+  const handleBlogPost=()=>{
+    console.log("hello")
+    postBlog()
+  }
   return (
 
         <button
+        onClick={()=>handleBlogPost()}
     className="align-middle mx-auto select-none text-sm font-sans font-bold text-centertransition-all disabled:opacity-100 disabled:shadow-none disabled:pointer-events-none  py-4 px-8 rounded-lg bg-[#374151] text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900  flex items-center gap-3"
     type="button">
     
