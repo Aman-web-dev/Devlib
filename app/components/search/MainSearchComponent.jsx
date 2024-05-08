@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SearchResults from "@/app/components/search/searchResults";
 import DialogueWrapper from "../../assets/dialogueWrapper";
 import axios from "axios";
@@ -10,6 +10,7 @@ import axios from "axios";
 const MainSearchComponent = (props) => {
   const [searchResultData, setSearchResultData] = useState([]);
   const [searchdRepoData, setSearchedRepoData] = useState([]);
+  const searchRef=useRef(null)
 
 
   const fetchRes = async (value) => {
@@ -47,6 +48,11 @@ const MainSearchComponent = (props) => {
     fetchRes(e.target.value);
   };
 
+
+  useEffect(()=>{
+   searchRef.current.focus()
+  },[])
+
   return (
 
   <DialogueWrapper>
@@ -61,6 +67,7 @@ const MainSearchComponent = (props) => {
         </label>
         <div className="relative w-full">
           <input
+            ref={searchRef}
             type="text"
             id="voice-search"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
