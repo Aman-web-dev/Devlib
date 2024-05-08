@@ -28,7 +28,7 @@ const Heading = () => {
       <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
        Devlib Blogs:{" "}
         <span className="text-blue-600 dark:text-blue-500">share what you Know</span>{" "}
-      Learn What you don't
+      Learn What you don&apos;t
       </h1>
       <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
        In devlib Blogs You can share your knowledge about tech Effortlessly by just creating a Blog of your own in few Clicks you can read and like Others Blogs and help them know. that they did good work.

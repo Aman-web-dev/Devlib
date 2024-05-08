@@ -6,7 +6,7 @@ import Preview from "./Preview";
 import { useTheme } from "next-themes";
 import BlogPublisher from "./BlogPublisher";
 import useclickOutisdeHook from "@/hooks/useclickOutisdeHook";
-
+import { postBlog } from "../../apiCalls/apiCalls";
 
 
 export default function EditorPain() {
@@ -45,6 +45,11 @@ export default function EditorPain() {
       console.log(data);
       setPublish(true)
     }
+  }
+
+
+  const handleBlogPost=()=>{
+   
   }
 
   return (
