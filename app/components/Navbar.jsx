@@ -144,12 +144,12 @@ const Navbar = () => {
                   </Link>
                 </li>
 
-                <li className={`${pathName === "/articles" && " text-cyan"}`}>
+                {/* <li className={`${pathName === "/articles" && " text-cyan"}`}>
                   <Link href="/articles" className="">
                     Articles
                   </Link>
-                </li>
-
+                </li> */}
+                {/* not completed yet */}
                 <li>
                   <div>
                     <div className="flex flex-col md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
