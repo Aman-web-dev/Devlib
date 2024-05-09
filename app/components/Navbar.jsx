@@ -12,8 +12,6 @@ import NavSearchButton from "./search/navSearchButton";
 import { useTheme } from "next-themes";
 import { VscMenu } from "react-icons/vsc";
 import { useVideoSidebar } from "@/utils (Context)/zustStores";
-import DummySideBar from "./DummySideBar";
-import Options from "./Options";
 
 const Navbar = () => {
   const defaultPhotoUrl =
