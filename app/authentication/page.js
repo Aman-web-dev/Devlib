@@ -8,13 +8,13 @@ import {
 } from "../firebase/auth";
 import { useAuth } from "@/utils (Context)/authContext.jsx";
 import { redirect } from "next/navigation";
-import axios from "axios";
-import Link from "next/link";
 import {
   doesUserExistInDatabase,
   makeNewVideoBucket,
   saveUserDataToDatabase,
 } from "./api/apiCalls";
+import astronaut from "../../public/assets/astronaut.svg";
+import Image from "next/image";
 
 function Page() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -44,12 +44,14 @@ function Page() {
 
       doesUserExistInDatabase(currentUser.uid).then((result) => {
         console.log(typeof result);
-        if (result == "true") {;
-         console.log("the user was old so data has't been saved and the bucket is also not created")
+        if (result == "true") {
+          console.log(
+            "the user was old so data has't been saved and the bucket is also not created"
+          );
         }
         if (result == "false") {
           saveUserDataToDatabase(currentUser);
-          makeNewVideoBucket(currentUser.uid)
+          makeNewVideoBucket(currentUser.uid);
         }
         return result;
       });
@@ -88,34 +90,21 @@ function Page() {
   }, [userLoggedIn]);
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
-      <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
-        <div className=" xl:w-7/12 p-4 sm:p-12">
-          <div className="text-left mx-auto">
-            <h1
-              id="title"
-              className="text-4xl mx-auto  font-bold   text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-600"
-            >
-              Dev
-              <span className="text-black text-xl">-Developer&#39;s</span>
-            </h1>
-            <h1
-              id="title"
-              className="text-4xl mx-auto font-bold   text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-600"
-            >
-              Lib
-              <span className="text-black text-xl">-Library</span>
-            </h1>
-          </div>
+    <div className="min-h-screen  text-gray-900 flex justify-center">
+      <div className="max-w-screen-xl m-0 sm:m-10 bg-gray-700 bg-opacity-25 shadow sm:rounded-lg flex justify-center flex-1">
+        <div className="px-4 py-6 w-full">
           <div className="mt-12 flex flex-col items-center">
-            <h1 className="text-2xl xl:text-3xl font-extrabold">Sign up</h1>
-            <div className="w-full flex-1 mt-8">
+            <h1 className="text-2xl xl:text-3xl font-extrabold tracking-wider text-lightGray">
+              Authenticate
+            </h1>
+
+            <div className="w-full flex-1">
               <div className="flex flex-col items-center">
                 <button
                   onClick={(e) => {
                     googleSignIn(e);
                   }}
-                  className="w-full max-w-xl font-bold shadow-sm rounded-lg py-3 px-3 bg-indigo-100 text-gray-800 flex items-center justify-center  duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
+                  className="hover:rounded-full ease-linear w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300  focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5"
                 >
                   <div className="bg-white p-2 rounded-full">
                     <svg className="w-4" viewBox="0 0 533.5 544.3">
@@ -137,12 +126,12 @@ function Page() {
                       />
                     </svg>
                   </div>
-                  <span className="ml-4">Sign Up with Google</span>
+                  <span className="ml-4">Register/Login with Google</span>
                 </button>
 
                 <button
                   onClick={(e) => githubSignIn(e)}
-                  className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5"
+                  className="hover:rounded-full w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5"
                 >
                   <div className="bg-white p-1 rounded-full">
                     <svg className="w-6" viewBox="0 0 32 32">
@@ -152,14 +141,14 @@ function Page() {
                       />
                     </svg>
                   </div>
-                  <span className="ml-4">Sign Up with GitHub</span>
+                  <span className="ml-4">Register/Login with GitHub</span>
                 </button>
               </div>
             </div>
 
-            <div className="my-12 border-b text-center">
-              <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                Or sign up with e-mail
+            <div className="my-6 text-center">
+              <div className="leading-none px-2 inline-block text-sm text-lightGray tracking-wide font-medium transform translate-y-1/2">
+                or Sign up or Login with email
               </div>
             </div>
 
@@ -196,38 +185,15 @@ function Page() {
                     <circle cx="8.5" cy="7" r="4" />
                     <path d="M20 8v6M23 11h-6" />
                   </svg>
-                  <span className="ml-3">Sign Up</span>
+                  <span className="ml-3">Submit</span>
                 </button>
               </form>
-
-              <p className="mt-6 text-xs text-gray-600 text-center">
-                I agree to abide by templatana &apos; s
-                <Link
-                  href="#"
-                  className="border-b border-gray-500 border-dotted"
-                >
-                  Terms of Service
-                </Link>
-                and its
-                <Link
-                  href="#"
-                  className="border-b border-gray-500 border-dotted"
-                >
-                  Privacy Policy
-                </Link>
-              </p>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex-1 bg-indigo-100 text-center hidden lg:flex">
-        <div
-          className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
-          // style={{
-          //   backgroundImage:
-          //     "url('https://storage.googleapis.com/devitary-image-host.appspot.com/15848031292911696601-undraw_designer_life_w96d.svg')",
-          // }}
-        ></div>
+      <div className="flex-1 hidden md:flex items-center justify-center">
+        <Image src={astronaut} width={300} height={400} />
       </div>
     </div>
   );
