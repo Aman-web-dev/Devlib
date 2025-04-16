@@ -52,7 +52,7 @@ function Hero() {
             </div>
             
             <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-              Don't Waste Time to Find Perfect{" "}
+              Don&apos;t Waste Time to Find Perfect{" "}
               <span className="bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
                 Resources, DevLib
               </span>
