@@ -6,8 +6,7 @@ import Provider from "./provider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "./components/Footer";
-// import Footer from "./components/Footer";
-// import DummySideBar from "./components/DummySideBar";
+
 
 const inter = Inter({
   subsets: ["latin"],

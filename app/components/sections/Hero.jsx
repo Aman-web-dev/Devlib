@@ -1,203 +1,207 @@
 "use client";
 import React, { useState } from "react";
+import { ArrowRight, Star, X, Github, Code, Bookmark } from "lucide-react";
 
 function Hero() {
   const [donateButton, setDonateButton] = useState(true);
+  
   return (
-    <div className={`  min-h-screen w-full m-auto`}>
+    <div className="relative min-h-screen w-full bg-gradient-to-b from-slate-900 to-slate-800 text-white">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-purple-700 opacity-20 blur-3xl"></div>
+        <div className="absolute top-1/2 -left-20 h-60 w-60 rounded-full bg-pink-600 opacity-20 blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 h-40 w-40 rounded-full bg-blue-600 opacity-20 blur-3xl"></div>
+      </div>
+      
+      {/* Donation banner */}
       {donateButton && (
-        <div className="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
-          <div
-            className="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
-            aria-hidden="true"
-          >
-            <div
-              className="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
-              style={{
-                clipPath:
-                  "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
-              }}
-            ></div>
-          </div>
-          <div
-            className="absolute left-[max(45rem,calc(50%+8rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
-            aria-hidden="true"
-          >
-            <div
-              className="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
-              style={{
-                clipPath:
-                  "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
-              }}
-            ></div>
-          </div>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <p className="text-sm leading-6 text-gray-900">
-              <strong className="font-semibold">Help Devlib</strong>
-              <svg
-                viewBox="0 0 2 2"
-                className="mx-2 inline h-0.5 w-0.5 fill-current"
-                aria-hidden="true"
-              >
-                <circle cx="1" cy="1" r="1" />
-              </svg>
-              Support Devlib&apos;s Programmers to keep Working on Devlib and
+        <div className="relative z-10 flex items-center gap-x-6 overflow-hidden bg-gradient-to-r from-purple-800 to-pink-700 px-6 py-3">
+          <div className="flex flex-1 flex-wrap items-center gap-x-4 gap-y-2">
+            <p className="text-sm font-medium text-white">
+              <strong className="font-bold">Help DevLib</strong>
+              <span className="mx-2 inline-block h-1 w-1 rounded-full bg-white"></span>
+              Support DevLib&apos;s Programmers to keep working on DevLib and
               make a better Programming Community.
             </p>
             <a
               href="#"
-              className="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+              className="flex items-center rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-purple-900 shadow-lg transition-all hover:bg-opacity-90 hover:shadow-xl"
             >
-              Donate Now <span aria-hidden="true">&rarr;</span>
+              Donate Now <ArrowRight className="ml-2 h-4 w-4" />
             </a>
           </div>
-          <div className="flex flex-1 justify-end">
-            <button
-              onClick={() => setDonateButton(false)}
-              type="button"
-              className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
-            >
-              <span className="sr-only">Dismiss</span>
-              <svg
-                className="h-5 w-5 text-gray-900"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-              </svg>
-            </button>
-          </div>
+          <button
+            onClick={() => setDonateButton(false)}
+            type="button"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-white bg-opacity-20 text-white transition-colors hover:bg-opacity-30"
+          >
+            <span className="sr-only">Dismiss</span>
+            <X className="h-4 w-4" />
+          </button>
         </div>
       )}
 
-      <div className="mx-auto max-w-7xl ">
-        <div className="flex items-center justify-between py-6">
-          <div className="px-6 sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:flex lg:items-center lg:text-left">
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <span className="rounded-full uppercase bg-pink-500 px-3 py-0.5 text-sm font-semibold leading-5  dark:text-white">
-                    Early Access
-                  </span>
-                  <h1 className="text-4xl font-bold tracking-tight  sm:text-5xl md:text-6xl">
-                    <span className="sm:text-6xl "></span> Dont Waste Time to
-                    Find Perfect{" "}
-                    <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-600">
-                      Resources, Dev Lib
-                    </span>
-                    <br />
-                    Has Got Your Back
-                  </h1>
-                </div>
-
-                <p className=" text-lightGray text-sm sm:mt-5 md:text-base">
-                  Unlock the power of seamless coding with Dev Lib - where
-                  precision meets efficiency. No more time wasted in the pursuit
-                  of perfect resources; Dev Lib has got your back, empowering
-                  developers with a world of possibilities at their fingertips.
-                </p>
-              </div>
-
-              <div className="border-t border-gray-700"></div>
-
-              <div className="flex space-x-4 items-center ">
-                <div className="flex items-center space-x-2">
-                  <div className="flex  ">
-                    <img
-                      loading="lazy"
-                      width="400"
-                      height="400"
-                      decoding="async"
-                      className="h-6 w-6 max-w-none rounded-full ring-2 ring-white"
-                      style={{ color: "transparent" }}
-                      src="https://avatars.githubusercontent.com/u/117465920?v=4"
-                    />
-                    <img
-                      loading="lazy"
-                      width="400"
-                      height="400"
-                      decoding="async"
-                      className="h-6 w-6 max-w-none rounded-full ring-2 ring-white"
-                      style={{ color: "transparent" }}
-                      src="https://avatars.githubusercontent.com/u/112321572?v=4"
-                    />
-                  </div>
-
-                  <span className="flex-shrink-0 text-xs font-medium leading-5">
-                    Start Contributing
-                  </span>
-                </div>
-
-                <div className="h-4 border-l border-gray-700"></div>
-
-                <div className="flex items-center">
-                  <svg
-                    className="h-4 w-4 fill-current text-yellow-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"></path>
-                  </svg>
-                  <svg
-                    className="h-4 w-4 fill-current text-yellow-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"></path>
-                  </svg>
-                  <svg
-                    className="h-4 w-4 fill-current text-yellow-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"></path>
-                  </svg>
-                  <svg
-                    className="h-4 w-4 fill-current text-yellow-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"></path>
-                  </svg>
-                  <svg
-                    className="h-4 w-4 fill-current text-yellow-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"></path>
-                  </svg>
-                </div>
-                <div className="h-4 border-l border-gray-700"></div>
-                <a
-                  href="https://github.com/Aman-web-dev/Devlib"
-                  target="_blank"
-                >
+      {/* Main hero content */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex min-h-[80vh] flex-col items-center justify-center py-12 lg:flex-row lg:justify-between lg:py-24">
+          {/* Text content */}
+          <div className="max-w-2xl text-center lg:text-left">
+            <div className="mb-6 inline-block rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-4 py-1 text-xs font-bold uppercase tracking-wider text-white">
+              Early Access
+            </div>
+            
+            <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl md:text-6xl">
+              Don't Waste Time to Find Perfect{" "}
+              <span className="bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
+                Resources, DevLib
+              </span>
+              <br />
+              Has Got Your Back
+            </h1>
+            
+            <p className="mb-8 text-base text-gray-300 sm:text-lg">
+              Unlock the power of seamless coding with DevLib - where
+              precision meets efficiency. No more time wasted in the pursuit
+              of perfect resources; DevLib has got your back, empowering
+              developers with a world of possibilities at their fingertips.
+            </p>
+            
+            {/* Action buttons */}
+            <div className="mb-8 flex flex-wrap justify-center gap-4 lg:justify-start">
+              <a 
+                href="#" 
+                className="flex items-center rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 px-6 py-3 font-medium text-white shadow-lg transition-all hover:shadow-xl"
+              >
+                <Code className="mr-2 h-5 w-5" />
+                Get Started
+              </a>
+              
+              <a 
+                href="https://github.com/Aman-web-dev/Devlib" 
+                target="_blank"
+                className="flex items-center rounded-lg border border-gray-600 bg-gray-800 bg-opacity-50 px-6 py-3 font-medium text-white transition-all hover:bg-opacity-70"
+              >
+                <Github className="mr-2 h-5 w-5" />
+                GitHub Repo
+              </a>
+            </div>
+            
+            {/* Social proof */}
+            <div className="flex flex-col items-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-8 lg:items-start">
+              <div className="flex items-center">
+                <div className="flex -space-x-2">
                   <img
-                    src="https://firebasestorage.googleapis.com/v0/b/devlib-c6572.appspot.com/o/assets%2FGroup%2017.svg?alt=media&token=94635e79-3054-46e3-acac-34fa68016d32"
-                    className="w-32 h-8 md:w-48 md:h-12 lg:w-64 lg:h-16"
-                    width="250"
-                    height="54"
+                    loading="lazy"
+                    width="400"
+                    height="400"
+                    decoding="async"
+                    className="h-10 w-10 rounded-full border-2 border-slate-800 ring-2 ring-purple-500"
+                    src="https://avatars.githubusercontent.com/u/117465920?v=4"
+                    alt="Contributor"
                   />
-                </a>
+                  <img
+                    loading="lazy"
+                    width="400"
+                    height="400"
+                    decoding="async"
+                    className="h-10 w-10 rounded-full border-2 border-slate-800 ring-2 ring-pink-500"
+                    src="https://avatars.githubusercontent.com/u/112321572?v=4"
+                    alt="Contributor"
+                  />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-xs font-medium">
+                    20+
+                  </div>
+                </div>
+                <span className="ml-4 text-sm font-medium text-gray-300">
+                  Join <span className="text-white font-bold">100+</span> contributors
+                </span>
+              </div>
+              
+              <div className="h-8 hidden sm:block border-l border-gray-700"></div>
+              
+              <div className="flex items-center">
+                <div className="flex">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-yellow-500 text-yellow-500" />
+                  ))}
+                </div>
+                <span className="ml-2 text-sm font-medium text-gray-300">
+                  <span className="text-white font-bold">4.9/5</span> from 200+ reviews
+                </span>
               </div>
             </div>
           </div>
-
-          <div className="flex items-center w-full col-span-6">
-            <div className="px-6 h-96 lg:h-100% w-full max-w-2xl col-span-6 flex items-center mx-auto ">
-              <div style={{ width: "100%", height: "100%" }}>
-                <div
-                  className="shadow-2xl shadow-cyan-500/50"
-                  style={{ width: "100%", height: "100%" }}
-                >
-                  <iframe
-                    frameBorder="0"
-                    allowFullScreen="1"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    width="100%"
-                    height="100%"
-                    src="https://www.youtube.com/embed/mr15Xzb1Ook?autoplay=0&amp;mute=0&amp;controls=0&"
-                    id="widget2"
-                  ></iframe>
+          
+          {/* Hero image/visual */}
+          <div className="mt-10 lg:mt-0">
+            <div className="relative">
+              {/* Glow effect */}
+              <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 opacity-75 blur"></div>
+              
+              {/* Image container */}
+              <div className="relative rounded-lg bg-gray-900 p-1">
+                <div className="rounded-lg overflow-hidden border border-gray-700">
+                  <img 
+                    src="/api/placeholder/600/400" 
+                    alt="DevLib Dashboard Preview"
+                    className="w-full max-w-md rounded-lg shadow-2xl"
+                  />
+                </div>
+                
+                {/* Badge overlay */}
+                <div className="absolute -right-3 -top-3 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 p-1">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-black text-xs font-bold">
+                    <div className="text-center">
+                      <div className="text-yellow-400">NEW</div>
+                      <div className="text-white text-xs">V2.0</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Stats cards */}
+              <div className="absolute -bottom-6 -left-6 rounded-lg bg-gray-800 p-4 shadow-lg border border-gray-700">
+                <div className="flex items-center space-x-2">
+                  <Bookmark className="h-5 w-5 text-purple-400" />
+                  <div>
+                    <div className="text-xs text-gray-400">Resources</div>
+                    <div className="text-lg font-bold text-white">10,000+</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="absolute -right-6 -bottom-6 rounded-lg bg-gray-800 p-4 shadow-lg border border-gray-700">
+                <div className="flex items-center space-x-2">
+                  <div className="rounded-full bg-green-500 p-1">
+                    <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-400">Updated</div>
+                    <div className="text-lg font-bold text-white">Daily</div>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Tech stack logos */}
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-16">
+        <div className="mx-auto max-w-2xl">
+          <p className="mb-6 text-center text-sm font-medium text-gray-400">
+            SUPPORTED TECHNOLOGIES
+          </p>
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
+            {/* These would be actual tech logos in a real implementation */}
+            {["React", "Vue", "Angular", "Node", "Python", "Go", "Ruby"].map((tech) => (
+              <div key={tech} className="flex h-8 items-center rounded-md bg-gray-800 px-4 text-sm font-medium text-gray-300">
+                {tech}
+              </div>
+            ))}
           </div>
         </div>
       </div>
