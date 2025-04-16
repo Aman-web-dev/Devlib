@@ -16,7 +16,7 @@ const ProfileHeader = async ({ user_id }) => {
   };
 
 let followers=await followerCount({user_id:user_id})
-// let following=await followingCount()
+
 
 console.log("followers Count",followers)
 

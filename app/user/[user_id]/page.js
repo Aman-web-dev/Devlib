@@ -8,28 +8,18 @@ import { Suspense } from "react";
 import UserLoading from "./loading";
 import { PostLoading } from "./loading";
 
-
-
-
 function Page() {
   const params = useParams();
-  console.log("the main Page Loaded")
+  console.log("the main Page Loaded");
 
-
-
- 
   return (
     <div className="flex md:flex-row flex-col py-4">
-
-
-      <Suspense fallback={<UserLoading/>}>
-      <ProfileHeader user_id={params.user_id}/>
+      <Suspense fallback={<UserLoading />}>
+        <ProfileHeader user_id={params.user_id} />
       </Suspense>
-  
-   
 
-  <Suspense fallback={<PostLoading/>}>
-      <UsersResources />
+      <Suspense fallback={<PostLoading />}>
+        <UsersResources />
       </Suspense>
     </div>
   );
